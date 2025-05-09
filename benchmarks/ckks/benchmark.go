@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/tuneinsight/lattigo/v6/ring"
-	"github.com/tuneinsight/lattigo/v6/utils"
+	//"github.com/tuneinsight/lattigo/v6/utils"
 	"github.com/tuneinsight/lattigo/v6/utils/sampling"
 
 	"github.com/tuneinsight/lattigo/v6/circuits/ckks/bootstrapping"
@@ -144,14 +144,64 @@ func benchmarkAllLevels(params ckks.Parameters, btpParams bootstrapping.Paramete
 					panic(err)
 				}
 			}))
-
-		benchmarks = append(benchmarks, measureOp(times, level,
-			"ModSwitch",
-			func() {
-				eval.DropLevel(ct1, 1)
-			}))
-
 		fmt.Println(".")
+	}
+
+	return benchmarks
+}
+
+func benchmarkModSwitch(params ckks.Parameters, times int) []Benchmark {
+	benchmarks := []Benchmark{}
+
+	kgen := ckks.NewKeyGenerator(params)
+	sk := kgen.GenSecretKeyNew()
+	pk := kgen.GenPublicKeyNew(sk)
+	enc := rlwe.NewEncryptor(params, pk)
+	ecd := ckks.NewEncoder(params)
+
+	values := make([]complex128, params.MaxSlots())
+	for i := range values {
+		values[i] = sampling.RandComplex128(-1, 1)
+	}
+
+	for level := params.MaxLevel(); level > 0; level-- {
+		ciphertexts := make([]*rlwe.Ciphertext, times)
+		pt := ckks.NewPlaintext(params, level)
+		ecd.Encode(values, pt)
+		for i := 0; i < times; i++ {
+			ciphertexts[i], _ = enc.EncryptNew(pt)
+		}
+
+		eval := ckks.NewEvaluator(params, nil)
+
+		// Collect all measurements
+		timesArr := make([]time.Duration, times)
+		var sum time.Duration
+		for i := 0; i < times; i++ {
+			ct := ciphertexts[i]
+			start := time.Now()
+			eval.DropLevel(ct, 1)
+			elapsed := time.Since(start)
+			timesArr[i] = elapsed
+			sum += elapsed
+		}
+		avgTime := sum / time.Duration(times)
+
+		// Calculate standard deviation
+		var sqDiffSum float64
+		avgNano := float64(avgTime.Nanoseconds())
+		for _, t := range timesArr {
+			diff := float64(t.Nanoseconds()) - avgNano
+			sqDiffSum += diff * diff
+		}
+		stdDev := time.Duration(math.Sqrt(sqDiffSum / float64(times)))
+
+		benchmarks = append(benchmarks, Benchmark{
+			OpName:  "ModSwitch",
+			Level:   level,
+			AvgTime: avgTime,
+			StdDev:  stdDev,
+		})
 	}
 
 	return benchmarks
@@ -169,16 +219,17 @@ func main() {
 		panic(err)
 	}
 
-	btpParams, err := bootstrapping.NewParametersFromLiteral(params, bootstrapping.ParametersLiteral{
-		LogN: utils.Pointy(16),
-		LogP: []int{61, 61, 61, 61},
-	})
-	if err != nil {
-		panic(err)
-	}
+	//btpParams, err := bootstrapping.NewParametersFromLiteral(params, bootstrapping.ParametersLiteral{
+	//	LogN: utils.Pointy(16),
+	//	LogP: []int{61, 61, 61, 61},
+	//})
+	//if err != nil {
+	//	panic(err)
+	//}
 
 	// Run benchmarks
-	results := benchmarkAllLevels(params, btpParams)
+	//results := benchmarkAllLevels(params, btpParams)
+	results := benchmarkModSwitch(params, 30)
 	for _, result := range results {
 		fmt.Printf("Level %d\n", result.Level)
 		fmt.Printf("%s:\n", result.OpName)
