@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/tuneinsight/lattigo/v6/ring"
-	//"github.com/tuneinsight/lattigo/v6/utils"
+	"github.com/tuneinsight/lattigo/v6/utils"
 	"github.com/tuneinsight/lattigo/v6/utils/sampling"
 
 	"github.com/tuneinsight/lattigo/v6/circuits/ckks/bootstrapping"
@@ -227,18 +227,18 @@ func main() {
 		panic(err)
 	}
 
-	//btpParams, err := bootstrapping.NewParametersFromLiteral(params, bootstrapping.ParametersLiteral{
-	//	LogN: utils.Pointy(logN),
-	//	LogP: []int{61, 61, 61, 61},
-	//})
-	//if err != nil {
-	//	panic(err)
-	//}
+	btpParams, err := bootstrapping.NewParametersFromLiteral(params, bootstrapping.ParametersLiteral{
+		LogN: utils.Pointy(logN),
+		LogP: []int{61, 61, 61, 61},
+	})
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println("Running benchmarks...")
 
-	//results := benchmarkAllLevels(params, btpParams, times, bootstrapMinLevel, bootstrapMaxLevel)
-	results := benchmarkModSwitch(params, times)
+	results := benchmarkAllLevels(params, btpParams, times, bootstrapMinLevel, bootstrapMaxLevel)
+	results = append(results, benchmarkModSwitch(params, times)...)
 	fmt.Println()
 
 	fmt.Println("Generating cost model...")
