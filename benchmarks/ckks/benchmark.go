@@ -210,7 +210,7 @@ func main() {
 	for i := 1; i < len(logQ); i++ {
 		logQ[i] = 40
 	}
-	logN := 16
+	logN := 15
 	polyDegree := 1 << logN
 	logDefaultScale := 40
 
@@ -251,7 +251,14 @@ func main() {
 	}
 
 	for _, key := range opKeys {
-		latencyTable[key] = []float64{0}
+		if key == "earth.bootstrap_single" {
+			latencyTable[key] = make([]float64, bootstrapMinLevel+1)
+			for i := range latencyTable[key] {
+				latencyTable[key][i] = 0
+			}
+		} else {
+			latencyTable[key] = []float64{0}
+		}
 	}
 
 	for _, op := range opNames {
