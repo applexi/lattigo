@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -43,7 +44,7 @@ const (
 
 type Metadata struct {
 	RMSVar      float64   // Const
-	Value       int       // Const
+	Value       float64   // Const
 	PackedValue []float64 // Pack
 	MaskedValue []float64 // Mask
 	Offset      int       // Rot
@@ -62,37 +63,41 @@ type Term struct {
 }
 
 type LattigoFHE struct {
-	params           *ckks.Parameters
-	btpParams        *bootstrapping.Parameters
-	terms            map[int]*Term            // stores term info
-	env              map[int]*rlwe.Ciphertext // stores ciphertexts
-	ptEnv            map[int][]float64        // stores plaintexts
-	n                int
-	maxLevel         int
-	eval             *ckks.Evaluator
-	btpEval          *bootstrapping.Evaluator
-	enc              *rlwe.Encryptor
-	ecd              *ckks.Encoder
-	dec              *rlwe.Decryptor
-	instructionsPath string
-	mlirPath         string
-	fileType         FileType
-	getStats         bool
-	outFile          string
+	params            *ckks.Parameters
+	btpParams         *bootstrapping.Parameters
+	terms             map[int]*Term            // stores term info
+	env               map[int]*rlwe.Ciphertext // stores ciphertexts
+	ptEnv             map[int][]float64        // stores plaintexts
+	n                 int
+	maxLevel          int
+	bootstrapMinLevel int
+	bootstrapMaxLevel int
+	eval              *ckks.Evaluator
+	btpEval           *bootstrapping.Evaluator
+	enc               *rlwe.Encryptor
+	ecd               *ckks.Encoder
+	dec               *rlwe.Decryptor
+	instructionsPath  string
+	mlirPath          string
+	fileType          FileType
+	getStats          bool
+	outFile           string
 }
 
-func NewLattigoFHE(n int, instructionsPath string, mlirPath string, fileType FileType, maxLevel int, outFile string) *LattigoFHE {
+func NewLattigoFHE(n int, instructionsPath string, mlirPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, outFile string) *LattigoFHE {
 	return &LattigoFHE{
-		terms:            make(map[int]*Term),
-		env:              make(map[int]*rlwe.Ciphertext),
-		ptEnv:            make(map[int][]float64),
-		n:                n,
-		maxLevel:         maxLevel,
-		instructionsPath: instructionsPath,
-		mlirPath:         mlirPath,
-		fileType:         fileType,
-		getStats:         outFile != "",
-		outFile:          outFile,
+		terms:             make(map[int]*Term),
+		env:               make(map[int]*rlwe.Ciphertext),
+		ptEnv:             make(map[int][]float64),
+		n:                 n,
+		maxLevel:          maxLevel,
+		bootstrapMinLevel: bootstrapMinLevel,
+		bootstrapMaxLevel: bootstrapMaxLevel,
+		instructionsPath:  instructionsPath,
+		mlirPath:          mlirPath,
+		fileType:          fileType,
+		getStats:          outFile != "",
+		outFile:           outFile,
 	}
 }
 
@@ -142,7 +147,7 @@ func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []
 						Secret: strings.Contains(trimmed, "earth.ci"),
 						Scale:  scale,
 						// MAXLEVEL -
-						Level:  level,
+						Level: lattigo.maxLevel - level,
 					}
 					inputs = append(inputs, *term)
 				}
@@ -296,6 +301,11 @@ func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term, string) 
 		}
 	}
 
+	// For MUL operation with single parameter, duplicate the first child
+	if (mlirOpToOp(op) == MUL || mlirOpToOp(op) == ADD) && len(children) == 1 {
+		children = append(children, children[0])
+	}
+
 	// Get metadata (the stuff inside <{ ... }>)
 	metadata := ""
 	metaStart := strings.Index(rest, "<{")
@@ -344,7 +354,7 @@ func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term, string) 
 		Secret:   secret,
 		Scale:    scale,
 		// MAXLEVEL -
-		Level:    level,
+		Level:    lattigo.maxLevel - level,
 		Metadata: metadata,
 	}
 	if _, ok := lattigo.terms[lineNum]; !ok {
@@ -398,9 +408,9 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 				md.RMSVar = v
 			}
 		}
-		reValue := regexp.MustCompile(`value\s*=\s*([0-9]+)\s*:\s*i64`)
+		reValue := regexp.MustCompile(`value\s*=\s*([0-9\.]+)\s*:\s*i64`)
 		if match := reValue.FindStringSubmatch(metadata); len(match) == 2 {
-			if v, err := strconv.Atoi(match[1]); err == nil {
+			if v, err := strconv.ParseFloat(match[1], 64); err == nil {
 				md.Value = v
 			}
 		}
@@ -465,15 +475,19 @@ func findUniqueRots(operations []string) []int {
 
 func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	logQ := append([]int{55}, make([]int, depth)...)
-	for i := 1; i < len(logQ); i++ {
-		logQ[i] = 51
+	for i := 1; i <= lattigo.maxLevel; i++ {
+		if i >= lattigo.bootstrapMinLevel && i <= lattigo.bootstrapMaxLevel {
+			logQ[i] = 51
+		} else {
+			logQ[i] = 51
+		}
 	}
 	logN := int(math.Log2(float64(lattigo.n * 2)))
 	params, _ := ckks.NewParametersFromLiteral(ckks.ParametersLiteral{
 		LogN:            logN,
-		LogQ:            logQ, // slice of 50s, length depth+1
+		LogQ:            logQ,
 		LogP:            []int{61, 61, 61},
-		LogDefaultScale: 50,
+		LogDefaultScale: 51,
 	})
 	btpParams, _ := bootstrapping.NewParametersFromLiteral(params, bootstrapping.ParametersLiteral{
 		LogN: utils.Pointy(logN),
@@ -559,12 +573,12 @@ func (lattigo *LattigoFHE) evalRot(ct1 *rlwe.Ciphertext, k int) *rlwe.Ciphertext
 
 func (lattigo *LattigoFHE) evalUpscale(ct1 *rlwe.Ciphertext, upFactor int) *rlwe.Ciphertext {
 	pt := ckks.NewPlaintext(*lattigo.params, ct1.Level())
+	pt.Scale = rlwe.NewScale(math.Pow(2, float64(upFactor)))
 	ones := make([]float64, lattigo.n)
 	for i := range ones {
 		ones[i] = 1
 	}
 	lattigo.ecd.Encode(ones, pt)
-	pt.Scale = rlwe.NewScale(math.Pow(2, float64(upFactor)))
 	ct, _ := lattigo.eval.MulRelinNew(ct1, pt)
 	return ct
 }
@@ -586,12 +600,16 @@ func (lattigo *LattigoFHE) evalNegate(ct1 *rlwe.Ciphertext) *rlwe.Ciphertext {
 }
 
 func (lattigo *LattigoFHE) evalBootstrap(ct1 *rlwe.Ciphertext, targetLevel int) *rlwe.Ciphertext {
+	ct_i := ct1.CopyNew()
 	ct, err := lattigo.btpEval.Bootstrap(ct1)
 	if err != nil {
+		fmt.Println("initial Q: ", math.Log2(float64(lattigo.params.Q()[ct_i.Level()])))
+		fmt.Println("initial Scale: ", math.Log2(ct_i.Scale.Float64()))
+		fmt.Println("initial Q/Scale: ", float64(lattigo.params.Q()[ct_i.Level()])/ct_i.Scale.Float64())
 		panic(fmt.Sprintf("Bootstrap failed: %v", err))
 	}
 	// MAXLEVEL -
-	ct = lattigo.evalModswitch(ct, lattigo.maxLevel-targetLevel)
+	ct = lattigo.evalModswitch(ct, targetLevel)
 	return ct
 }
 
@@ -653,14 +671,13 @@ func (lattigo *LattigoFHE) processInputs(inputs []Term) {
 		pt := make([]float64, lattigo.n)
 		for j := 0; j < lattigo.n; j++ {
 			// random float from 0 to 1
-			pt[j] = rng.Float64()
+			pt[j] = rng.Float64() * math.Pow(2, -5)
 		}
 		lattigo.env[-1-i] = lattigo.encode(pt, &input.Scale, input.Level)
 		lattigo.terms[-1-i] = &input
 		if !input.Secret || lattigo.getStats {
 			lattigo.ptEnv[-1-i] = pt
 		}
-		fmt.Printf("Input %d: %v\n", -1-i, pt)
 	}
 }
 
@@ -796,48 +813,59 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 	}
 
 	decrypted := lattigo.decryptToPlaintext(lattigo.env[lineNum])
-	logFile, err := os.OpenFile(lattigo.outFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	// Create logs directory if it doesn't exist
+	err := os.MkdirAll("logs", 0755)
+	if err != nil {
+		fmt.Printf("Error creating logs directory: %v\n", err)
+		return
+	}
+
+	// Open file in logs directory
+	logPath := filepath.Join("logs", lattigo.outFile)
+	logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Printf("Error opening output file: %v\n", err)
-	} else {
-		defer logFile.Close()
-		writer := bufio.NewWriter(logFile)
-
-		fmt.Fprintf(writer, "==============================\n")
-		fmt.Fprintf(writer, "Line Number: %d\n", lineNum)
-		fmt.Fprintf(writer, "Scale: %f, Level: %v\n", math.Log2(term.Scale.Float64()), term.Level)
-		fmt.Fprintf(writer, "Operation: %v\n", term.Op)
-		fmt.Fprintf(writer, "Children: %v\n", term.Children)
-		fmt.Fprintf(writer, "Want:      [")
-		for i, v := range want {
-			if i > 0 {
-				fmt.Fprintf(writer, ", ")
-			}
-			fmt.Fprintf(writer, "%.6f", v)
-			if i == 9 && len(want) > 10 {
-				fmt.Fprintf(writer, ", ...")
-				break
-			}
-		}
-		fmt.Fprintf(writer, "]\n") 
-		fmt.Fprintf(writer, "Decrypted: [")
-		for i, v := range decrypted {
-			if i > 0 {
-				fmt.Fprintf(writer, ", ")
-			}
-			fmt.Fprintf(writer, "%.6f", v)
-			if i == 9 && len(decrypted) > 10 {
-				fmt.Fprintf(writer, ", ...")
-				break
-			}
-		}
-		fmt.Fprintf(writer, "]\n")
-		if !accurate(want, decrypted) {
-			fmt.Fprintf(writer, "FAILED\n")
-		} 
-		fmt.Fprintf(writer, "==============================\n\n")
-		writer.Flush()
+		return
 	}
+	defer logFile.Close()
+
+	writer := bufio.NewWriter(logFile)
+
+	fmt.Fprintf(writer, "==============================\n")
+	fmt.Fprintf(writer, "Line Number: %d\n", lineNum)
+	fmt.Fprintf(writer, "Scale: %f, Level: %v\n", math.Log2(term.Scale.Float64()), term.Level)
+	fmt.Fprintf(writer, "Operation: %v\n", term.Op)
+	fmt.Fprintf(writer, "Children: %v\n", term.Children)
+	fmt.Fprintf(writer, "Want:      [")
+	for i, v := range want {
+		if i > 0 {
+			fmt.Fprintf(writer, ", ")
+		}
+		fmt.Fprintf(writer, "%.6f", v)
+		if i == 9 && len(want) > 10 {
+			fmt.Fprintf(writer, ", ...")
+			break
+		}
+	}
+	fmt.Fprintf(writer, "]\n")
+	fmt.Fprintf(writer, "Decrypted: [")
+	for i, v := range decrypted {
+		if i > 0 {
+			fmt.Fprintf(writer, ", ")
+		}
+		fmt.Fprintf(writer, "%.6f", v)
+		if i == 9 && len(decrypted) > 10 {
+			fmt.Fprintf(writer, ", ...")
+			break
+		}
+	}
+	fmt.Fprintf(writer, "]\n")
+	if !accurate(want, decrypted) {
+		fmt.Fprintf(writer, "FAILED\n")
+	}
+	fmt.Fprintf(writer, "==============================\n\n")
+	writer.Flush()
 }
 
 func (lattigo *LattigoFHE) runInstructions(operations []string) ([]*rlwe.Ciphertext, time.Duration, error) {
@@ -887,7 +915,10 @@ func (lattigo *LattigoFHE) Run() error {
 	} else {
 		file = lattigo.instructionsPath
 	}
-	fmt.Println("Reading file: ", file)
+	fmt.Println("Input file: ", file)
+	if lattigo.outFile != "" {
+		fmt.Println("Output log: ", filepath.Join("logs", lattigo.outFile))
+	}
 	expected_str, operations, inputs, err := lattigo.ReadFile(file)
 	if err != nil {
 		return fmt.Errorf("error reading file: %v", err)

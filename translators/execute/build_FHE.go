@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-
+	"path/filepath"
 	"github.com/tuneinsight/lattigo/v6/translators/shared"
 )
 
@@ -20,8 +20,12 @@ func main() {
 	var instructionsPath string
 	var mlirPath string
 	var maxLevel int
+	var bootstrapMinLevel int
+	var bootstrapMaxLevel int
 	flag.IntVar(&n, "n", 4096, "The polynomial modulus degree")
 	flag.IntVar(&maxLevel, "maxLevel", 29, "The maximum level of the FHE scheme")
+	flag.IntVar(&bootstrapMinLevel, "bootstrapMinLevel", 3, "The minimum bootstrap level of the FHE scheme")
+	flag.IntVar(&bootstrapMaxLevel, "bootstrapMaxLevel", 16, "The maximum bootstrap level of the FHE scheme")
 	flag.StringVar(&outFile, "getLog", "", "Enable debug log. Optionally specify output file (default: precision_debug.txt)")
 	flag.StringVar(&instructionsPath, "i", "/home/ubuntu/ajxi/fhe_compiler/instructions/fhe_terms.txt", "Path to instructions file")
 	flag.StringVar(&mlirPath, "mlir", "/home/ubuntu/ajxi/lattigo/translators/SqueezeNet_relu_lattigo_ilp.mlir", "Path to MLIR file")
@@ -38,7 +42,11 @@ func main() {
 		fileType = shared.Instructions
 	}
 
-	fhe := shared.NewLattigoFHE(n, instructionsPath, mlirPath, fileType, maxLevel, outFile)
+	if _, err := os.Stat(filepath.Join("logs", outFile)); err == nil {
+		os.Remove(filepath.Join("logs", outFile))
+	}
+
+	fhe := shared.NewLattigoFHE(n, instructionsPath, mlirPath, fileType, maxLevel, bootstrapMinLevel, bootstrapMaxLevel, outFile)
 	if err := fhe.Run(); err != nil {
 		fmt.Println(err)
 	}
