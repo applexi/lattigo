@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"github.com/tuneinsight/lattigo/v6/translators/shared"
 )
 
 func main() {
@@ -35,18 +34,18 @@ func main() {
 		outFile = "precision_debug.txt"
 	} 
 
-	var fileType shared.FileType
+	var fileType FileType
 	if mlirPath != "" {
-		fileType = shared.MLIR
+		fileType = MLIR
 	} else {
-		fileType = shared.Instructions
+		fileType = Instructions
 	}
 
 	if _, err := os.Stat(filepath.Join("logs", outFile)); err == nil {
 		os.Remove(filepath.Join("logs", outFile))
 	}
 
-	fhe := shared.NewLattigoFHE(n, instructionsPath, mlirPath, fileType, maxLevel, bootstrapMinLevel, bootstrapMaxLevel, outFile)
+	fhe := NewLattigoFHE(n, instructionsPath, mlirPath, fileType, maxLevel, bootstrapMinLevel, bootstrapMaxLevel, outFile)
 	if err := fhe.Run(); err != nil {
 		fmt.Println(err)
 	}

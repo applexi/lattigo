@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# call chmod +x run to make it executable
+
+case "$1" in
+    lowering)
+        shift
+        go run ./fhe "$@"
+        ;;
+    test_bootstrap)
+        shift
+        go run ./tests/bootstrap.go "$@"
+        ;;
+    *)
+        echo "Usage:"
+        echo "  ./run lowering -mlir <file>    Run Lattigo lowering on MLIR file"
+        echo "  ./run lowering -inst <file>    Run Lattigo lowering on instructions file"  
+        echo "  ./run test_bootstrap           Test bootstrap accuracy"
+        echo ""
+        echo "Examples:"
+        echo "  ./run lowering --mlir tests/test.mlir"
+        echo "  ./run test_bootstrap"
+        ;;
+esac 
