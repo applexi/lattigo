@@ -2,9 +2,10 @@ package main
 
 import (
 	"bufio"
+	"log"
 	"math"
-	"math/rand"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -77,20 +78,57 @@ func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []
 }
 
 func (lattigo *LattigoFHE) processInputs(inputs []Term) {
-	seed := int64(42)
-	rng := rand.New(rand.NewSource(seed))
-
 	// line num is -1 - index of input
 	for i, input := range inputs {
-		pt := make([]float64, lattigo.n)
-		for j := 0; j < lattigo.n; j++ {
-			// random float from 0 to 1
-			pt[j] = rng.Float64()
+		// read from lattigo.inputsPath (path to a file)
+		readFile, err := os.ReadFile(filepath.Join(lattigo.inputsPath))
+		if err != nil {
+			log.Fatal(err)
+		}
+		lines := strings.Split(string(readFile), "\n")
+		numValues, _ := strconv.Atoi(lines[0])
+		pt := make([]float64, numValues)
+		for j := 0; j < numValues; j++ {
+			pt[j], _ = strconv.ParseFloat(lines[j+1], 64)
 		}
 		lattigo.env[-1-i] = lattigo.encode(pt, &input.Scale, input.Level)
 		lattigo.terms[-1-i] = &input
 		if !input.Secret || lattigo.getStats {
 			lattigo.ptEnv[-1-i] = pt
+		}
+	}
+}
+
+func (lattigo *LattigoFHE) processConstants() {
+	files, err := os.ReadDir(lattigo.constantsPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, file := range files {
+		filePath := filepath.Join(lattigo.constantsPath, file.Name())
+		info, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Fatal(err)
+		}
+		lines := strings.Split(string(info), "\n")
+		numValues, _ := strconv.Atoi(lines[0])
+		value, _ := strconv.Atoi(lines[1])
+		data := make([]float64, numValues)
+		for i := 0; i < numValues; i++ {
+			data[i], _ = strconv.ParseFloat(lines[i+2], 64)
+		}
+		// If lattigo.constants[value] exists, check if the data is the same
+		if existing, ok := lattigo.constants[value]; ok {
+			if len(existing) != len(data) {
+				log.Fatalf("Constant value %d already exists with different data", value)
+			}
+			for i := range existing {
+				if math.Abs(existing[i]-data[i]) > 1e-10 {
+					log.Fatalf("Constant value %d already exists with different data", value)
+				}
+			}
+		} else {
+			lattigo.constants[value] = data
 		}
 	}
 }
@@ -347,7 +385,7 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 		}
 		reValue := regexp.MustCompile(`value\s*=\s*([-+]?[0-9\.]+)\s*:\s*i64`)
 		if match := reValue.FindStringSubmatch(metadata); len(match) == 2 {
-			if v, err := strconv.ParseFloat(match[1], 64); err == nil {
+			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.Value = v
 			}
 		}
@@ -383,4 +421,3 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 	}
 	return md
 }
-

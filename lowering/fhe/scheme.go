@@ -33,7 +33,7 @@ const (
 
 type Metadata struct {
 	RMSVar      float64   // Const
-	Value       float64   // Const
+	Value       int       // Const
 	PackedValue []float64 // Pack
 	MaskedValue []float64 // Mask
 	Offset      int       // Rot
@@ -57,6 +57,7 @@ type LattigoFHE struct {
 	terms             map[int]*Term            // stores term info
 	env               map[int]*rlwe.Ciphertext // stores ciphertexts
 	ptEnv             map[int][]float64        // stores plaintexts
+	constants         map[int][]float64        // stores constants by value
 	n                 int
 	maxLevel          int
 	bootstrapMinLevel int
@@ -68,22 +69,29 @@ type LattigoFHE struct {
 	dec               *rlwe.Decryptor
 	instructionsPath  string
 	mlirPath          string
+	constantsPath     string
+	inputsPath        string
+	outputPath        string
 	fileType          FileType
 	getStats          bool
 	outFile           string
 }
 
-func NewLattigoFHE(n int, instructionsPath string, mlirPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, outFile string) *LattigoFHE {
+func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputsPath string, outputPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, outFile string) *LattigoFHE {
 	return &LattigoFHE{
 		terms:             make(map[int]*Term),
 		env:               make(map[int]*rlwe.Ciphertext),
 		ptEnv:             make(map[int][]float64),
+		constants:         make(map[int][]float64),
 		n:                 n,
 		maxLevel:          maxLevel,
 		bootstrapMinLevel: bootstrapMinLevel,
 		bootstrapMaxLevel: bootstrapMaxLevel,
 		instructionsPath:  instructionsPath,
 		mlirPath:          mlirPath,
+		constantsPath:     constantsPath,
+		inputsPath:        inputsPath,
+		outputPath:        outputPath,
 		fileType:          fileType,
 		getStats:          outFile != "",
 		outFile:           outFile,
@@ -119,11 +127,7 @@ func findUniqueRots(operations []string) []int {
 func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	logQ := append([]int{55}, make([]int, depth)...)
 	for i := 1; i <= lattigo.maxLevel; i++ {
-		if i >= lattigo.bootstrapMinLevel && i <= lattigo.bootstrapMaxLevel {
-			logQ[i] = 51
-		} else {
-			logQ[i] = 51
-		}
+		logQ[i] = 51
 	}
 	logN := int(math.Log2(float64(lattigo.n * 2)))
 	params, _ := ckks.NewParametersFromLiteral(ckks.ParametersLiteral{
@@ -155,7 +159,6 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	lattigo.ecd = ckks.NewEncoder(params)
 	lattigo.dec = rlwe.NewDecryptor(params, sk)
 	eval := ckks.NewEvaluator(params, evk)
-	lattigo.eval = eval
 	lattigo.eval = eval.WithKey(rlwe.NewMemEvaluationKeySet(rlk, kgen.GenGaloisKeysNew(galEls, sk)...))
 
 	btpEvk, _, _ := btpParams.GenEvaluationKeys(sk)
@@ -184,9 +187,14 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 			lattigo.ptEnv[lineNum] = pt
 			lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
 		case CONST:
-			pt := make([]float64, lattigo.n)
-			for i := 0; i < lattigo.n; i++ {
-				pt[i] = float64(md.Value)
+			var pt []float64
+			if lattigo.constantsPath != "" {
+				pt = lattigo.constants[md.Value]
+			} else {
+				pt = make([]float64, lattigo.n)
+				for i := 0; i < lattigo.n; i++ {
+					pt[i] = float64(md.Value)
+				}
 			}
 			if !term.Secret {
 				lattigo.ptEnv[lineNum] = pt
@@ -277,7 +285,7 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, []*r
 	return want, results, runtime, nil
 }
 
-func (lattigo *LattigoFHE) Run() error {
+func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	var file string
 	if lattigo.fileType == MLIR {
 		file = lattigo.mlirPath
@@ -290,7 +298,7 @@ func (lattigo *LattigoFHE) Run() error {
 	}
 	expected_str, operations, inputs, err := lattigo.ReadFile(file)
 	if err != nil {
-		return fmt.Errorf("error reading file: %v", err)
+		return nil, fmt.Errorf("error reading file: %v", err)
 	}
 	var expected []float64
 
@@ -302,6 +310,10 @@ func (lattigo *LattigoFHE) Run() error {
 		fmt.Println("Processing inputs...")
 		lattigo.processInputs(inputs)
 	}
+	if lattigo.constantsPath != "" {
+		fmt.Println("Processing constants...")
+		lattigo.processConstants()
+	}
 
 	fmt.Println("Preprocessing...")
 	lattigo.preprocess(operations)
@@ -309,15 +321,10 @@ func (lattigo *LattigoFHE) Run() error {
 	fmt.Println("Running instructions...")
 	want, results, runtime, err := lattigo.runInstructions(operations)
 	if err != nil {
-		return fmt.Errorf("error running instructions: %v", err)
+		return nil, fmt.Errorf("error running instructions: %v", err)
 	}
 	lastResult := results[len(results)-1]
 	pt_results := lattigo.decode(lastResult)
-
-	rounded := make([]float64, len(pt_results))
-	for i, v := range pt_results {
-		rounded[i] = math.Round(v)
-	}
 	if expected_str != "" {
 		fmt.Printf("\nOverall Statistics:\n")
 		expected = parseFloatArray(expected_str)
@@ -327,7 +334,7 @@ func (lattigo *LattigoFHE) Run() error {
 		} else {
 			fmt.Println("Failed... ")
 			for i := 0; i < len(expected); i++ {
-				fmt.Printf("Difference: %v\n", expected[i]-rounded[i])
+				fmt.Printf("Difference: %v\n", expected[i]-pt_results[i])
 			}
 		}
 		fmt.Printf("\nFinal Result Stats:\n")
@@ -337,7 +344,7 @@ func (lattigo *LattigoFHE) Run() error {
 	}
 	if lattigo.fileType == MLIR {
 		fmt.Printf("\nMLIR Result Stats:\n")
-		fmt.Printf("Decrypted Result: %v\n", pt_results[:20])
+		fmt.Printf("Decrypted Result: %v...\n", pt_results[:20])
 		fmt.Printf("Result Scale: %f\n", math.Log2(lastResult.Scale.Float64()))
 		fmt.Printf("Result Level (following lattigo): %v\n", lastResult.Level())
 	}
@@ -347,5 +354,5 @@ func (lattigo *LattigoFHE) Run() error {
 	}
 	fmt.Printf("Runtime: %v\n", runtime)
 
-	return nil
+	return pt_results, nil
 }

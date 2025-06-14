@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/tuneinsight/lattigo/v6/ring"
 	"github.com/tuneinsight/lattigo/v6/utils"
 	"github.com/tuneinsight/lattigo/v6/utils/sampling"
 
@@ -72,7 +71,6 @@ func benchmarkAllLevels(params ckks.Parameters, btpParams bootstrapping.Paramete
 	// Rotation by 5 positions to the left
 	galEl := []uint64{
 		params.GaloisElement(5),
-		params.GaloisElementForComplexConjugation(),
 	}
 	galKeys := kgen.GenGaloisKeysNew(galEl, sk)
 	eval = eval.WithKey(rlwe.NewMemEvaluationKeySet(rlk, galKeys...))
@@ -130,7 +128,7 @@ func benchmarkAllLevels(params ckks.Parameters, btpParams bootstrapping.Paramete
 			func() { eval.Rescale(ct1, ctout) }))
 
 		if level >= bootstrapMinLevel && level < bootstrapMaxLevel {
-			benchmarks = append(benchmarks, measureOp(times, level,
+			benchmarks = append(benchmarks, measureOp(times/4, level,
 				"Bootstrap",
 				func() { btpEval.Bootstrap(ct1) }))
 		}
@@ -208,11 +206,11 @@ func main() {
 
 	logQ := append([]int{55}, make([]int, levels-1)...)
 	for i := 1; i < len(logQ); i++ {
-		logQ[i] = 40
+		logQ[i] = 51
 	}
-	logN := 15
+	logN := 17
 	polyDegree := 1 << logN
-	logDefaultScale := 40
+	logDefaultScale := 51
 
 	fmt.Println("Generating parameters...")
 
@@ -221,7 +219,6 @@ func main() {
 		LogQ:            logQ,              // Log2 of the ciphertext prime moduli
 		LogP:            []int{61, 61, 61}, // Log2 of the key-switch auxiliary prime moduli
 		LogDefaultScale: logDefaultScale,   // Log2 of the scale
-		Xs:              ring.Ternary{H: 192},
 	})
 	if err != nil {
 		panic(err)

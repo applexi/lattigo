@@ -95,9 +95,14 @@ func (lattigo *LattigoFHE) evalOp(term *Term, metadata string) *rlwe.Ciphertext 
 	case MASK:
 		return lattigo.encode(md.MaskedValue, nil, lattigo.params.MaxLevel())
 	case CONST:
-		pt := make([]float64, lattigo.n)
-		for i := 0; i < lattigo.n; i++ {
-			pt[i] = float64(md.Value)
+		var pt []float64
+		if lattigo.constantsPath != "" {
+			pt = lattigo.constants[md.Value]
+		} else {
+			pt = make([]float64, lattigo.n)
+			for i := 0; i < lattigo.n; i++ {
+				pt[i] = float64(md.Value)
+			}
 		}
 		return lattigo.encode(pt, &term.Scale, term.Level)
 	case ADD:
