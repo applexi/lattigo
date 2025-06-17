@@ -101,7 +101,7 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 		}
 
 		// Open file in logs directory
-		logPath := filepath.Join("logs", lattigo.outFile)
+		logPath := filepath.Join("logs", lattigo.logFile)
 		logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			fmt.Printf("Error opening output file: %v\n", err)

@@ -71,14 +71,14 @@ type LattigoFHE struct {
 	instructionsPath  string
 	mlirPath          string
 	constantsPath     string
-	inputsPath        string
-	outputPath        string
+	inputPath        string
+	outputFile        string
 	fileType          FileType
 	getStats          bool
-	outFile           string
+	logFile           string
 }
 
-func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputsPath string, outputPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, outFile string) *LattigoFHE {
+func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputPath string, outputFile string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, logFile string) *LattigoFHE {
 	return &LattigoFHE{
 		terms:             make(map[int]*Term),
 		env:               make(map[int]*rlwe.Ciphertext),
@@ -92,11 +92,11 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 		instructionsPath:  instructionsPath,
 		mlirPath:          mlirPath,
 		constantsPath:     constantsPath,
-		inputsPath:        inputsPath,
-		outputPath:        outputPath,
+		inputPath:        inputPath,
+		outputFile:        outputFile,
 		fileType:          fileType,
-		getStats:          outFile != "",
-		outFile:           outFile,
+		getStats:          logFile != "",
+		logFile:           logFile,
 	}
 }
 
@@ -316,8 +316,11 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		file = lattigo.instructionsPath
 	}
 	fmt.Println("Input file: ", file)
-	if lattigo.outFile != "" {
-		fmt.Println("Output log: ", filepath.Join("logs", lattigo.outFile))
+	if lattigo.logFile != "" {
+		fmt.Println("Debug log: ", filepath.Join("logs", lattigo.logFile))
+	}
+	if lattigo.outputFile != "" {
+		fmt.Println("Output file: ", filepath.Join("outputs", lattigo.outputFile))
 	}
 	expected_str, operations, inputs, err := lattigo.ReadFile(file)
 	if err != nil {
@@ -376,7 +379,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		fmt.Printf("Final Result Accuracy: %.2f%%\n", accuracy)
 	}
 	fmt.Printf("Runtime: %v\n", runtime)
-	
+
 	// DEBUG
 	if len(lattigo.refCounts) > 0 {
 		for key := range lattigo.refCounts {
