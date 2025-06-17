@@ -286,6 +286,13 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, []*r
 		}
 		results[lineNum] = lattigo.env[lineNum]
 
+		if lattigo.env[lineNum].Level() != term.Level {
+			fmt.Printf("Warning: line %d op %v level mismatch. Expected: %d, Actual: %d, Children: %v\n", lineNum, term.Op, term.Level, lattigo.env[lineNum].Level(), term.Children)
+		}
+		if lattigo.getStats {
+			want = lattigo.doPrecisionStats(lineNum, term, metadata)
+		}
+
 		// Decrement reference counts for children and delete if count reaches 0
 		for _, child := range term.Children {
 			lattigo.refCounts[child]--
@@ -294,13 +301,6 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, []*r
 				delete(lattigo.refCounts, child)
 				fmt.Printf("Deleted child %d\n", child)
 			}
-		}
-
-		if lattigo.env[lineNum].Level() != term.Level {
-			fmt.Printf("Warning: line %d op %v level mismatch. Expected: %d, Actual: %d, Children: %v\n", lineNum, term.Op, term.Level, lattigo.env[lineNum].Level(), term.Children)
-		}
-		if lattigo.getStats {
-			want = lattigo.doPrecisionStats(lineNum, term, metadata)
 		}
 	}
 	runtime := time.Since(startTime)

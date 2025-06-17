@@ -44,8 +44,8 @@ go run ./fhe [options]
 - `-bootstrapMaxLevel <number>`: Maximum bootstrap level (default: 16)
 - `-cons <directory>`: Path to constants directory
 - `-input <file>`: Path to input file
-- `-output <file>`: Path to output file
-- `-getLog [filename]`: Enable debug logging (default: precision_debug.txt)
+- `-output [filename]`: Obtain output [filename] in outputs/ directory
+- `-getLog [filename]`: Obtain debug log [filename] in logs/ directory (default: precision_debug.txt)
 
 ### Examples
 
@@ -91,6 +91,34 @@ systemd-run --scope --user -p MemoryMax=200G ./fhe_binary \
 ulimit -v 209715200
 ./fhe_binary [options]
 ```
+
+## Monitoring Memory Usage
+
+### Check Running Process Memory
+```bash
+# Real-time monitoring with htop (shows VIRT, RES, %MEM columns)
+htop
+
+# Alternative with top
+top
+
+# Check specific process memory usage
+ps aux | grep fhe_binary
+```
+
+### Verify systemd Memory Limits
+```bash
+# Check if systemd memory limit is active
+systemctl --user status run-r*.scope
+
+# Monitor systemd service memory usage
+systemctl --user show run-r*.scope | grep Memory
+```
+
+### Understanding Memory Columns
+- **VIRT**: Virtual memory (total memory space used by process)
+- **RES**: Resident memory (actual physical RAM being used)
+- **%MEM**: Percentage of total system memory being used
 
 ## Directory Structure
 
