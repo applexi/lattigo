@@ -159,7 +159,10 @@ func parseIntArray(s string) []int {
 	return result
 }
 
-func (lattigo *LattigoFHE) parseOperation(line string) (int, *Term, string) {
+/*
+Parses a line of instructions and creates a term.
+*/
+func (lattigo *LattigoFHE) parseOperation(line string) (lineNum int, term *Term, metadata string) {
 	if lattigo.fileType == Instructions {
 		return lattigo.parseInstructionOperation(line)
 	} else if lattigo.fileType == MLIR {

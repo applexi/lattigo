@@ -58,6 +58,7 @@ type LattigoFHE struct {
 	env               map[int]*rlwe.Ciphertext // stores ciphertexts
 	ptEnv             map[int][]float64        // stores plaintexts
 	constants         map[int][]float64        // stores constants by value
+	refCounts         map[int]int              // stores reference counts for memory management
 	n                 int
 	maxLevel          int
 	bootstrapMinLevel int
@@ -83,6 +84,7 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 		env:               make(map[int]*rlwe.Ciphertext),
 		ptEnv:             make(map[int][]float64),
 		constants:         make(map[int][]float64),
+		refCounts:         make(map[int]int),
 		n:                 n,
 		maxLevel:          maxLevel,
 		bootstrapMinLevel: bootstrapMinLevel,
@@ -98,7 +100,7 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 	}
 }
 
-func findUniqueRots(operations []string) []int {
+func (lattigo *LattigoFHE) findUniqueRots(operations []string) []int {
 	var rots []int
 	seen := make(map[int]struct{})
 	for _, operation := range operations {
@@ -170,9 +172,20 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	}
 }
 
+func (lattigo *LattigoFHE) deleteFromEnvironments(lineNum int) {
+	delete(lattigo.terms, lineNum)
+	delete(lattigo.env, lineNum)
+	delete(lattigo.ptEnv, lineNum)
+}
+
 func (lattigo *LattigoFHE) preprocess(operations []string) {
 	for _, line := range operations {
 		lineNum, term, metadata := lattigo.parseOperation(line)
+
+		for _, child := range term.Children {
+			lattigo.refCounts[child]++
+		}
+
 		md := lattigo.parseMetadata(metadata, term.Op)
 
 		switch term.Op {
@@ -273,6 +286,16 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, []*r
 		}
 		results[lineNum] = lattigo.env[lineNum]
 
+		// Decrement reference counts for children and delete if count reaches 0
+		for _, child := range term.Children {
+			lattigo.refCounts[child]--
+			if lattigo.refCounts[child] <= 0 {
+				lattigo.deleteFromEnvironments(child)
+				delete(lattigo.refCounts, child)
+				fmt.Printf("Deleted child %d\n", child)
+			}
+		}
+
 		if lattigo.env[lineNum].Level() != term.Level {
 			fmt.Printf("Warning: line %d op %v level mismatch. Expected: %d, Actual: %d, Children: %v\n", lineNum, term.Op, term.Level, lattigo.env[lineNum].Level(), term.Children)
 		}
@@ -303,7 +326,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	var expected []float64
 
 	fmt.Println("Finding unique rots...")
-	rots := findUniqueRots(operations)
+	rots := lattigo.findUniqueRots(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 	if len(inputs) > 0 {
@@ -353,6 +376,13 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		fmt.Printf("Final Result Accuracy: %.2f%%\n", accuracy)
 	}
 	fmt.Printf("Runtime: %v\n", runtime)
+	
+	// DEBUG
+	if len(lattigo.refCounts) > 0 {
+		for key := range lattigo.refCounts {
+			fmt.Printf("Reference count for %d: %d\n", key, lattigo.refCounts[key])
+		}
+	}
 
 	return pt_results, nil
 }

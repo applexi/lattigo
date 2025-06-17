@@ -91,59 +91,60 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 
 	accuracyStats := lattigo.calculateAccuracy(want, lattigo.env[lineNum])
 
-	// Create logs directory if it doesn't exist
-	err := os.MkdirAll("logs", 0755)
-	if err != nil {
-		fmt.Printf("Error creating logs directory: %v\n", err)
-		return nil
-	}
+	// Only print debug information if accuracy is less than 99.99%
+	if accuracyStats < 99.99 {
+		// Create logs directory if it doesn't exist
+		err := os.MkdirAll("logs", 0755)
+		if err != nil {
+			fmt.Printf("Error creating logs directory: %v\n", err)
+			return nil
+		}
 
-	// Open file in logs directory
-	logPath := filepath.Join("logs", lattigo.outFile)
-	logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Printf("Error opening output file: %v\n", err)
-		return nil
-	}
-	defer logFile.Close()
+		// Open file in logs directory
+		logPath := filepath.Join("logs", lattigo.outFile)
+		logFile, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			fmt.Printf("Error opening output file: %v\n", err)
+			return nil
+		}
+		defer logFile.Close()
 
-	writer := bufio.NewWriter(logFile)
+		writer := bufio.NewWriter(logFile)
 
-	fmt.Fprintf(writer, "==============================\n")
-	fmt.Fprintf(writer, "Line Number: %d\n", lineNum)
-	fmt.Fprintf(writer, "Scale: %f, Level: %v\n", math.Log2(term.Scale.Float64()), term.Level)
-	fmt.Fprintf(writer, "Operation: %v\n", term.Op)
-	fmt.Fprintf(writer, "Children: %v\n", term.Children)
-	fmt.Fprintf(writer, "Want:      [")
-	for i, v := range want {
-		if i > 0 {
-			fmt.Fprintf(writer, ", ")
+		fmt.Fprintf(writer, "==============================\n")
+		fmt.Fprintf(writer, "Line Number: %d\n", lineNum)
+		fmt.Fprintf(writer, "Scale: %f, Level: %v\n", math.Log2(term.Scale.Float64()), term.Level)
+		fmt.Fprintf(writer, "Operation: %v\n", term.Op)
+		fmt.Fprintf(writer, "Children: %v\n", term.Children)
+		fmt.Fprintf(writer, "Want:      [")
+		for i, v := range want {
+			if i > 0 {
+				fmt.Fprintf(writer, ", ")
+			}
+			fmt.Fprintf(writer, "%.6f", v)
+			if i == 9 && len(want) > 10 {
+				fmt.Fprintf(writer, ", ...")
+				break
+			}
 		}
-		fmt.Fprintf(writer, "%.6f", v)
-		if i == 9 && len(want) > 10 {
-			fmt.Fprintf(writer, ", ...")
-			break
+		fmt.Fprintf(writer, "]\n")
+		fmt.Fprintf(writer, "Decrypted: [")
+		for i, v := range decrypted {
+			if i > 0 {
+				fmt.Fprintf(writer, ", ")
+			}
+			fmt.Fprintf(writer, "%.6f", v)
+			if i == 9 && len(decrypted) > 10 {
+				fmt.Fprintf(writer, ", ...")
+				break
+			}
 		}
-	}
-	fmt.Fprintf(writer, "]\n")
-	fmt.Fprintf(writer, "Decrypted: [")
-	for i, v := range decrypted {
-		if i > 0 {
-			fmt.Fprintf(writer, ", ")
-		}
-		fmt.Fprintf(writer, "%.6f", v)
-		if i == 9 && len(decrypted) > 10 {
-			fmt.Fprintf(writer, ", ...")
-			break
-		}
-	}
-	fmt.Fprintf(writer, "]\n")
-	fmt.Fprintf(writer, "Accuracy: %.2f%%\n", accuracyStats)
-	if accuracyStats < 99 {
+		fmt.Fprintf(writer, "]\n")
+		fmt.Fprintf(writer, "Accuracy: %.2f%%\n", accuracyStats)
 		fmt.Fprintf(writer, "FAILED\n")
+		fmt.Fprintf(writer, "==============================\n\n")
+		writer.Flush()
 	}
-	fmt.Fprintf(writer, "==============================\n\n")
-	writer.Flush()
 
 	return want
 }
