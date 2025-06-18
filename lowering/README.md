@@ -5,8 +5,7 @@ This directory contains tools for running FHE (Fully Homomorphic Encryption) ope
 ## Setup
 
 ### Prerequisites
-- Go 1.19 or later
-- Git (for cloning dependencies)
+- Lattigo dependencies
 
 ### Initial Setup
 1. Navigate to the lattigo root directory and ensure dependencies are installed:
@@ -33,6 +32,26 @@ If you're actively developing and want to run without building each time:
 ```bash
 go run ./fhe [options]
 ```
+
+## Testing
+
+### Bootstrap Test
+Test bootstrap accuracy and functionality:
+```bash
+# Run bootstrap test directly
+go run ./tests/bootstrap.go [options]
+
+# Or build and run the test binary
+go build -o tests/bootstrap_test ./tests/bootstrap.go
+./tests/bootstrap_test [options]
+```
+
+### Bootstrap Test Options
+The bootstrap test supports the same basic options as the main program:
+- `-n <number>`: Polynomial modulus degree
+- `-maxLevel <number>`: Maximum FHE level
+- `-bootstrapMinLevel <number>`: Minimum bootstrap level  
+- `-bootstrapMaxLevel <number>`: Maximum bootstrap level
 
 ### Command Line Options
 
@@ -127,6 +146,7 @@ lowering/
 ├── fhe/                    # Source code for FHE operations
 ├── mlirs/                  # MLIR input files
 ├── tests/                  # Test files and utilities
+│   └── bootstrap_test     # Built test binary (optional)
 ├── logs/                   # Debug output logs (created automatically)
 ├── outputs/                # Output files (created automatically)
 ├── fhe_binary             # Built binary (after running go build)

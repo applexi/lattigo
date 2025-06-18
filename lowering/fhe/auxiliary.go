@@ -141,7 +141,6 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 		}
 		fmt.Fprintf(writer, "]\n")
 		fmt.Fprintf(writer, "Accuracy: %.2f%%\n", accuracyStats)
-		fmt.Fprintf(writer, "FAILED\n")
 		fmt.Fprintf(writer, "==============================\n\n")
 		writer.Flush()
 	}

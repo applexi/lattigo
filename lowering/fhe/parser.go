@@ -20,6 +20,46 @@ const (
 	MLIR
 )
 
+func instructionOptoOp(op string) op {
+	switch op {
+	case "FHEOp.PACK":
+		return PACK
+	case "FHEOp.MASK":
+		return MASK
+	case "FHEOp.ADD":
+		return ADD
+	case "FHEOp.MUL":
+		return MUL
+	case "FHEOp.ROT":
+		return ROT
+	}
+	return -1
+}
+
+func mlirOpToOp(op string) op {
+	switch op {
+	case "earth.constant":
+		return CONST
+	case "earth.add":
+		return ADD
+	case "earth.mul":
+		return MUL
+	case "earth.rotate":
+		return ROT
+	case "earth.modswitch":
+		return MODSWITCH
+	case "earth.negate":
+		return NEGATE
+	case "earth.bootstrap":
+		return BOOTSTRAP
+	case "earth.rescale":
+		return RESCALE
+	case "earth.upscale":
+		return UPSCALE
+	}
+	return -1
+}
+
 func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []string, inputs []Term, err error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -163,52 +203,14 @@ func parseIntArray(s string) []int {
 Parses a line of instructions and creates a term.
 */
 func (lattigo *LattigoFHE) parseOperation(line string) (lineNum int, term *Term, metadata string) {
-	if lattigo.fileType == Instructions {
+	switch lattigo.fileType {
+	case Instructions:
 		return lattigo.parseInstructionOperation(line)
-	} else if lattigo.fileType == MLIR {
+	case MLIR:
 		return lattigo.parseMLIROperation(line)
+	default:
+		return -1, nil, ""
 	}
-	return -1, nil, ""
-}
-
-func instructionOptoOp(op string) op {
-	switch op {
-	case "FHEOp.PACK":
-		return PACK
-	case "FHEOp.MASK":
-		return MASK
-	case "FHEOp.ADD":
-		return ADD
-	case "FHEOp.MUL":
-		return MUL
-	case "FHEOp.ROT":
-		return ROT
-	}
-	return -1
-}
-
-func mlirOpToOp(op string) op {
-	switch op {
-	case "earth.constant":
-		return CONST
-	case "earth.add":
-		return ADD
-	case "earth.mul":
-		return MUL
-	case "earth.rotate":
-		return ROT
-	case "earth.modswitch":
-		return MODSWITCH
-	case "earth.negate":
-		return NEGATE
-	case "earth.bootstrap":
-		return BOOTSTRAP
-	case "earth.rescale":
-		return RESCALE
-	case "earth.upscale":
-		return UPSCALE
-	}
-	return -1
 }
 
 func (lattigo *LattigoFHE) parseInstructionOperation(line string) (int, *Term, string) {
@@ -354,12 +356,14 @@ func extractRotateOffsetFromMLIRLine(line string) (int, bool) {
 }
 
 func (lattigo *LattigoFHE) parseMetadata(metadata string, op op) Metadata {
-	if lattigo.fileType == Instructions {
+	switch lattigo.fileType {
+	case Instructions:
 		return parseInstructionsMetadata(metadata, op)
-	} else if lattigo.fileType == MLIR {
+	case MLIR:
 		return parseMLIRMetadata(metadata, op)
+	default:
+		return Metadata{}
 	}
-	return Metadata{}
 }
 
 func parseInstructionsMetadata(metadata string, op op) Metadata {

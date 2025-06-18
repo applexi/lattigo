@@ -104,6 +104,17 @@ func (lattigo *LattigoFHE) evalOp(term *Term, metadata string) *rlwe.Ciphertext 
 				pt[i] = float64(md.Value)
 			}
 		}
+		// Debug: only print if all values are zeros
+		allZeros := true
+		for i := 0; i < len(pt) && allZeros; i++ {
+			if pt[i] != 0.0 {
+				allZeros = false
+			}
+		}
+		if allZeros && len(pt) > 0 {
+			fmt.Printf("DEBUG: CONST evalOp - md.Value=%d, pt[0:5]=%v, scale=%f, level=%d\n",
+				md.Value, pt[:min(5, len(pt))], math.Log2(term.Scale.Float64()), term.Level)
+		}
 		return lattigo.encode(pt, &term.Scale, term.Level)
 	case ADD:
 		a := term.Children[0]

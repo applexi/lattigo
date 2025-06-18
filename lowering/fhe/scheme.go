@@ -71,7 +71,7 @@ type LattigoFHE struct {
 	instructionsPath  string
 	mlirPath          string
 	constantsPath     string
-	inputPath        string
+	inputPath         string
 	outputFile        string
 	fileType          FileType
 	getStats          bool
@@ -92,7 +92,7 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 		instructionsPath:  instructionsPath,
 		mlirPath:          mlirPath,
 		constantsPath:     constantsPath,
-		inputPath:        inputPath,
+		inputPath:         inputPath,
 		outputFile:        outputFile,
 		fileType:          fileType,
 		getStats:          logFile != "",
@@ -173,6 +173,10 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 }
 
 func (lattigo *LattigoFHE) deleteFromEnvironments(lineNum int) {
+	lattigo.env[lineNum] = nil
+	lattigo.ptEnv[lineNum] = []float64{}
+	lattigo.terms[lineNum] = nil
+
 	delete(lattigo.terms, lineNum)
 	delete(lattigo.env, lineNum)
 	delete(lattigo.ptEnv, lineNum)
@@ -187,6 +191,10 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 		}
 
 		md := lattigo.parseMetadata(metadata, term.Op)
+
+		if term.Op != CONST {
+			continue
+		}
 
 		switch term.Op {
 		case PACK:
@@ -267,8 +275,8 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 	}
 }
 
-func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, []*rlwe.Ciphertext, time.Duration, error) {
-	results := make([]*rlwe.Ciphertext, len(operations))
+func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlwe.Ciphertext, time.Duration, error) {
+	var finalResult *rlwe.Ciphertext
 	want := make([]float64, lattigo.n)
 	startTime := time.Now()
 
@@ -281,10 +289,18 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, []*r
 		}
 		prevLineNum = lineNum
 
+		// Progress print every 100 lines
+		if lineNum%100 == 0 {
+			fmt.Printf("Processing line %d/%d\n", lineNum, len(operations))
+		}
+
 		if _, ok := lattigo.env[lineNum]; !ok {
 			lattigo.env[lineNum] = lattigo.evalOp(term, metadata)
 		}
-		results[lineNum] = lattigo.env[lineNum]
+
+		if lineNum == len(operations) - 1 {
+			finalResult = lattigo.env[lineNum]
+		}
 
 		if lattigo.env[lineNum].Level() != term.Level {
 			fmt.Printf("Warning: line %d op %v level mismatch. Expected: %d, Actual: %d, Children: %v\n", lineNum, term.Op, term.Level, lattigo.env[lineNum].Level(), term.Children)
@@ -299,13 +315,12 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, []*r
 			if lattigo.refCounts[child] <= 0 {
 				lattigo.deleteFromEnvironments(child)
 				delete(lattigo.refCounts, child)
-				fmt.Printf("Deleted child %d\n", child)
 			}
 		}
 	}
 	runtime := time.Since(startTime)
 
-	return want, results, runtime, nil
+	return want, finalResult, runtime, nil
 }
 
 func (lattigo *LattigoFHE) Run() ([]float64, error) {
@@ -315,7 +330,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	} else {
 		file = lattigo.instructionsPath
 	}
-	fmt.Println("Input file: ", file)
+	fmt.Println("Instructions file: ", file)
 	if lattigo.logFile != "" {
 		fmt.Println("Debug log: ", filepath.Join("logs", lattigo.logFile))
 	}
@@ -328,7 +343,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	}
 	var expected []float64
 
-	fmt.Println("Finding unique rots...")
+	fmt.Println("\nFinding unique rots...")
 	rots := lattigo.findUniqueRots(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
@@ -345,11 +360,11 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	lattigo.preprocess(operations)
 
 	fmt.Println("Running instructions...")
-	want, results, runtime, err := lattigo.runInstructions(operations)
+	want, finalResult, runtime, err := lattigo.runInstructions(operations)
 	if err != nil {
 		return nil, fmt.Errorf("error running instructions: %v", err)
 	}
-	lastResult := results[len(results)-1]
+	lastResult := finalResult
 	pt_results := lattigo.decode(lastResult)
 	if expected_str != "" {
 		fmt.Printf("\nOverall Statistics:\n")
