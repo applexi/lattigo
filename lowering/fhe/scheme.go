@@ -298,9 +298,7 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 			lattigo.env[lineNum] = lattigo.evalOp(term, metadata)
 		}
 
-		if lineNum == len(operations) - 1 {
-			finalResult = lattigo.env[lineNum]
-		}
+		finalResult = lattigo.env[lineNum]
 
 		if lattigo.env[lineNum].Level() != term.Level {
 			fmt.Printf("Warning: line %d op %v level mismatch. Expected: %d, Actual: %d, Children: %v\n", lineNum, term.Op, term.Level, lattigo.env[lineNum].Level(), term.Children)
