@@ -92,7 +92,7 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 	accuracyStats := lattigo.calculateAccuracy(want, lattigo.env[lineNum])
 
 	// Only print debug information if accuracy is less than 99.99%
-	if accuracyStats < 99.8 {
+	if accuracyStats < 101 {
 		// Create logs directory if it doesn't exist
 		err := os.MkdirAll("logs", 0755)
 		if err != nil {
@@ -116,21 +116,12 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 		fmt.Fprintf(writer, "Scale: %f, Level: %v\n", math.Log2(term.Scale.Float64()), term.Level)
 		fmt.Fprintf(writer, "Operation: %v\n", term.Op)
 		fmt.Fprintf(writer, "Children: %v\n", term.Children)
-		// Find first nonzero value, then print 10 consecutive values from that point
+		// Print first 10 values
 		var indicesToPrint []int
-		startIdx := 0
 
-		// Find first nonzero value
-		for i, v := range want {
-			if v > 1e-10 || v < -1e-10 {
-				startIdx = i
-				break
-			}
-		}
-
-		// Create indices for startIdx + next 9 consecutive values (or until end of data)
-		for i := 0; i < 10 && (startIdx+i) < len(want); i++ {
-			indicesToPrint = append(indicesToPrint, startIdx+i)
+		// Create indices for first 10 values (or until end of data)
+		for i := 0; i < 10 && i < len(want); i++ {
+			indicesToPrint = append(indicesToPrint, i)
 		}
 
 		fmt.Fprintf(writer, "Want:      [")
@@ -140,7 +131,7 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 			}
 			fmt.Fprintf(writer, "%.6f", want[idx])
 		}
-		if (startIdx + len(indicesToPrint)) < len(want) {
+		if len(indicesToPrint) < len(want) {
 			fmt.Fprintf(writer, ", ...")
 		}
 		fmt.Fprintf(writer, "]\n")
@@ -151,7 +142,7 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 			}
 			fmt.Fprintf(writer, "%.6f", decrypted[idx])
 		}
-		if (startIdx + len(indicesToPrint)) < len(decrypted) {
+		if len(indicesToPrint) < len(decrypted) {
 			fmt.Fprintf(writer, ", ...")
 		}
 		fmt.Fprintf(writer, "]\n")

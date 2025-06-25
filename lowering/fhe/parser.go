@@ -157,18 +157,35 @@ func (lattigo *LattigoFHE) processConstants() {
 		for i := 0; i < numValues; i++ {
 			data[i], _ = strconv.ParseFloat(lines[i+2], 64)
 		}
+
+		// Process constant data to match lattigo.n size
+		var processedData []float64
+		if numValues == lattigo.n {
+			processedData = data
+		} else if numValues > lattigo.n {
+			processedData = data[0:lattigo.n]
+		} else if numValues == 1 {
+			processedData = make([]float64, lattigo.n)
+			for i := 0; i < lattigo.n; i++ {
+				processedData[i] = data[0]
+			}
+		} else {
+			// Invalid size (smaller than lattigo.n but not size 1)
+			log.Fatalf("Constant %d has invalid size %d (expected 1 or %d)", value, numValues, lattigo.n)
+		}
+
 		// If lattigo.constants[value] exists, check if the data is the same
 		if existing, ok := lattigo.constants[value]; ok {
-			if len(existing) != len(data) {
+			if len(existing) != len(processedData) {
 				log.Fatalf("Constant value %d already exists with different data", value)
 			}
 			for i := range existing {
-				if math.Abs(existing[i]-data[i]) > 1e-10 {
+				if math.Abs(existing[i]-processedData[i]) > 1e-10 {
 					log.Fatalf("Constant value %d already exists with different data", value)
 				}
 			}
 		} else {
-			lattigo.constants[value] = data
+			lattigo.constants[value] = processedData
 		}
 	}
 }
