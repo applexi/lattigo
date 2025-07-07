@@ -6,6 +6,10 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"regexp"
+	"sort"
+	"strings"
+	"time"
 
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 )
@@ -152,4 +156,110 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata st
 	}
 
 	return want
+}
+
+func (lattigo *LattigoFHE) findInputFiles() ([]string, error) {
+	files, err := filepath.Glob(filepath.Join(lattigo.inputPath, "input*.txt"))
+	if err != nil {
+		return nil, err
+	}
+
+	// Sort files to ensure consistent processing order
+	sort.Strings(files)
+	return files, nil
+}
+
+func (lattigo *LattigoFHE) createOutputDirectory() (string, error) {
+	// Extract model, benchmark, and waterline from MLIR filename (similar to process_fhe_inputs.sh)
+	var outputDirName string
+	if lattigo.fileType == MLIR {
+		mlirBase := filepath.Base(lattigo.mlirPath)
+		// Remove .mlir extension
+		if strings.HasSuffix(mlirBase, ".mlir") {
+			outputDirName = strings.TrimSuffix(mlirBase, ".mlir")
+		} else {
+			outputDirName = mlirBase
+		}
+	} else {
+		// For instruction files, use a generic name
+		outputDirName = "batch_output"
+	}
+
+	outputDir := filepath.Join("outputs", outputDirName)
+	err := os.MkdirAll(outputDir, 0755)
+	if err != nil {
+		return "", err
+	}
+
+	return outputDir, nil
+}
+
+func (lattigo *LattigoFHE) resetForNewInput() {
+	lattigo.env = make(map[int]*rlwe.Ciphertext)
+	lattigo.ptEnv = make(map[int][]float64)
+	lattigo.terms = make(map[int]*Term)
+	lattigo.refCounts = make(map[int]int)
+}
+
+func (lattigo *LattigoFHE) generateOutputFileName(inputFile string) string {
+	inputBase := filepath.Base(inputFile)
+	re := regexp.MustCompile(`input(\d+)\.txt`)
+	matches := re.FindStringSubmatch(inputBase)
+
+	if len(matches) >= 2 {
+		number := matches[1]
+		if lattigo.fileType == MLIR {
+			mlirBase := filepath.Base(lattigo.mlirPath)
+			if strings.HasSuffix(mlirBase, ".mlir") {
+				baseName := strings.TrimSuffix(mlirBase, ".mlir")
+				return fmt.Sprintf("%s_output%s.txt", baseName, number)
+			}
+		}
+		return fmt.Sprintf("output%s.txt", number)
+	}
+
+	return fmt.Sprintf("output_%s", inputBase)
+}
+
+func (lattigo *LattigoFHE) writeOutputFile(outputPath string, results []float64) error {
+	content := fmt.Sprintf("%v\n", len(results))
+	for _, v := range results {
+		content += fmt.Sprintf("%v\n", v)
+	}
+
+	return os.WriteFile(outputPath, []byte(content), 0644)
+}
+
+func (lattigo *LattigoFHE) writeRuntimesFile(outputDir string, runtimeInfos []RuntimeInfo, avgDuration time.Duration) error {
+	runtimesPath := filepath.Join(outputDir, "runtimes.txt")
+
+	// Build the content string with average runtime at the top
+	content := fmt.Sprintf("Average runtime: %v\n\n", avgDuration)
+
+	// Add individual file runtimes
+	for _, info := range runtimeInfos {
+		content += fmt.Sprintf("%s: %v\n", info.OutputFileName, info.Runtime)
+	}
+
+	return os.WriteFile(runtimesPath, []byte(content), 0644)
+}
+
+// validateResult compares the predicted class (max index of first 10 values) with true label
+func (lattigo *LattigoFHE) validateResult(result []float64, trueLabel int) (bool, int) {
+	if len(result) < 10 {
+		return false, -1
+	}
+
+	// Find the index of the maximum value in the first 10 elements
+	maxIndex := 0
+	maxValue := result[0]
+
+	for i := 1; i < 10; i++ {
+		if result[i] > maxValue {
+			maxValue = result[i]
+			maxIndex = i
+		}
+	}
+
+	return maxIndex == trueLabel, maxIndex
 }

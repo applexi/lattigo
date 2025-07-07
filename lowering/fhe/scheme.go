@@ -11,6 +11,7 @@ import (
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/schemes/ckks"
 
+	"github.com/schollz/progressbar/v3"
 	"github.com/tuneinsight/lattigo/v6/circuits/ckks/bootstrapping"
 	"github.com/tuneinsight/lattigo/v6/utils"
 )
@@ -51,6 +52,11 @@ type Term struct {
 	Level    int
 }
 
+type RuntimeInfo struct {
+	OutputFileName string
+	Runtime        time.Duration
+}
+
 type LattigoFHE struct {
 	params            *ckks.Parameters
 	btpParams         *bootstrapping.Parameters
@@ -73,12 +79,13 @@ type LattigoFHE struct {
 	constantsPath     string
 	inputPath         string
 	outputFile        string
+	trueLabelsPath    string
 	fileType          FileType
 	getStats          bool
 	logFile           string
 }
 
-func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputPath string, outputFile string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, logFile string) *LattigoFHE {
+func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputPath string, outputFile string, trueLabelsPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, logFile string) *LattigoFHE {
 	return &LattigoFHE{
 		terms:             make(map[int]*Term),
 		env:               make(map[int]*rlwe.Ciphertext),
@@ -94,6 +101,7 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 		constantsPath:     constantsPath,
 		inputPath:         inputPath,
 		outputFile:        outputFile,
+		trueLabelsPath:    trueLabelsPath,
 		fileType:          fileType,
 		getStats:          logFile != "",
 		logFile:           logFile,
@@ -280,19 +288,23 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 	want := make([]float64, lattigo.n)
 	startTime := time.Now()
 
+	bar := progressbar.NewOptions(len(operations),
+		progressbar.OptionSetWidth(50),
+		progressbar.OptionShowCount(),
+		progressbar.OptionShowIts(),
+		progressbar.OptionSetItsString("ops"),
+	)
+
 	prevLineNum := -1
 
-	for _, line := range operations {
+	for i, line := range operations {
+		bar.Set(i + 1)
+
 		lineNum, term, metadata := lattigo.parseOperation(line)
 		if lineNum != prevLineNum+1 {
 			fmt.Printf("Missed line number: %d\n", lineNum)
 		}
 		prevLineNum = lineNum
-
-		// Progress print every 100 lines
-		if lineNum%100 == 0 {
-			fmt.Printf("Processing line %d/%d\n", lineNum, len(operations))
-		}
 
 		if _, ok := lattigo.env[lineNum]; !ok {
 			lattigo.env[lineNum] = lattigo.evalOp(term, metadata)
@@ -302,6 +314,7 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 
 		if lattigo.env[lineNum].Level() != term.Level {
 			fmt.Printf("Warning: line %d op %v level mismatch. Expected: %d, Actual: %d, Children: %v\n", lineNum, term.Op, term.Level, lattigo.env[lineNum].Level(), term.Children)
+			return nil, nil, time.Duration(0), fmt.Errorf("level mismatch")
 		}
 		if lattigo.getStats {
 			want = lattigo.doPrecisionStats(lineNum, term, metadata)
@@ -316,6 +329,8 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 			}
 		}
 	}
+	bar.Finish()
+	fmt.Println()
 	runtime := time.Since(startTime)
 
 	return want, finalResult, runtime, nil
@@ -401,4 +416,173 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	}
 
 	return pt_results, nil
+}
+
+func (lattigo *LattigoFHE) RunBatch() error {
+	var file string
+	if lattigo.fileType == MLIR {
+		file = lattigo.mlirPath
+	} else {
+		file = lattigo.instructionsPath
+	}
+	fmt.Println("Instructions file: ", file)
+	if lattigo.logFile != "" {
+		fmt.Println("Debug log: ", filepath.Join("logs", lattigo.logFile))
+	}
+
+	// Parse true labels if provided
+	trueLabels, err := lattigo.parseTrueLabels()
+	if err != nil {
+		return fmt.Errorf("error parsing true labels: %v", err)
+	}
+	if trueLabels != nil {
+		fmt.Printf("True labels loaded for %d files\n", len(trueLabels))
+	}
+
+	// Read operations and inputs from instruction/MLIR file
+	expected_str, operations, inputs, err := lattigo.ReadFile(file)
+	if err != nil {
+		return fmt.Errorf("error reading file: %v", err)
+	}
+
+	// Initialize context once for all inputs
+	fmt.Println("\nFinding unique rots...")
+	rots := lattigo.findUniqueRots(operations)
+	fmt.Println("Creating context...")
+	lattigo.createContext(lattigo.maxLevel, rots)
+
+	// Process constants once for all inputs
+	if lattigo.constantsPath != "" {
+		fmt.Println("Processing constants...")
+		lattigo.processConstants()
+	}
+
+	// Find all input files in the directory
+	inputFiles, err := lattigo.findInputFiles()
+	if err != nil {
+		return fmt.Errorf("error finding input files: %v", err)
+	}
+
+	if len(inputFiles) == 0 {
+		return fmt.Errorf("no input files found matching pattern input*.txt")
+	}
+
+	// Create output directory structure
+	outputDir, err := lattigo.createOutputDirectory()
+	if err != nil {
+		return fmt.Errorf("error creating output directory: %v", err)
+	}
+
+	// Track runtimes and corresponding output file names
+	var runtimeInfos []RuntimeInfo
+	var expected []float64
+	if expected_str != "" {
+		expected = parseFloatArray(expected_str)
+	}
+
+	// Track validation results
+	var passedCount, failedCount int
+
+	fmt.Printf("\nProcessing %d input files...\n", len(inputFiles))
+
+	// Process each input file
+	for _, inputFile := range inputFiles {
+		fmt.Printf("Processing %s...\n", filepath.Base(inputFile))
+
+		// Reset environments for new input but keep constants and context
+		lattigo.resetForNewInput()
+
+		// Temporarily set input path to current file and process inputs
+		originalInputPath := lattigo.inputPath
+		lattigo.inputPath = inputFile
+		lattigo.processInputs(inputs)
+		lattigo.inputPath = originalInputPath
+
+		// Preprocess operations for this specific input (to rebuild term dependencies)
+		fmt.Println("Preprocessing...")
+		lattigo.preprocess(operations)
+
+		// Run operations for this input
+		fmt.Println("Running instructions...")
+		_, finalResult, runtime, err := lattigo.runInstructions(operations)
+		if err != nil {
+			fmt.Printf("Error running instructions for %s: %v\n", inputFile, err)
+			continue
+		}
+
+		pt_results := lattigo.decode(finalResult)
+
+		// Validate results if true labels are available
+		if trueLabels != nil {
+			inputFileName := filepath.Base(inputFile)
+			if trueLabel, exists := trueLabels[inputFileName]; exists {
+				isCorrect, predictedClass := lattigo.validateResult(pt_results, trueLabel)
+				if isCorrect {
+					fmt.Printf("  PASSED (predicted: %d, true: %d)\n", predictedClass, trueLabel)
+					passedCount++
+				} else {
+					fmt.Printf("  FAILED (predicted: %d, true: %d)\n", predictedClass, trueLabel)
+					failedCount++
+				}
+			}
+		}
+
+		// Write output file
+		outputFileName := lattigo.generateOutputFileName(inputFile)
+		outputPath := filepath.Join(outputDir, outputFileName)
+		err = lattigo.writeOutputFile(outputPath, pt_results)
+		if err != nil {
+			fmt.Printf("Error writing output file %s: %v\n", outputPath, err)
+			continue
+		}
+
+		// Store runtime info for this file
+		runtimeInfos = append(runtimeInfos, RuntimeInfo{
+			OutputFileName: outputFileName,
+			Runtime:        runtime,
+		})
+
+		// Optional: Print accuracy for this input if expected values are available
+		if expected != nil && len(expected) > 0 {
+			accuracy := lattigo.calculateAccuracy(expected, finalResult)
+			fmt.Printf("  Accuracy: %.2f%%\n", accuracy)
+		}
+
+		fmt.Printf("  Runtime: %v\n\n", runtime)
+	}
+
+	// Calculate and print average runtime
+	if len(runtimeInfos) > 0 {
+		var totalDuration time.Duration
+		for _, info := range runtimeInfos {
+			totalDuration += info.Runtime
+		}
+		avgDuration := totalDuration / time.Duration(len(runtimeInfos))
+		fmt.Printf("\nBatch processing completed!")
+		fmt.Printf("\nProcessed %d files", len(runtimeInfos))
+		fmt.Printf("\nTotal runtime: %v", totalDuration)
+		fmt.Printf("\nAverage runtime per file: %v\n", avgDuration)
+		fmt.Printf("Output files written to: %s\n", outputDir)
+
+		// Print validation summary if true labels were used
+		if trueLabels != nil && (passedCount+failedCount) > 0 {
+			totalValidated := passedCount + failedCount
+			accuracy := float64(passedCount) / float64(totalValidated) * 100
+			fmt.Printf("\nValidation Summary:")
+			fmt.Printf("\nTotal validated: %d", totalValidated)
+			fmt.Printf("\nPassed: %d", passedCount)
+			fmt.Printf("\nFailed: %d", failedCount)
+			fmt.Printf("\nAccuracy: %.2f%%\n", accuracy)
+		}
+
+		// Write runtimes to file
+		err = lattigo.writeRuntimesFile(outputDir, runtimeInfos, avgDuration)
+		if err != nil {
+			fmt.Printf("Warning: Error writing runtimes file: %v\n", err)
+		} else {
+			fmt.Printf("Runtimes written to: %s\n\n", filepath.Join(outputDir, "runtimes.txt"))
+		}
+	}
+
+	return nil
 }

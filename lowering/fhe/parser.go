@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"math"
 	"os"
@@ -407,7 +408,7 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 				md.RMSVar = v
 			}
 		}
-		reValue := regexp.MustCompile(`value\s*=\s*([-+]?[0-9\.]+)\s*:\s*i64`)
+		reValue := regexp.MustCompile(`value\s*=\s*([-+]?[0-9\.]+)(?:\s*:\s*\w+)?`)
 		if match := reValue.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.Value = v
@@ -422,21 +423,21 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 		}
 	case UPSCALE:
 		// upFactor (int)
-		reUpFactor := regexp.MustCompile(`upFactor\s*=\s*([0-9]+)\s*:\s*i64`)
+		reUpFactor := regexp.MustCompile(`upFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 		if match := reUpFactor.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.UpFactor = v
 			}
 		}
 	case MODSWITCH:
-		reDownFactor := regexp.MustCompile(`downFactor\s*=\s*([0-9]+)\s*:\s*i64`)
+		reDownFactor := regexp.MustCompile(`downFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 		if match := reDownFactor.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.DownFactor = v
 			}
 		}
 	case BOOTSTRAP:
-		reTargetLevel := regexp.MustCompile(`targetLevel\s*=\s*([0-9]+)\s*:\s*i64`)
+		reTargetLevel := regexp.MustCompile(`targetLevel\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 		if match := reTargetLevel.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.TargetLevel = v
@@ -444,4 +445,50 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 		}
 	}
 	return md
+}
+
+// parseTrueLabels parses the true_labels.txt file and returns a map of filename -> true label
+func (lattigo *LattigoFHE) parseTrueLabels() (map[string]int, error) {
+	if lattigo.trueLabelsPath == "" {
+		return nil, nil
+	}
+
+	file, err := os.Open(lattigo.trueLabelsPath)
+	if err != nil {
+		return nil, fmt.Errorf("error opening true labels file: %v", err)
+	}
+	defer file.Close()
+
+	trueLabels := make(map[string]int)
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
+
+		// Parse format: "input0.txt: 3"
+		parts := strings.Split(line, ":")
+		if len(parts) != 2 {
+			continue
+		}
+
+		filename := strings.TrimSpace(parts[0])
+		labelStr := strings.TrimSpace(parts[1])
+
+		label, err := strconv.Atoi(labelStr)
+		if err != nil {
+			fmt.Printf("Warning: invalid label '%s' for file '%s'\n", labelStr, filename)
+			continue
+		}
+
+		trueLabels[filename] = label
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error reading true labels file: %v", err)
+	}
+
+	return trueLabels, nil
 }

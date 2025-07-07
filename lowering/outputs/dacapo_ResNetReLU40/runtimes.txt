@@ -1,0 +1,12 @@
+Average runtime: 40m17.880434989s
+
+dacapo_ResNetReLU40_output0.txt: 38m35.217030264s
+dacapo_ResNetReLU40_output1.txt: 38m16.600489903s
+dacapo_ResNetReLU40_output2.txt: 38m16.506591291s
+dacapo_ResNetReLU40_output3.txt: 42m15.890258506s
+dacapo_ResNetReLU40_output4.txt: 40m5.801550619s
+dacapo_ResNetReLU40_output5.txt: 37m54.430846026s
+dacapo_ResNetReLU40_output6.txt: 37m27.692430334s
+dacapo_ResNetReLU40_output7.txt: 43m20.741090251s
+dacapo_ResNetReLU40_output8.txt: 43m20.378241908s
+dacapo_ResNetReLU40_output9.txt: 43m25.545820792s

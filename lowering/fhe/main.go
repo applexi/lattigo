@@ -21,6 +21,7 @@ func main() {
 	var constantsPath string
 	var inputsPath string
 	var outputPath string
+	var trueLabelsPath string
 	var maxLevel int
 	var bootstrapMinLevel int
 	var bootstrapMaxLevel int
@@ -33,6 +34,7 @@ func main() {
 	flag.StringVar(&constantsPath, "cons", "", "Path to constants directory")
 	flag.StringVar(&inputsPath, "input", "", "Path to inputs directory")
 	flag.StringVar(&outputPath, "output", "", "Path to output file")
+	flag.StringVar(&trueLabelsPath, "true", "", "Path to true labels file (for batch processing validation)")
 	flag.StringVar(&mlirPath, "mlir", "", "Path to MLIR file")
 	flag.Parse()
 
@@ -51,7 +53,22 @@ func main() {
 		os.Remove(filepath.Join("logs", outFile))
 	}
 
-	fhe := NewLattigoFHE(n, instructionsPath, mlirPath, constantsPath, inputsPath, outputPath, fileType, maxLevel, bootstrapMinLevel, bootstrapMaxLevel, outFile)
+	fhe := NewLattigoFHE(n, instructionsPath, mlirPath, constantsPath, inputsPath, outputPath, trueLabelsPath, fileType, maxLevel, bootstrapMinLevel, bootstrapMaxLevel, outFile)
+
+	// Check if inputsPath is a directory for batch processing
+	if inputsPath != "" {
+		if info, err := os.Stat(inputsPath); err == nil && info.IsDir() {
+			// Batch processing mode
+			err := fhe.RunBatch()
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			return
+		}
+	}
+
+	// Single file processing mode
 	decrypted, err := fhe.Run()
 	if err != nil {
 		fmt.Println(err)
@@ -60,25 +77,15 @@ func main() {
 
 	// Handle output file writing
 	if outputPath != "" {
-		// Create outputs folder if it doesn't exist
-		if _, err := os.Stat("outputs"); os.IsNotExist(err) {
-			os.MkdirAll("outputs", 0755)
-		}
-
 		// Always put output file in outputs directory
 		outputFile := "outputs/" + outputPath
-		if _, err := os.Stat(outputFile); err == nil {
-			os.Remove(outputFile)
+		// Create outputs folder if it doesn't exist (os.MkdirAll is idempotent)
+		os.MkdirAll("outputs", 0755)
+		err = fhe.writeOutputFile(outputFile, decrypted)
+		if err != nil {
+			fmt.Printf("Error writing output file: %v\n", err)
+		} else {
+			fmt.Println("Output written to: ", outputFile)
 		}
-
-		// Build the content string with count first, then all values
-		content := fmt.Sprintf("%v\n", len(decrypted))
-		for _, v := range decrypted {
-			content += fmt.Sprintf("%v\n", v)
-		}
-
-		// Write all content at once
-		os.WriteFile(outputFile, []byte(content), 0644)
-		fmt.Println("Output written to: ", outputFile)
 	}
 }
