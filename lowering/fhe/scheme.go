@@ -55,6 +55,9 @@ type Term struct {
 type RuntimeInfo struct {
 	OutputFileName string
 	Runtime        time.Duration
+	PredictedClass int
+	TrueClass      int
+	HasValidation  bool
 }
 
 type LattigoFHE struct {
@@ -109,29 +112,92 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 }
 
 func (lattigo *LattigoFHE) findUniqueRots(operations []string) []int {
-	var rots []int
+	maxRot := 0
 	seen := make(map[int]struct{})
+
 	for _, operation := range operations {
 		if strings.Contains(operation, "ROT") {
 			parts := strings.Split(operation, " ")
 			if len(parts) > 4 {
 				rot, _ := strconv.Atoi(parts[4])
-				if _, exists := seen[rot]; !exists {
-					rots = append(rots, rot)
-					seen[rot] = struct{}{}
+				absRot := rot
+				if absRot < 0 {
+					absRot = -absRot
 				}
+				if absRot > maxRot {
+					maxRot = absRot
+				}
+				seen[rot] = struct{}{}
 			}
 		} else if strings.Contains(operation, "rotate") {
 			offset, ok := extractRotateOffsetFromMLIRLine(operation)
 			if ok {
-				if _, exists := seen[offset]; !exists {
-					rots = append(rots, offset)
-					seen[offset] = struct{}{}
+				absOffset := offset
+				if absOffset < 0 {
+					absOffset = -absOffset
 				}
+				if absOffset > maxRot {
+					maxRot = absOffset
+				}
+				seen[offset] = struct{}{}
 			}
 		}
 	}
-	return rots
+
+	// Generate powers of two up to the maximum rotation needed
+	var powerOfTwoRots []int
+	for power := 1; power <= maxRot; power *= 2 {
+		powerOfTwoRots = append(powerOfTwoRots, power)
+	}
+
+	for rot := range seen {
+		if rot < 0 {
+			for _, pos := range powerOfTwoRots {
+				neg := -pos
+				found := false
+				for _, existing := range powerOfTwoRots {
+					if existing == neg {
+						found = true
+						break
+					}
+				}
+				if !found {
+					powerOfTwoRots = append(powerOfTwoRots, neg)
+				}
+			}
+			break
+		}
+	}
+
+	return powerOfTwoRots
+}
+
+func (lattigo *LattigoFHE) decomposeRotation(rotation int) []int {
+	if rotation == 0 {
+		return []int{}
+	}
+
+	var decomposition []int
+	remaining := rotation
+	if remaining < 0 {
+		remaining = -remaining
+	}
+
+	for remaining > 0 {
+		power := 1
+		for power*2 <= remaining {
+			power *= 2
+		}
+
+		if rotation < 0 {
+			decomposition = append(decomposition, -power)
+		} else {
+			decomposition = append(decomposition, power)
+		}
+		remaining -= power
+	}
+
+	return decomposition
 }
 
 func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
@@ -159,21 +225,23 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	pk := kgen.GenPublicKeyNew(sk)
 	rlk := kgen.GenRelinearizationKeyNew(sk)
 
-	galEls := make([]uint64, len(rots))
-	for i, rot := range rots {
-		galEls[i] = params.GaloisElement(rot)
-	}
-
 	evk := rlwe.NewMemEvaluationKeySet(rlk)
 	lattigo.enc = rlwe.NewEncryptor(params, pk)
 	lattigo.ecd = ckks.NewEncoder(params)
 	lattigo.dec = rlwe.NewDecryptor(params, sk)
 	eval := ckks.NewEvaluator(params, evk)
-	lattigo.eval = eval.WithKey(rlwe.NewMemEvaluationKeySet(rlk, kgen.GenGaloisKeysNew(galEls, sk)...))
 
+	fmt.Println("Doing bootstrapping keys...")
 	btpEvk, _, _ := btpParams.GenEvaluationKeys(sk)
 	btpEval, _ := bootstrapping.NewEvaluator(btpParams, btpEvk)
 	lattigo.btpEval = btpEval
+
+	fmt.Println("Doing rotation keys...")
+	galEls := make([]uint64, len(rots))
+	for i, rot := range rots {
+		galEls[i] = params.GaloisElement(rot)
+	}
+	lattigo.eval = eval.WithKey(rlwe.NewMemEvaluationKeySet(rlk, kgen.GenGaloisKeysNew(galEls, sk)...))
 
 	if lattigo.maxLevel != params.MaxLevel() {
 		fmt.Printf("Warning: maxLevel mismatch. Expected: %d, Actual: %d\n", params.MaxLevel(), lattigo.maxLevel)
@@ -513,10 +581,15 @@ func (lattigo *LattigoFHE) RunBatch() error {
 		pt_results := lattigo.decode(finalResult)
 
 		// Validate results if true labels are available
+		var predictedClass, trueClass int
+		var hasValidation bool
 		if trueLabels != nil {
 			inputFileName := filepath.Base(inputFile)
 			if trueLabel, exists := trueLabels[inputFileName]; exists {
-				isCorrect, predictedClass := lattigo.validateResult(pt_results, trueLabel)
+				isCorrect, predicted := lattigo.validateResult(pt_results, trueLabel)
+				predictedClass = predicted
+				trueClass = trueLabel
+				hasValidation = true
 				if isCorrect {
 					fmt.Printf("  PASSED (predicted: %d, true: %d)\n", predictedClass, trueLabel)
 					passedCount++
@@ -540,10 +613,13 @@ func (lattigo *LattigoFHE) RunBatch() error {
 		runtimeInfos = append(runtimeInfos, RuntimeInfo{
 			OutputFileName: outputFileName,
 			Runtime:        runtime,
+			PredictedClass: predictedClass,
+			TrueClass:      trueClass,
+			HasValidation:  hasValidation,
 		})
 
 		// Optional: Print accuracy for this input if expected values are available
-		if expected != nil && len(expected) > 0 {
+		if len(expected) > 0 {
 			accuracy := lattigo.calculateAccuracy(expected, finalResult)
 			fmt.Printf("  Accuracy: %.2f%%\n", accuracy)
 		}

@@ -38,11 +38,28 @@ func (lattigo *LattigoFHE) evalSingleMul(ct1 *rlwe.Ciphertext, pt1 []float64, pt
 }
 
 func (lattigo *LattigoFHE) evalRot(ct1 *rlwe.Ciphertext, k int) *rlwe.Ciphertext {
-	ct, err := lattigo.eval.RotateNew(ct1, k)
-	if err != nil {
-		fmt.Printf("Error rotating: %v\n", err)
+	absK := k
+	if absK < 0 {
+		absK = -absK
 	}
-	return ct
+
+	isPowerOfTwo := (absK & (absK - 1)) == 0
+
+	if isPowerOfTwo || k == 0 {
+		ct, err := lattigo.eval.RotateNew(ct1, k)
+		if err != nil {
+			fmt.Printf("Error rotating by %d: %v\n", k, err)
+		}
+		return ct
+	} else {
+		decomposition := lattigo.decomposeRotation(k)
+
+		ct, _ := lattigo.eval.RotateNew(ct1, decomposition[0])
+		for i := 1; i < len(decomposition); i++ {
+			ct, _ = lattigo.eval.RotateNew(ct, decomposition[i])
+		}
+		return ct
+	}
 }
 
 func (lattigo *LattigoFHE) evalUpscale(ct1 *rlwe.Ciphertext, upFactor int) *rlwe.Ciphertext {

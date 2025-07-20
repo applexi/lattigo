@@ -1,0 +1,12 @@
+Average runtime: 22m52.202109003s
+
+saturn_ResNetSiLU30_output0.txt: 23m14.842424367s (predicted: 3, true: 3, PASS)
+saturn_ResNetSiLU30_output1.txt: 22m44.937977448s (predicted: 8, true: 8, PASS)
+saturn_ResNetSiLU30_output2.txt: 22m49.64664669s (predicted: 8, true: 8, PASS)
+saturn_ResNetSiLU30_output3.txt: 22m51.908492446s (predicted: 0, true: 0, PASS)
+saturn_ResNetSiLU30_output4.txt: 22m50.37744724s (predicted: 6, true: 6, PASS)
+saturn_ResNetSiLU30_output5.txt: 22m51.006590382s (predicted: 6, true: 6, PASS)
+saturn_ResNetSiLU30_output6.txt: 22m47.22601683s (predicted: 9, true: 1, FAIL)
+saturn_ResNetSiLU30_output7.txt: 22m50.411096226s (predicted: 6, true: 6, PASS)
+saturn_ResNetSiLU30_output8.txt: 22m48.769725112s (predicted: 3, true: 3, PASS)
+saturn_ResNetSiLU30_output9.txt: 22m52.894673298s (predicted: 1, true: 1, PASS)

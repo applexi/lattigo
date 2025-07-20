@@ -1,0 +1,12 @@
+Average runtime: 23m38.665518009s
+
+dacapo_ResNetSiLU30_output0.txt: 25m7.969524985s
+dacapo_ResNetSiLU30_output1.txt: 24m47.845686576s
+dacapo_ResNetSiLU30_output2.txt: 23m27.091326228s
+dacapo_ResNetSiLU30_output3.txt: 23m23.285713877s
+dacapo_ResNetSiLU30_output4.txt: 23m15.484126155s
+dacapo_ResNetSiLU30_output5.txt: 23m12.214561247s
+dacapo_ResNetSiLU30_output6.txt: 23m19.709373089s
+dacapo_ResNetSiLU30_output7.txt: 23m23.899495382s
+dacapo_ResNetSiLU30_output8.txt: 23m16.14827388s
+dacapo_ResNetSiLU30_output9.txt: 23m13.007098677s

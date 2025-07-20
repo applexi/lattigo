@@ -236,9 +236,18 @@ func (lattigo *LattigoFHE) writeRuntimesFile(outputDir string, runtimeInfos []Ru
 	// Build the content string with average runtime at the top
 	content := fmt.Sprintf("Average runtime: %v\n\n", avgDuration)
 
-	// Add individual file runtimes
+	// Add individual file runtimes with prediction information
 	for _, info := range runtimeInfos {
-		content += fmt.Sprintf("%s: %v\n", info.OutputFileName, info.Runtime)
+		if info.HasValidation {
+			status := "FAIL"
+			if info.PredictedClass == info.TrueClass {
+				status = "PASS"
+			}
+			content += fmt.Sprintf("%s: %v (predicted: %d, true: %d, %s)\n",
+				info.OutputFileName, info.Runtime, info.PredictedClass, info.TrueClass, status)
+		} else {
+			content += fmt.Sprintf("%s: %v\n", info.OutputFileName, info.Runtime)
+		}
 	}
 
 	return os.WriteFile(runtimesPath, []byte(content), 0644)
