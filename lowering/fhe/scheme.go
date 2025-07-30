@@ -293,10 +293,7 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 					pt[i] = float64(md.Value)
 				}
 			}
-			if !term.Secret {
-				lattigo.ptEnv[lineNum] = pt
-			}
-			lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+			lattigo.ptEnv[lineNum] = pt
 		case ADD:
 			if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
 				if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
@@ -373,6 +370,10 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 			fmt.Printf("Missed line number: %d\n", lineNum)
 		}
 		prevLineNum = lineNum
+
+		if term.Op == CONST {
+			continue
+		}
 
 		if _, ok := lattigo.env[lineNum]; !ok {
 			lattigo.env[lineNum] = lattigo.evalOp(term, metadata)

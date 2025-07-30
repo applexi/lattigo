@@ -1,0 +1,295 @@
+DETAILED COST ANALYSIS REPORT
+==============================
+
+SUMMARY
+-------
+Total estimated cost: 17333585624.14 microseconds
+Total estimated cost: 17333.585624 seconds
+
+OPERATION BREAKDOWN BY LEVEL
+----------------------------
+
+modswitch:
+  Level 16: 110 operations, 26.95 cost (0.00% of total)
+  Level 19: 12 operations, 3.10 cost (0.00% of total)
+  Level 20: 34 operations, 10.06 cost (0.00% of total)
+  Level 21: 1 operations, 0.28 cost (0.00% of total)
+  Level 22: 48 operations, 14.54 cost (0.00% of total)
+  Level 23: 54 operations, 15.93 cost (0.00% of total)
+  Level 25: 15 operations, 4.88 cost (0.00% of total)
+  Level 26: 18 operations, 5.31 cost (0.00% of total)
+  Level 27: 46 operations, 13.71 cost (0.00% of total)
+  Level 28: 42 operations, 13.86 cost (0.00% of total)
+  Total: 380 operations, 108.62 cost (0.00% of total)
+
+negate:
+  Level 20: 1 operations, 12574.00 cost (0.00% of total)
+  Level 21: 44 operations, 566148.00 cost (0.00% of total)
+  Level 22: 1 operations, 13839.00 cost (0.00% of total)
+  Level 23: 16 operations, 228656.00 cost (0.00% of total)
+  Level 24: 6 operations, 90264.00 cost (0.00% of total)
+  Level 25: 17 operations, 259488.00 cost (0.00% of total)
+  Level 26: 10 operations, 156210.00 cost (0.00% of total)
+  Level 27: 26 operations, 420862.00 cost (0.00% of total)
+  Level 28: 9 operations, 155430.00 cost (0.00% of total)
+  Total: 130 operations, 1903471.00 cost (0.01% of total)
+
+rescale:
+  Level 16: 1 operations, 39134.00 cost (0.00% of total)
+  Level 17: 82 operations, 3425140.00 cost (0.02% of total)
+  Level 18: 359 operations, 15881442.00 cost (0.09% of total)
+  Level 19: 1564 operations, 72943396.00 cost (0.42% of total)
+  Level 20: 1633 operations, 80573853.00 cost (0.46% of total)
+  Level 21: 406 operations, 20847288.00 cost (0.12% of total)
+  Level 22: 325 operations, 17471350.00 cost (0.10% of total)
+  Level 23: 207 operations, 11561985.00 cost (0.07% of total)
+  Level 24: 255 operations, 14866245.00 cost (0.09% of total)
+  Level 25: 304 operations, 18448848.00 cost (0.11% of total)
+  Level 26: 265 operations, 16705335.00 cost (0.10% of total)
+  Level 27: 160 operations, 10452320.00 cost (0.06% of total)
+  Level 28: 77 operations, 5220138.00 cost (0.03% of total)
+  Total: 5638 operations, 288436474.00 cost (1.66% of total)
+
+upscale:
+  Level 16: 50 operations, 673800.00 cost (0.00% of total)
+  Level 17: 98 operations, 1396892.00 cost (0.01% of total)
+  Level 18: 182 operations, 2895438.00 cost (0.02% of total)
+  Level 19: 275 operations, 4399450.00 cost (0.03% of total)
+  Level 20: 354 operations, 5891268.00 cost (0.03% of total)
+  Level 21: 307 operations, 5375570.00 cost (0.03% of total)
+  Level 22: 127 operations, 2326005.00 cost (0.01% of total)
+  Level 23: 173 operations, 3362428.00 cost (0.02% of total)
+  Level 24: 313 operations, 6311958.00 cost (0.04% of total)
+  Level 25: 236 operations, 4654156.00 cost (0.03% of total)
+  Level 26: 96 operations, 1970208.00 cost (0.01% of total)
+  Level 27: 74 operations, 1664852.00 cost (0.01% of total)
+  Level 28: 30 operations, 702390.00 cost (0.00% of total)
+  Level 29: 6 operations, 0.00 cost (0.00% of total)
+  Total: 2321 operations, 41624415.00 cost (0.24% of total)
+
+rot:
+  Level 15: 22 operations, 5975948.00 cost (0.03% of total)
+  Level 17: 2472 operations, 739449360.00 cost (4.27% of total)
+  Level 18: 1297 operations, 466423249.00 cost (2.69% of total)
+  Level 19: 14043 operations, 5183313429.00 cost (29.90% of total)
+  Level 20: 11897 operations, 4618225048.00 cost (26.64% of total)
+  Level 28: 144 operations, 99101376.00 cost (0.57% of total)
+  Total: 29875 operations, 11112488410.00 cost (64.11% of total)
+
+mul_s:
+  Level 15: 8 operations, 100440.00 cost (0.00% of total)
+  Level 16: 50 operations, 673800.00 cost (0.00% of total)
+  Level 17: 315 operations, 4490010.00 cost (0.03% of total)
+  Level 18: 395 operations, 6284055.00 cost (0.04% of total)
+  Level 19: 2335 operations, 37355330.00 cost (0.22% of total)
+  Level 20: 2198 operations, 36579116.00 cost (0.21% of total)
+  Level 21: 395 operations, 6916450.00 cost (0.04% of total)
+  Level 22: 344 operations, 6300360.00 cost (0.04% of total)
+  Level 23: 254 operations, 4936744.00 cost (0.03% of total)
+  Level 24: 390 operations, 7864740.00 cost (0.05% of total)
+  Level 25: 389 operations, 7671469.00 cost (0.04% of total)
+  Level 26: 253 operations, 5192319.00 cost (0.03% of total)
+  Level 27: 140 operations, 3149720.00 cost (0.02% of total)
+  Level 28: 90 operations, 2107170.00 cost (0.01% of total)
+  Total: 7556 operations, 129621723.00 cost (0.75% of total)
+
+add_s:
+  Level 16: 1 operations, 9894.00 cost (0.00% of total)
+  Level 17: 22 operations, 231022.00 cost (0.00% of total)
+  Level 18: 38 operations, 418494.00 cost (0.00% of total)
+  Level 19: 28 operations, 326564.00 cost (0.00% of total)
+  Level 20: 43 operations, 531523.00 cost (0.00% of total)
+  Level 21: 43 operations, 554872.00 cost (0.00% of total)
+  Level 22: 6 operations, 81684.00 cost (0.00% of total)
+  Level 23: 39 operations, 569439.00 cost (0.00% of total)
+  Level 24: 34 operations, 496774.00 cost (0.00% of total)
+  Level 25: 21 operations, 282786.00 cost (0.00% of total)
+  Level 26: 23 operations, 320528.00 cost (0.00% of total)
+  Level 27: 25 operations, 412150.00 cost (0.00% of total)
+  Level 28: 5 operations, 84090.00 cost (0.00% of total)
+  Total: 328 operations, 4319820.00 cost (0.02% of total)
+
+mul_d:
+  Level 16: 1 operations, 330636.00 cost (0.00% of total)
+  Level 17: 43 operations, 14971654.00 cost (0.09% of total)
+  Level 18: 57 operations, 23409216.00 cost (0.14% of total)
+  Level 19: 90 operations, 38288790.00 cost (0.22% of total)
+  Level 20: 80 operations, 35732400.00 cost (0.21% of total)
+  Level 21: 93 operations, 47498076.00 cost (0.27% of total)
+  Level 22: 46 operations, 24116236.00 cost (0.14% of total)
+  Level 23: 99 operations, 54285957.00 cost (0.31% of total)
+  Level 24: 66 operations, 41314482.00 cost (0.24% of total)
+  Level 25: 56 operations, 35304976.00 cost (0.20% of total)
+  Level 26: 62 operations, 40927688.00 cost (0.24% of total)
+  Level 27: 60 operations, 44837220.00 cost (0.26% of total)
+  Level 28: 3 operations, 2293869.00 cost (0.01% of total)
+  Total: 756 operations, 403311200.00 cost (2.33% of total)
+
+bootstrap:
+  Level 16: 110 operations, 10614594540.00 cost (61.24% of total)
+  Total: 110 operations, 10614594540.00 cost (61.24% of total)
+
+add_d:
+  Level 15: 11 operations, 109098.00 cost (0.00% of total)
+  Level 16: 25 operations, 266775.00 cost (0.00% of total)
+  Level 17: 1171 operations, 13178434.00 cost (0.08% of total)
+  Level 18: 1533 operations, 19711314.00 cost (0.11% of total)
+  Level 19: 2436 operations, 32415852.00 cost (0.19% of total)
+  Level 20: 840 operations, 11087160.00 cost (0.06% of total)
+  Level 21: 76 operations, 1063164.00 cost (0.01% of total)
+  Level 22: 62 operations, 912702.00 cost (0.01% of total)
+  Level 23: 78 operations, 1201746.00 cost (0.01% of total)
+  Level 24: 134 operations, 2185808.00 cost (0.01% of total)
+  Level 25: 96 operations, 1442688.00 cost (0.01% of total)
+  Level 26: 29 operations, 449500.00 cost (0.00% of total)
+  Level 27: 9 operations, 158391.00 cost (0.00% of total)
+  Level 28: 111 operations, 2024529.00 cost (0.01% of total)
+  Total: 6611 operations, 86207161.00 cost (0.50% of total)
+
+LEVEL DISTRIBUTION ANALYSIS
+---------------------------
+Level 15: 41 operations, 6185486.00 cost (0.04% of total)
+Level 16: 348 operations, 10616588605.95 cost (61.25% of total)
+Level 17: 4203 operations, 777142512.00 cost (4.48% of total)
+Level 18: 3861 operations, 535023208.00 cost (3.09% of total)
+Level 19: 20783 operations, 5369042814.10 cost (30.97% of total)
+Level 20: 17080 operations, 4788632952.06 cost (27.63% of total)
+Level 21: 1365 operations, 82821568.28 cost (0.48% of total)
+Level 22: 959 operations, 51222190.54 cost (0.30% of total)
+Level 23: 920 operations, 76146970.93 cost (0.44% of total)
+Level 24: 1198 operations, 73130271.00 cost (0.42% of total)
+Level 25: 1134 operations, 68064415.88 cost (0.39% of total)
+Level 26: 756 operations, 65721793.31 cost (0.38% of total)
+Level 27: 540 operations, 61095528.71 cost (0.35% of total)
+Level 28: 511 operations, 111689005.86 cost (0.64% of total)
+Level 29: 6 operations, 0.00 cost (0.00% of total)
+
+OPERATION TYPE ANALYSIS
+-----------------------
+
+add_d: 6611 operations, 86207161.00 cost (0.50% of total)
+  0.13% at level 15
+  0.31% at level 16
+  15.29% at level 17
+  22.87% at level 18
+  37.60% at level 19
+  12.86% at level 20
+  1.23% at level 21
+  1.06% at level 22
+  1.39% at level 23
+  2.54% at level 24
+  1.67% at level 25
+  0.52% at level 26
+  0.18% at level 27
+  2.35% at level 28
+
+modswitch: 380 operations, 108.62 cost (0.00% of total)
+  24.81% at level 16
+  2.85% at level 19
+  9.27% at level 20
+  0.26% at level 21
+  13.39% at level 22
+  14.67% at level 23
+  4.49% at level 25
+  4.89% at level 26
+  12.62% at level 27
+  12.76% at level 28
+
+negate: 130 operations, 1903471.00 cost (0.01% of total)
+  0.66% at level 20
+  29.74% at level 21
+  0.73% at level 22
+  12.01% at level 23
+  4.74% at level 24
+  13.63% at level 25
+  8.21% at level 26
+  22.11% at level 27
+  8.17% at level 28
+
+rescale: 5638 operations, 288436474.00 cost (1.66% of total)
+  0.01% at level 16
+  1.19% at level 17
+  5.51% at level 18
+  25.29% at level 19
+  27.93% at level 20
+  7.23% at level 21
+  6.06% at level 22
+  4.01% at level 23
+  5.15% at level 24
+  6.40% at level 25
+  5.79% at level 26
+  3.62% at level 27
+  1.81% at level 28
+
+upscale: 2321 operations, 41624415.00 cost (0.24% of total)
+  1.62% at level 16
+  3.36% at level 17
+  6.96% at level 18
+  10.57% at level 19
+  14.15% at level 20
+  12.91% at level 21
+  5.59% at level 22
+  8.08% at level 23
+  15.16% at level 24
+  11.18% at level 25
+  4.73% at level 26
+  4.00% at level 27
+  1.69% at level 28
+  0.00% at level 29
+
+rot: 29875 operations, 11112488410.00 cost (64.11% of total)
+  0.05% at level 15
+  6.65% at level 17
+  4.20% at level 18
+  46.64% at level 19
+  41.56% at level 20
+  0.89% at level 28
+
+mul_s: 7556 operations, 129621723.00 cost (0.75% of total)
+  0.08% at level 15
+  0.52% at level 16
+  3.46% at level 17
+  4.85% at level 18
+  28.82% at level 19
+  28.22% at level 20
+  5.34% at level 21
+  4.86% at level 22
+  3.81% at level 23
+  6.07% at level 24
+  5.92% at level 25
+  4.01% at level 26
+  2.43% at level 27
+  1.63% at level 28
+
+add_s: 328 operations, 4319820.00 cost (0.02% of total)
+  0.23% at level 16
+  5.35% at level 17
+  9.69% at level 18
+  7.56% at level 19
+  12.30% at level 20
+  12.84% at level 21
+  1.89% at level 22
+  13.18% at level 23
+  11.50% at level 24
+  6.55% at level 25
+  7.42% at level 26
+  9.54% at level 27
+  1.95% at level 28
+
+mul_d: 756 operations, 403311200.00 cost (2.33% of total)
+  0.08% at level 16
+  3.71% at level 17
+  5.80% at level 18
+  9.49% at level 19
+  8.86% at level 20
+  11.78% at level 21
+  5.98% at level 22
+  13.46% at level 23
+  10.24% at level 24
+  8.75% at level 25
+  10.15% at level 26
+  11.12% at level 27
+  0.57% at level 28
+
+bootstrap: 110 operations, 10614594540.00 cost (61.24% of total)
+  100.00% at level 16

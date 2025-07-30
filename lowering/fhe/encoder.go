@@ -8,7 +8,6 @@ import (
 )
 
 func (lattigo *LattigoFHE) encode(values []float64, scale *rlwe.Scale, level int) *rlwe.Ciphertext {
-	// Debug: Check for invalid inputs
 	if len(values) == 0 {
 		fmt.Printf("DEBUG ENCODE: Empty values array\n")
 		return nil
@@ -28,27 +27,6 @@ func (lattigo *LattigoFHE) encode(values []float64, scale *rlwe.Scale, level int
 	ct, err := lattigo.enc.EncryptNew(pack)
 	if err != nil {
 		fmt.Printf("Error encrypting: %v\n", err)
-	}
-
-	// Debug: Immediate decode test for CONST operations
-	testDecoded := lattigo.decode(ct)
-	nonZeroCount := 0
-	for i := 0; i < min(len(testDecoded), 10); i++ {
-		if testDecoded[i] != 0.0 {
-			nonZeroCount++
-		}
-	}
-	if nonZeroCount == 0 {
-		fmt.Printf("DEBUG ENCODE: Immediate decode test failed - all zeros! Input had %d non-zero values\n",
-			func() int {
-				count := 0
-				for _, v := range values[:min(len(values), 10)] {
-					if v != 0 {
-						count++
-					}
-				}
-				return count
-			}())
 	}
 
 	return ct

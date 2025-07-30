@@ -170,9 +170,6 @@ func (lattigo *LattigoFHE) processConstants() {
 			for i := 0; i < lattigo.n; i++ {
 				processedData[i] = data[0]
 			}
-		} else {
-			// Invalid size (smaller than lattigo.n but not size 1)
-			log.Fatalf("Constant %d has invalid size %d (expected 1 or %d)", value, numValues, lattigo.n)
 		}
 
 		// If lattigo.constants[value] exists, check if the data is the same
