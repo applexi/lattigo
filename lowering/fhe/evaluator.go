@@ -104,6 +104,14 @@ func (lattigo *LattigoFHE) evalBootstrap(ct1 *rlwe.Ciphertext, targetLevel int) 
 	return ct
 }
 
+func (lattigo *LattigoFHE) ensureEncoded(childID int) {
+	if !lattigo.terms[childID].Secret {
+		if _, exists := lattigo.env[childID]; !exists {
+			lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
+		}
+	}
+}
+
 func (lattigo *LattigoFHE) evalOp(term *Term, metadata string) *rlwe.Ciphertext {
 	md := lattigo.parseMetadata(metadata, term.Op)
 	switch term.Op {
@@ -117,16 +125,10 @@ func (lattigo *LattigoFHE) evalOp(term *Term, metadata string) *rlwe.Ciphertext 
 		a := term.Children[0]
 		b := term.Children[1]
 		if !lattigo.terms[a].Secret {
-			// Encode constant if not already encoded
-			if _, exists := lattigo.env[a]; !exists {
-				lattigo.env[a] = lattigo.encode(lattigo.ptEnv[a], &lattigo.terms[a].Scale, lattigo.terms[a].Level)
-			}
+			lattigo.ensureEncoded(a)
 			return lattigo.evalSingleAdd(lattigo.env[b], lattigo.ptEnv[a], lattigo.terms[a].Level, &lattigo.terms[a].Scale)
 		} else if !lattigo.terms[b].Secret {
-			// Encode constant if not already encoded
-			if _, exists := lattigo.env[b]; !exists {
-				lattigo.env[b] = lattigo.encode(lattigo.ptEnv[b], &lattigo.terms[b].Scale, lattigo.terms[b].Level)
-			}
+			lattigo.ensureEncoded(b)
 			return lattigo.evalSingleAdd(lattigo.env[a], lattigo.ptEnv[b], lattigo.terms[b].Level, &lattigo.terms[b].Scale)
 		}
 		return lattigo.evalDoubleAdd(lattigo.env[a], lattigo.env[b])
@@ -134,66 +136,30 @@ func (lattigo *LattigoFHE) evalOp(term *Term, metadata string) *rlwe.Ciphertext 
 		a := term.Children[0]
 		b := term.Children[1]
 		if !lattigo.terms[a].Secret {
-			// Encode constant if not already encoded
-			if _, exists := lattigo.env[a]; !exists {
-				lattigo.env[a] = lattigo.encode(lattigo.ptEnv[a], &lattigo.terms[a].Scale, lattigo.terms[a].Level)
-			}
+			lattigo.ensureEncoded(a)
 			return lattigo.evalSingleMul(lattigo.env[b], lattigo.ptEnv[a], lattigo.terms[a].Level, &lattigo.terms[a].Scale)
 		} else if !lattigo.terms[b].Secret {
-			// Encode constant if not already encoded
-			if _, exists := lattigo.env[b]; !exists {
-				lattigo.env[b] = lattigo.encode(lattigo.ptEnv[b], &lattigo.terms[b].Scale, lattigo.terms[b].Level)
-			}
+			lattigo.ensureEncoded(b)
 			return lattigo.evalSingleMul(lattigo.env[a], lattigo.ptEnv[b], lattigo.terms[b].Level, &lattigo.terms[b].Scale)
 		}
 		return lattigo.evalDoubleMul(lattigo.env[a], lattigo.env[b])
 	case ROT:
-		// Encode constant if not already encoded
-		if !lattigo.terms[term.Children[0]].Secret {
-			if _, exists := lattigo.env[term.Children[0]]; !exists {
-				lattigo.env[term.Children[0]] = lattigo.encode(lattigo.ptEnv[term.Children[0]], &lattigo.terms[term.Children[0]].Scale, lattigo.terms[term.Children[0]].Level)
-			}
-		}
+		lattigo.ensureEncoded(term.Children[0])
 		return lattigo.evalRot(lattigo.env[term.Children[0]], md.Offset)
 	case MODSWITCH:
-		// Encode constant if not already encoded
-		if !lattigo.terms[term.Children[0]].Secret {
-			if _, exists := lattigo.env[term.Children[0]]; !exists {
-				lattigo.env[term.Children[0]] = lattigo.encode(lattigo.ptEnv[term.Children[0]], &lattigo.terms[term.Children[0]].Scale, lattigo.terms[term.Children[0]].Level)
-			}
-		}
+		lattigo.ensureEncoded(term.Children[0])
 		return lattigo.evalModswitch(lattigo.env[term.Children[0]], md.DownFactor)
 	case NEGATE:
-		// Encode constant if not already encoded
-		if !lattigo.terms[term.Children[0]].Secret {
-			if _, exists := lattigo.env[term.Children[0]]; !exists {
-				lattigo.env[term.Children[0]] = lattigo.encode(lattigo.ptEnv[term.Children[0]], &lattigo.terms[term.Children[0]].Scale, lattigo.terms[term.Children[0]].Level)
-			}
-		}
+		lattigo.ensureEncoded(term.Children[0])
 		return lattigo.evalNegate(lattigo.env[term.Children[0]])
 	case BOOTSTRAP:
-		// Encode constant if not already encoded
-		if !lattigo.terms[term.Children[0]].Secret {
-			if _, exists := lattigo.env[term.Children[0]]; !exists {
-				lattigo.env[term.Children[0]] = lattigo.encode(lattigo.ptEnv[term.Children[0]], &lattigo.terms[term.Children[0]].Scale, lattigo.terms[term.Children[0]].Level)
-			}
-		}
+		lattigo.ensureEncoded(term.Children[0])
 		return lattigo.evalBootstrap(lattigo.env[term.Children[0]], md.TargetLevel)
 	case RESCALE:
-		// Encode constant if not already encoded
-		if !lattigo.terms[term.Children[0]].Secret {
-			if _, exists := lattigo.env[term.Children[0]]; !exists {
-				lattigo.env[term.Children[0]] = lattigo.encode(lattigo.ptEnv[term.Children[0]], &lattigo.terms[term.Children[0]].Scale, lattigo.terms[term.Children[0]].Level)
-			}
-		}
+		lattigo.ensureEncoded(term.Children[0])
 		return lattigo.evalRescale(lattigo.env[term.Children[0]])
 	case UPSCALE:
-		// Encode constant if not already encoded
-		if !lattigo.terms[term.Children[0]].Secret {
-			if _, exists := lattigo.env[term.Children[0]]; !exists {
-				lattigo.env[term.Children[0]] = lattigo.encode(lattigo.ptEnv[term.Children[0]], &lattigo.terms[term.Children[0]].Scale, lattigo.terms[term.Children[0]].Level)
-			}
-		}
+		lattigo.ensureEncoded(term.Children[0])
 		return lattigo.evalUpscale(lattigo.env[term.Children[0]], md.UpFactor)
 	default:
 		fmt.Printf("Unknown op: %v\n", term.Op)

@@ -14,6 +14,16 @@ import (
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 )
 
+var (
+	reRotateOffset = regexp.MustCompile(`offset\s*=\s*array<i64:\s*(-?\d+)>`)
+	reMLIRCi       = regexp.MustCompile(`earth\.ci<\s*([0-9]+)\s*\*\s*([0-9]+)\s*>`)
+	reRMSVar       = regexp.MustCompile(`rms_var\s*=\s*([0-9eE\.\-]+)\s*:\s*f64`)
+	reValue        = regexp.MustCompile(`value\s*=\s*([-+]?[0-9\.]+)(?:\s*:\s*\w+)?`)
+	reUpFactor     = regexp.MustCompile(`upFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
+	reDownFactor   = regexp.MustCompile(`downFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
+	reTargetLevel  = regexp.MustCompile(`targetLevel\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
+)
+
 type FileType int
 
 const (
@@ -96,8 +106,7 @@ func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []
 			if strings.HasPrefix(trimmed, "%") {
 				operations = append(operations, line)
 			} else if strings.HasPrefix(trimmed, "^bb0(") || strings.HasPrefix(trimmed, "func.func @") {
-				re := regexp.MustCompile(`earth\.ci<\s*([0-9]+)\s*\*\s*([0-9]+)\s*>`)
-				matches := re.FindStringSubmatch(trimmed)
+				matches := reMLIRCi.FindStringSubmatch(trimmed)
 				if len(matches) == 3 {
 					scaleInt, _ := strconv.Atoi(matches[1])
 					level, _ := strconv.Atoi(matches[2])
@@ -359,8 +368,7 @@ func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term, string) 
 }
 
 func extractRotateOffsetFromMLIRLine(line string) (int, bool) {
-	re := regexp.MustCompile(`offset\s*=\s*array<i64:\s*(-?\d+)>`)
-	match := re.FindStringSubmatch(line)
+	match := reRotateOffset.FindStringSubmatch(line)
 	if len(match) == 2 {
 		value, err := strconv.Atoi(match[1])
 		if err == nil {
@@ -399,42 +407,35 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 	md := Metadata{}
 	switch op {
 	case CONST:
-		reRMSVar := regexp.MustCompile(`rms_var\s*=\s*([0-9eE\.\-]+)\s*:\s*f64`)
 		if match := reRMSVar.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.ParseFloat(match[1], 64); err == nil {
 				md.RMSVar = v
 			}
 		}
-		reValue := regexp.MustCompile(`value\s*=\s*([-+]?[0-9\.]+)(?:\s*:\s*\w+)?`)
 		if match := reValue.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.Value = v
 			}
 		}
 	case ROT:
-		reOffset := regexp.MustCompile(`offset\s*=\s*array<i64:\s*(-?\d+)>`)
-		if match := reOffset.FindStringSubmatch(metadata); len(match) == 2 {
+		if match := reRotateOffset.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.Offset = v
 			}
 		}
 	case UPSCALE:
-		// upFactor (int)
-		reUpFactor := regexp.MustCompile(`upFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 		if match := reUpFactor.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.UpFactor = v
 			}
 		}
 	case MODSWITCH:
-		reDownFactor := regexp.MustCompile(`downFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 		if match := reDownFactor.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.DownFactor = v
 			}
 		}
 	case BOOTSTRAP:
-		reTargetLevel := regexp.MustCompile(`targetLevel\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 		if match := reTargetLevel.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
 				md.TargetLevel = v

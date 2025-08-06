@@ -15,9 +15,6 @@ func (lattigo *LattigoFHE) encode(values []float64, scale *rlwe.Scale, level int
 	if level < 0 || level > lattigo.params.MaxLevel() {
 		fmt.Printf("DEBUG ENCODE: Invalid level %d (max: %d)\n", level, lattigo.params.MaxLevel())
 	}
-	if scale != nil && (scale.Float64() <= 0 || scale.Float64() != scale.Float64()) { // Check for NaN/negative
-		fmt.Printf("DEBUG ENCODE: Invalid scale %f\n", scale.Float64())
-	}
 
 	pack := ckks.NewPlaintext(*lattigo.params, level)
 	if scale != nil {

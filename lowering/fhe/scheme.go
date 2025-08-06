@@ -113,33 +113,30 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 
 func (lattigo *LattigoFHE) findUniqueRots(operations []string) []int {
 	maxRot := 0
-	seen := make(map[int]struct{})
+	hasNegative := false
 
 	for _, operation := range operations {
+		var rot int
+		var found bool
+
 		if strings.Contains(operation, "ROT") {
 			parts := strings.Split(operation, " ")
 			if len(parts) > 4 {
-				rot, _ := strconv.Atoi(parts[4])
-				absRot := rot
-				if absRot < 0 {
-					absRot = -absRot
-				}
-				if absRot > maxRot {
-					maxRot = absRot
-				}
-				seen[rot] = struct{}{}
+				rot, _ = strconv.Atoi(parts[4])
+				found = true
 			}
 		} else if strings.Contains(operation, "rotate") {
-			offset, ok := extractRotateOffsetFromMLIRLine(operation)
-			if ok {
-				absOffset := offset
-				if absOffset < 0 {
-					absOffset = -absOffset
-				}
-				if absOffset > maxRot {
-					maxRot = absOffset
-				}
-				seen[offset] = struct{}{}
+			rot, found = extractRotateOffsetFromMLIRLine(operation)
+		}
+
+		if found {
+			absRot := rot
+			if absRot < 0 {
+				absRot = -absRot
+				hasNegative = true
+			}
+			if absRot > maxRot {
+				maxRot = absRot
 			}
 		}
 	}
@@ -150,23 +147,13 @@ func (lattigo *LattigoFHE) findUniqueRots(operations []string) []int {
 		powerOfTwoRots = append(powerOfTwoRots, power)
 	}
 
-	for rot := range seen {
-		if rot < 0 {
-			for _, pos := range powerOfTwoRots {
-				neg := -pos
-				found := false
-				for _, existing := range powerOfTwoRots {
-					if existing == neg {
-						found = true
-						break
-					}
-				}
-				if !found {
-					powerOfTwoRots = append(powerOfTwoRots, neg)
-				}
-			}
-			break
+	// Add negative powers if any negative rotations were found
+	if hasNegative {
+		negativeRots := make([]int, len(powerOfTwoRots))
+		for i, pos := range powerOfTwoRots {
+			negativeRots[i] = -pos
 		}
+		powerOfTwoRots = append(powerOfTwoRots, negativeRots...)
 	}
 
 	return powerOfTwoRots
@@ -249,10 +236,6 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 }
 
 func (lattigo *LattigoFHE) deleteFromEnvironments(lineNum int) {
-	lattigo.env[lineNum] = nil
-	lattigo.ptEnv[lineNum] = []float64{}
-	lattigo.terms[lineNum] = nil
-
 	delete(lattigo.terms, lineNum)
 	delete(lattigo.env, lineNum)
 	delete(lattigo.ptEnv, lineNum)
@@ -360,16 +343,10 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 		progressbar.OptionSetItsString("ops"),
 	)
 
-	prevLineNum := -1
-
 	for i, line := range operations {
 		bar.Set(i + 1)
 
 		lineNum, term, metadata := lattigo.parseOperation(line)
-		if lineNum != prevLineNum+1 {
-			fmt.Printf("Missed line number: %d\n", lineNum)
-		}
-		prevLineNum = lineNum
 
 		if term.Op == CONST {
 			continue
@@ -476,13 +453,6 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		fmt.Printf("Final Result Accuracy: %.2f%%\n", accuracy)
 	}
 	fmt.Printf("Runtime: %v\n", runtime)
-
-	// DEBUG
-	if len(lattigo.refCounts) > 0 {
-		for key := range lattigo.refCounts {
-			fmt.Printf("Reference count for %d: %d\n", key, lattigo.refCounts[key])
-		}
-	}
 
 	return pt_results, nil
 }

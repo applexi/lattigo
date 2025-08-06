@@ -208,7 +208,7 @@ func main() {
 	for i := 1; i < len(logQ); i++ {
 		logQ[i] = 51
 	}
-	logN := 17
+	logN := 16
 	polyDegree := 1 << logN
 	logDefaultScale := 51
 

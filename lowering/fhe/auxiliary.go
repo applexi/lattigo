@@ -14,6 +14,8 @@ import (
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 )
 
+var reInputFileNumber = regexp.MustCompile(`input(\d+)\.txt`)
+
 func (lattigo *LattigoFHE) calculateAccuracy(want []float64, ct *rlwe.Ciphertext) float64 {
 	decrypted := lattigo.decode(ct)
 
@@ -203,8 +205,7 @@ func (lattigo *LattigoFHE) resetForNewInput() {
 
 func (lattigo *LattigoFHE) generateOutputFileName(inputFile string) string {
 	inputBase := filepath.Base(inputFile)
-	re := regexp.MustCompile(`input(\d+)\.txt`)
-	matches := re.FindStringSubmatch(inputBase)
+	matches := reInputFileNumber.FindStringSubmatch(inputBase)
 
 	if len(matches) >= 2 {
 		number := matches[1]
