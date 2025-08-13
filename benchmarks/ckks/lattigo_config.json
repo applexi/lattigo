@@ -274,5 +274,5 @@
     "levelUpperBound": 29,
     "polynomialDegree": 131072,
     "rescalingFactor": 51,
-    "runtime": "Lattigo"
+    "runtime": "HEAAN-HEVM"
 }

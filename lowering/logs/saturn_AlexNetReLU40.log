@@ -1,0 +1,4 @@
+Running scope as unit: run-r42fa5a28e8474b5783e7e3f1310f6076.scope
+Instructions file:  mlirs/65536/saturn/AlexNetReLU40.mlir
+Output file:  outputs/saturn_AlexNetReLU40.txt
+error reading file: open mlirs/65536/saturn/AlexNetReLU40.mlir: no such file or directory

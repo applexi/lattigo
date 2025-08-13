@@ -208,7 +208,7 @@ func main() {
 	for i := 1; i < len(logQ); i++ {
 		logQ[i] = 51
 	}
-	logN := 16
+	logN := 15
 	polyDegree := 1 << logN
 	logDefaultScale := 51
 
@@ -299,7 +299,7 @@ func main() {
 		"runtime":                  "Lattigo",
 	}
 
-	jsonFile, err := os.Create("lattigo_config.json")
+	jsonFile, err := os.Create("lattigo_config16384.json")
 	if err != nil {
 		panic(err)
 	}

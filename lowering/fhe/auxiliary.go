@@ -48,9 +48,55 @@ func (lattigo *LattigoFHE) calculateAccuracy(want []float64, ct *rlwe.Ciphertext
 	return accuracyPercent
 }
 
-func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term, metadata string) []float64 {
+func (lattigo *LattigoFHE) validateResult(result []float64, trueLabel int) (bool, int) {
+	if len(result) < 10 {
+		return false, -1
+	}
+
+	maxIndex := 0
+	maxValue := result[0]
+
+	for i := 1; i < 10; i++ {
+		if result[i] > maxValue {
+			maxValue = result[i]
+			maxIndex = i
+		}
+	}
+
+	return maxIndex == trueLabel, maxIndex
+}
+
+func (lattigo *LattigoFHE) decomposeRotation(rotation int) []int {
+	if rotation == 0 {
+		return []int{}
+	}
+
+	var decomposition []int
+	remaining := rotation
+	if remaining < 0 {
+		remaining = -remaining
+	}
+
+	for remaining > 0 {
+		power := 1
+		for power*2 <= remaining {
+			power *= 2
+		}
+
+		if rotation < 0 {
+			decomposition = append(decomposition, -power)
+		} else {
+			decomposition = append(decomposition, power)
+		}
+		remaining -= power
+	}
+
+	return decomposition
+}
+
+func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term) []float64 {
 	want := make([]float64, lattigo.n)
-	md := lattigo.parseMetadata(metadata, term.Op)
+	md := term.Metadata
 	if _, ok := lattigo.ptEnv[lineNum]; !ok {
 		switch term.Op {
 		case PACK:
@@ -254,22 +300,107 @@ func (lattigo *LattigoFHE) writeRuntimesFile(outputDir string, runtimeInfos []Ru
 	return os.WriteFile(runtimesPath, []byte(content), 0644)
 }
 
-// validateResult compares the predicted class (max index of first 10 values) with true label
-func (lattigo *LattigoFHE) validateResult(result []float64, trueLabel int) (bool, int) {
-	if len(result) < 10 {
-		return false, -1
+func (lattigo *LattigoFHE) writeTimingReport() error {
+	if !lattigo.enableTiming || lattigo.timingStats == nil {
+		return nil
 	}
 
-	// Find the index of the maximum value in the first 10 elements
-	maxIndex := 0
-	maxValue := result[0]
+	// Create logs directory if it doesn't exist
+	err := os.MkdirAll("logs", 0755)
+	if err != nil {
+		return fmt.Errorf("error creating logs directory: %v", err)
+	}
 
-	for i := 1; i < 10; i++ {
-		if result[i] > maxValue {
-			maxValue = result[i]
-			maxIndex = i
+	// Generate timestamp for unique filename
+	timestamp := time.Now().Format("20060102_150405")
+	filename := filepath.Join("logs", fmt.Sprintf("timing_report_%s.txt", timestamp))
+
+	file, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("error creating timing report file: %v", err)
+	}
+	defer file.Close()
+
+	// Write header
+	fmt.Fprintf(file, "FHE Operations Timing Analysis Report\n")
+	fmt.Fprintf(file, "=====================================\n")
+	fmt.Fprintf(file, "Generated: %s\n", time.Now().Format("2006-01-02 15:04:05"))
+	fmt.Fprintf(file, "Total Execution Time: %v\n\n", lattigo.timingStats.TotalTime)
+
+	type OpLevel struct {
+		Op    op
+		Level int
+	}
+	var opLevels []OpLevel
+
+	for operation, levelMap := range lattigo.timingStats.OperationStats {
+		for level, stats := range levelMap {
+			if stats.Count > 0 { // Only include non-zero counts
+				opLevels = append(opLevels, OpLevel{Op: operation, Level: level})
+			}
 		}
 	}
 
-	return maxIndex == trueLabel, maxIndex
+	sort.Slice(opLevels, func(i, j int) bool {
+		if opLevels[i].Op != opLevels[j].Op {
+			return opLevels[i].Op < opLevels[j].Op
+		}
+		return opLevels[i].Level < opLevels[j].Level
+	})
+
+	fmt.Fprintf(file, "Detailed Operations Statistics:\n")
+	fmt.Fprintf(file, "%-12s %-6s %-8s %-15s %-15s %-10s\n",
+		"Operation", "Level", "Count", "Total Time", "Avg Time", "% of Total")
+	fmt.Fprintf(file, "%-12s %-6s %-8s %-15s %-15s %-10s\n",
+		"----------", "-----", "-----", "----------", "--------", "----------")
+
+	for _, ol := range opLevels {
+		stats := lattigo.timingStats.OperationStats[ol.Op][ol.Level]
+		avgTime := stats.TotalTime / time.Duration(stats.Count)
+		percentage := float64(stats.TotalTime) / float64(lattigo.timingStats.TotalTime) * 100
+
+		fmt.Fprintf(file, "%-12s %-6d %-8d %-15v %-15v %-9.2f%%\n",
+			getOpName(ol.Op), ol.Level, stats.Count,
+			stats.TotalTime, avgTime, percentage)
+	}
+
+	// Write summary by operation (across all levels)
+	opSummary := make(map[op]*LevelStats)
+	for operation, levelMap := range lattigo.timingStats.OperationStats {
+		opSummary[operation] = &LevelStats{}
+		for _, stats := range levelMap {
+			if stats.Count > 0 {
+				opSummary[operation].Count += stats.Count
+				opSummary[operation].TotalTime += stats.TotalTime
+			}
+		}
+	}
+
+	fmt.Fprintf(file, "\nSummary by Operation Type:\n")
+	fmt.Fprintf(file, "%-12s %-8s %-15s %-15s %-10s\n",
+		"Operation", "Count", "Total Time", "Avg Time", "% of Total")
+	fmt.Fprintf(file, "%-12s %-8s %-15s %-15s %-10s\n",
+		"----------", "-----", "----------", "--------", "----------")
+
+	var operations []op
+	for op, stats := range opSummary {
+		if stats.Count > 0 {
+			operations = append(operations, op)
+		}
+	}
+	sort.Slice(operations, func(i, j int) bool {
+		return operations[i] < operations[j]
+	})
+
+	for _, operation := range operations {
+		stats := opSummary[operation]
+		avgTime := stats.TotalTime / time.Duration(stats.Count)
+		percentage := float64(stats.TotalTime) / float64(lattigo.timingStats.TotalTime) * 100
+
+		fmt.Fprintf(file, "%-12s %-8d %-15v %-15v %-9.2f%%\n",
+			getOpName(operation), stats.Count, stats.TotalTime, avgTime, percentage)
+	}
+
+	fmt.Printf("Timing report written to: %s\n", filename)
+	return nil
 }

@@ -6,7 +6,6 @@ import (
 	"log"
 	"math"
 	"os"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -71,6 +70,35 @@ func mlirOpToOp(op string) op {
 	return -1
 }
 
+func getOpName(operation op) string {
+	switch operation {
+	case PACK:
+		return "PACK"
+	case CONST:
+		return "CONST"
+	case MASK:
+		return "MASK"
+	case ADD:
+		return "ADD"
+	case MUL:
+		return "MUL"
+	case ROT:
+		return "ROT"
+	case MODSWITCH:
+		return "MODSWITCH"
+	case NEGATE:
+		return "NEGATE"
+	case BOOTSTRAP:
+		return "BOOTSTRAP"
+	case RESCALE:
+		return "RESCALE"
+	case UPSCALE:
+		return "UPSCALE"
+	default:
+		return "UNKNOWN"
+	}
+}
+
 func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []string, inputs []Term, err error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -115,8 +143,7 @@ func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []
 					term := &Term{
 						Secret: strings.Contains(trimmed, "earth.ci"),
 						Scale:  scale,
-						// MAXLEVEL -
-						Level: lattigo.maxLevel - level,
+						Level:  lattigo.bootstrapMaxLevel - level,
 					}
 					inputs = append(inputs, *term)
 				}
@@ -131,7 +158,7 @@ func (lattigo *LattigoFHE) processInputs(inputs []Term) {
 	// line num is -1 - index of input
 	for i, input := range inputs {
 		// read from lattigo.inputPath (path to a file)
-		readFile, err := os.ReadFile(filepath.Join(lattigo.inputPath))
+		readFile, err := os.ReadFile(lattigo.inputPath)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -141,58 +168,31 @@ func (lattigo *LattigoFHE) processInputs(inputs []Term) {
 		for j := 0; j < numValues; j++ {
 			pt[j], _ = strconv.ParseFloat(lines[j+1], 64)
 		}
-		lattigo.env[-1-i] = lattigo.encode(pt, &input.Scale, input.Level)
 		lattigo.terms[-1-i] = &input
-		if !input.Secret || lattigo.getStats {
-			lattigo.ptEnv[-1-i] = pt
-		}
+		lattigo.ptEnv[-1-i] = pt
 	}
 }
 
 func (lattigo *LattigoFHE) processConstants() {
-	files, err := os.ReadDir(lattigo.constantsPath)
+	constantMap, err := loadConstants(lattigo.constantsPath)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to load constants from cst file %s: %v", lattigo.constantsPath, err)
 	}
-	for _, file := range files {
-		filePath := filepath.Join(lattigo.constantsPath, file.Name())
-		info, err := os.ReadFile(filePath)
-		if err != nil {
-			log.Fatal(err)
-		}
-		lines := strings.Split(string(info), "\n")
-		numValues, _ := strconv.Atoi(lines[0])
-		value, _ := strconv.Atoi(lines[1])
-		data := make([]float64, numValues)
-		for i := 0; i < numValues; i++ {
-			data[i], _ = strconv.ParseFloat(lines[i+2], 64)
-		}
 
-		// Process constant data to match lattigo.n size
-		var processedData []float64
-		if numValues == lattigo.n {
-			processedData = data
-		} else if numValues > lattigo.n {
-			processedData = data[0:lattigo.n]
-		} else if numValues == 1 {
-			processedData = make([]float64, lattigo.n)
-			for i := 0; i < lattigo.n; i++ {
-				processedData[i] = data[0]
-			}
-		}
-
-		// If lattigo.constants[value] exists, check if the data is the same
+	// Store constants directly (assuming they're already the correct size)
+	for value, data := range constantMap {
+		// Check for duplicates
 		if existing, ok := lattigo.constants[value]; ok {
-			if len(existing) != len(processedData) {
-				log.Fatalf("Constant value %d already exists with different data", value)
+			if len(existing) != len(data) {
+				log.Fatalf("Constant value %d already exists with different length", value)
 			}
 			for i := range existing {
-				if math.Abs(existing[i]-processedData[i]) > 1e-10 {
+				if math.Abs(existing[i]-data[i]) > 1e-10 {
 					log.Fatalf("Constant value %d already exists with different data", value)
 				}
 			}
 		} else {
-			lattigo.constants[value] = processedData
+			lattigo.constants[value] = data
 		}
 	}
 }
@@ -226,20 +226,20 @@ func parseIntArray(s string) []int {
 /*
 Parses a line of instructions and creates a term.
 */
-func (lattigo *LattigoFHE) parseOperation(line string) (lineNum int, term *Term, metadata string) {
+func (lattigo *LattigoFHE) parseOperation(line string) (lineNum int, term *Term) {
 	switch lattigo.fileType {
 	case Instructions:
 		return lattigo.parseInstructionOperation(line)
 	case MLIR:
 		return lattigo.parseMLIROperation(line)
 	default:
-		return -1, nil, ""
+		return -1, nil
 	}
 }
 
-func (lattigo *LattigoFHE) parseInstructionOperation(line string) (int, *Term, string) {
+func (lattigo *LattigoFHE) parseInstructionOperation(line string) (int, *Term) {
 	if line == "" || strings.HasPrefix(line, "#") {
-		return -1, nil, ""
+		return -1, nil
 	}
 
 	parts := strings.Split(line, " ")
@@ -247,35 +247,35 @@ func (lattigo *LattigoFHE) parseInstructionOperation(line string) (int, *Term, s
 	op := instructionOptoOp(parts[1])
 	cs := parseIntArray(parts[2])
 	isSecret, _ := strconv.ParseBool(parts[3])
-	metadata := parts[4]
+	metadataStr := parts[4]
 
 	term := &Term{
 		Op:       op,
 		Children: cs,
 		Secret:   isSecret,
-		Metadata: metadata,
+		Metadata: parseInstructionsMetadata(metadataStr, op),
 	}
 	if _, ok := lattigo.terms[lineNum]; !ok {
 		lattigo.terms[lineNum] = term
 	}
-	return lineNum, term, metadata
+	return lineNum, term
 }
 
-func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term, string) {
+func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term) {
 	line = strings.TrimSpace(line)
 	if line == "" || !strings.HasPrefix(line, "%") {
-		return -1, nil, ""
+		return -1, nil
 	}
 
 	// Split at '='
 	parts := strings.SplitN(line, "=", 2)
 	if len(parts) < 2 {
-		return -1, nil, ""
+		return -1, nil
 	}
 	lineNumStr := strings.TrimPrefix(strings.TrimSpace(parts[0]), "%")
 	lineNum, err := strconv.Atoi(lineNumStr)
 	if err != nil {
-		return -1, nil, ""
+		return -1, nil
 	}
 	rest := strings.TrimSpace(parts[1])
 
@@ -357,14 +357,13 @@ func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term, string) 
 		Children: children,
 		Secret:   secret,
 		Scale:    scale,
-		// MAXLEVEL -
-		Level:    lattigo.maxLevel - level,
-		Metadata: metadata,
+		Level:    lattigo.bootstrapMaxLevel - level,
+		Metadata: parseMLIRMetadata(metadata, mlirOpToOp(op)),
 	}
 	if _, ok := lattigo.terms[lineNum]; !ok {
 		lattigo.terms[lineNum] = term
 	}
-	return lineNum, term, rest
+	return lineNum, term
 }
 
 func extractRotateOffsetFromMLIRLine(line string) (int, bool) {

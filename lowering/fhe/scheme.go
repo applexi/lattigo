@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"math"
+	"os"
 	"path/filepath"
+	"runtime/pprof"
 	"strconv"
 	"strings"
 	"time"
@@ -47,7 +49,7 @@ type Term struct {
 	Op       op
 	Children []int
 	Secret   bool
-	Metadata string
+	Metadata Metadata
 	Scale    rlwe.Scale
 	Level    int
 }
@@ -58,6 +60,16 @@ type RuntimeInfo struct {
 	PredictedClass int
 	TrueClass      int
 	HasValidation  bool
+}
+
+type LevelStats struct {
+	Count     int
+	TotalTime time.Duration
+}
+
+type TimingStats struct {
+	OperationStats map[op]map[int]*LevelStats // op -> level -> stats
+	TotalTime      time.Duration
 }
 
 type LattigoFHE struct {
@@ -86,9 +98,19 @@ type LattigoFHE struct {
 	fileType          FileType
 	getStats          bool
 	logFile           string
+	enableTiming      bool
+	timingStats       *TimingStats
 }
 
-func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputPath string, outputFile string, trueLabelsPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, logFile string) *LattigoFHE {
+func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputPath string, outputFile string, trueLabelsPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, logFile string, enableTiming bool) *LattigoFHE {
+	var timingStats *TimingStats
+	if enableTiming {
+		timingStats = &TimingStats{
+			OperationStats: make(map[op]map[int]*LevelStats),
+			TotalTime:      0,
+		}
+	}
+
 	return &LattigoFHE{
 		terms:             make(map[int]*Term),
 		env:               make(map[int]*rlwe.Ciphertext),
@@ -108,12 +130,13 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 		fileType:          fileType,
 		getStats:          logFile != "",
 		logFile:           logFile,
+		enableTiming:      enableTiming,
+		timingStats:       timingStats,
 	}
 }
 
 func (lattigo *LattigoFHE) findUniqueRots(operations []string) []int {
-	maxRot := 0
-	hasNegative := false
+	uniqueRots := make(map[int]struct{})
 
 	for _, operation := range operations {
 		var rot int
@@ -130,61 +153,66 @@ func (lattigo *LattigoFHE) findUniqueRots(operations []string) []int {
 		}
 
 		if found {
-			absRot := rot
-			if absRot < 0 {
-				absRot = -absRot
-				hasNegative = true
-			}
-			if absRot > maxRot {
-				maxRot = absRot
-			}
+			uniqueRots[rot] = struct{}{}
 		}
 	}
 
-	// Generate powers of two up to the maximum rotation needed
-	var powerOfTwoRots []int
-	for power := 1; power <= maxRot; power *= 2 {
-		powerOfTwoRots = append(powerOfTwoRots, power)
+	result := make([]int, 0, len(uniqueRots))
+	for rot := range uniqueRots {
+		result = append(result, rot)
 	}
-
-	// Add negative powers if any negative rotations were found
-	if hasNegative {
-		negativeRots := make([]int, len(powerOfTwoRots))
-		for i, pos := range powerOfTwoRots {
-			negativeRots[i] = -pos
-		}
-		powerOfTwoRots = append(powerOfTwoRots, negativeRots...)
-	}
-
-	return powerOfTwoRots
+	return result
 }
 
-func (lattigo *LattigoFHE) decomposeRotation(rotation int) []int {
-	if rotation == 0 {
-		return []int{}
-	}
+func (lattigo *LattigoFHE) findUniqueRotsPow2(operations []string) []int {
+	maxRot := 0
+	minRot := 0
 
-	var decomposition []int
-	remaining := rotation
-	if remaining < 0 {
-		remaining = -remaining
-	}
+	for _, operation := range operations {
+		var rot int
+		var found bool
 
-	for remaining > 0 {
-		power := 1
-		for power*2 <= remaining {
-			power *= 2
+		if strings.Contains(operation, "ROT") {
+			parts := strings.Split(operation, " ")
+			if len(parts) > 4 {
+				rot, _ = strconv.Atoi(parts[4])
+				found = true
+			}
+		} else if strings.Contains(operation, "rotate") {
+			rot, found = extractRotateOffsetFromMLIRLine(operation)
 		}
 
-		if rotation < 0 {
-			decomposition = append(decomposition, -power)
-		} else {
-			decomposition = append(decomposition, power)
+		if found {
+			if rot > maxRot {
+				maxRot = rot
+			}
+			if rot < minRot {
+				minRot = rot
+			}
 		}
-		remaining -= power
 	}
 
-	return decomposition
+	capacity := 0
+	for power := 1; power <= maxRot; power *= 2 {
+		capacity++
+	}
+	if minRot < 0 {
+		for power := 1; power <= -minRot; power *= 2 {
+			capacity++
+		}
+	}
+
+	result := make([]int, 0, capacity)
+	for power := 1; power <= maxRot; power *= 2 {
+		result = append(result, power)
+	}
+	if minRot < 0 {
+		for power := 1; power <= -minRot; power *= 2 {
+			result = append(result, -power)
+		}
+	}
+
+	return result
 }
 
 func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
@@ -237,26 +265,26 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 
 func (lattigo *LattigoFHE) deleteFromEnvironments(lineNum int) {
 	delete(lattigo.terms, lineNum)
-	delete(lattigo.env, lineNum)
 	delete(lattigo.ptEnv, lineNum)
+	delete(lattigo.env, lineNum)
 }
 
 func (lattigo *LattigoFHE) preprocess(operations []string) {
 	for _, line := range operations {
-		lineNum, term, metadata := lattigo.parseOperation(line)
+		lineNum, term := lattigo.parseOperation(line)
 
 		for _, child := range term.Children {
 			lattigo.refCounts[child]++
 		}
 
-		md := lattigo.parseMetadata(metadata, term.Op)
+		md := term.Metadata
 
 		if term.Op != CONST {
 			continue
 		}
 
 		switch term.Op {
-		case PACK:
+		/* case PACK:
 			pt := md.PackedValue
 			if !term.Secret {
 				lattigo.ptEnv[lineNum] = pt
@@ -265,7 +293,7 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 		case MASK:
 			pt := md.MaskedValue
 			lattigo.ptEnv[lineNum] = pt
-			lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
+			lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel()) */
 		case CONST:
 			var pt []float64
 			if lattigo.constantsPath != "" {
@@ -277,83 +305,87 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 				}
 			}
 			lattigo.ptEnv[lineNum] = pt
-		case ADD:
-			if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-				if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
-					pt := make([]float64, lattigo.n)
-					for i := 0; i < lattigo.n; i++ {
-						pt[i] = a[i] + b[i]
-					}
-					lattigo.ptEnv[lineNum] = pt
-					if lattigo.fileType == MLIR {
-						lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-					} else {
-						lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-					}
-				}
-			}
-		case MUL:
-			if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-				if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
-					pt := make([]float64, lattigo.n)
-					for i := 0; i < lattigo.n; i++ {
-						pt[i] = a[i] * b[i]
-					}
-					lattigo.ptEnv[lineNum] = pt
-					if lattigo.fileType == MLIR {
-						lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-					} else {
-						lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-					}
-				}
-			}
-		case ROT:
-			if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-				rot := md.Offset
-				pt := make([]float64, lattigo.n)
-				for i := 0; i < lattigo.n; i++ {
-					index := ((i+rot)%lattigo.n + lattigo.n) % lattigo.n
-					pt[i] = a[index]
-				}
-				lattigo.ptEnv[lineNum] = pt
-				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			}
-		case NEGATE:
-			if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-				pt := make([]float64, lattigo.n)
-				for i := 0; i < lattigo.n; i++ {
-					pt[i] = -a[i]
-				}
-				lattigo.ptEnv[lineNum] = pt
-				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			}
+			// case ADD:
+			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+			// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
+			// 			pt := make([]float64, lattigo.n)
+			// 			for i := 0; i < lattigo.n; i++ {
+			// 				pt[i] = a[i] + b[i]
+			// 			}
+			// 			lattigo.ptEnv[lineNum] = pt
+			// 			if lattigo.fileType == MLIR {
+			// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+			// 			} else {
+			// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
+			// 			}
+			// 		}
+			// 	}
+			// case MUL:
+			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+			// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
+			// 			pt := make([]float64, lattigo.n)
+			// 			for i := 0; i < lattigo.n; i++ {
+			// 				pt[i] = a[i] * b[i]
+			// 			}
+			// 			lattigo.ptEnv[lineNum] = pt
+			// 			if lattigo.fileType == MLIR {
+			// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+			// 			} else {
+			// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
+			// 			}
+			// 		}
+			// 	}
+			// case ROT:
+			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+			// 		rot := md.Offset
+			// 		pt := make([]float64, lattigo.n)
+			// 		for i := 0; i < lattigo.n; i++ {
+			// 			index := ((i+rot)%lattigo.n + lattigo.n) % lattigo.n
+			// 			pt[i] = a[index]
+			// 		}
+			// 		lattigo.ptEnv[lineNum] = pt
+			// 		lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+			// 	}
+			// case NEGATE:
+			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+			// 		pt := make([]float64, lattigo.n)
+			// 		for i := 0; i < lattigo.n; i++ {
+			// 			pt[i] = -a[i]
+			// 		}
+			// 		lattigo.ptEnv[lineNum] = pt
+			// 		lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+			// 	}
 		}
 	}
 }
 
-func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlwe.Ciphertext, time.Duration, error) {
+func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphertext, time.Duration, error) {
 	var finalResult *rlwe.Ciphertext
 	want := make([]float64, lattigo.n)
-	startTime := time.Now()
-
-	bar := progressbar.NewOptions(len(operations),
+	var f *os.File
+	if lattigo.outputFile != "" {
+		f, _ = os.Create(filepath.Join("outputs", lattigo.outputFile) + ".prof")
+	} else {
+		f, _ = os.Create(filepath.Join("outputs", "profile.prof"))
+	}
+	pprof.StartCPUProfile(f)
+	bar := progressbar.NewOptions(numOps,
 		progressbar.OptionSetWidth(50),
 		progressbar.OptionShowCount(),
 		progressbar.OptionShowIts(),
 		progressbar.OptionSetItsString("ops"),
 	)
+	startTime := time.Now()
 
-	for i, line := range operations {
-		bar.Set(i + 1)
-
-		lineNum, term, metadata := lattigo.parseOperation(line)
+	for lineNum := range numOps {
+		term := lattigo.terms[lineNum]
 
 		if term.Op == CONST {
 			continue
 		}
 
 		if _, ok := lattigo.env[lineNum]; !ok {
-			lattigo.env[lineNum] = lattigo.evalOp(term, metadata)
+			lattigo.env[lineNum] = lattigo.evalOp(term)
 		}
 
 		finalResult = lattigo.env[lineNum]
@@ -363,10 +395,9 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 			return nil, nil, time.Duration(0), fmt.Errorf("level mismatch")
 		}
 		if lattigo.getStats {
-			want = lattigo.doPrecisionStats(lineNum, term, metadata)
+			want = lattigo.doPrecisionStats(lineNum, term)
 		}
 
-		// Decrement reference counts for children and delete if count reaches 0
 		for _, child := range term.Children {
 			lattigo.refCounts[child]--
 			if lattigo.refCounts[child] <= 0 {
@@ -374,10 +405,13 @@ func (lattigo *LattigoFHE) runInstructions(operations []string) ([]float64, *rlw
 				delete(lattigo.refCounts, child)
 			}
 		}
+		bar.Set(lineNum + 1)
 	}
-	bar.Finish()
-	fmt.Println()
 	runtime := time.Since(startTime)
+	bar.Finish()
+	pprof.StopCPUProfile()
+	f.Close()
+	fmt.Println()
 
 	return want, finalResult, runtime, nil
 }
@@ -403,7 +437,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	var expected []float64
 
 	fmt.Println("\nFinding unique rots...")
-	rots := lattigo.findUniqueRots(operations)
+	rots := lattigo.findUniqueRotsPow2(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 	if len(inputs) > 0 {
@@ -419,7 +453,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	lattigo.preprocess(operations)
 
 	fmt.Println("Running instructions...")
-	want, finalResult, runtime, err := lattigo.runInstructions(operations)
+	want, finalResult, runtime, err := lattigo.runInstructions(len(operations))
 	if err != nil {
 		return nil, fmt.Errorf("error running instructions: %v", err)
 	}
@@ -454,6 +488,13 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	}
 	fmt.Printf("Runtime: %v\n", runtime)
 
+	if lattigo.enableTiming {
+		err := lattigo.writeTimingReport()
+		if err != nil {
+			fmt.Printf("Warning: Failed to write timing report: %v\n", err)
+		}
+	}
+
 	return pt_results, nil
 }
 
@@ -486,7 +527,7 @@ func (lattigo *LattigoFHE) RunBatch() error {
 
 	// Initialize context once for all inputs
 	fmt.Println("\nFinding unique rots...")
-	rots := lattigo.findUniqueRots(operations)
+	rots := lattigo.findUniqueRotsPow2(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 
@@ -496,7 +537,6 @@ func (lattigo *LattigoFHE) RunBatch() error {
 		lattigo.processConstants()
 	}
 
-	// Find all input files in the directory
 	inputFiles, err := lattigo.findInputFiles()
 	if err != nil {
 		return fmt.Errorf("error finding input files: %v", err)
@@ -506,7 +546,6 @@ func (lattigo *LattigoFHE) RunBatch() error {
 		return fmt.Errorf("no input files found matching pattern input*.txt")
 	}
 
-	// Create output directory structure
 	outputDir, err := lattigo.createOutputDirectory()
 	if err != nil {
 		return fmt.Errorf("error creating output directory: %v", err)
@@ -528,28 +567,34 @@ func (lattigo *LattigoFHE) RunBatch() error {
 	for _, inputFile := range inputFiles {
 		fmt.Printf("Processing %s...\n", filepath.Base(inputFile))
 
-		// Reset environments for new input but keep constants and context
 		lattigo.resetForNewInput()
 
-		// Temporarily set input path to current file and process inputs
 		originalInputPath := lattigo.inputPath
 		lattigo.inputPath = inputFile
 		lattigo.processInputs(inputs)
 		lattigo.inputPath = originalInputPath
 
-		// Preprocess operations for this specific input (to rebuild term dependencies)
 		fmt.Println("Preprocessing...")
 		lattigo.preprocess(operations)
 
-		// Run operations for this input
 		fmt.Println("Running instructions...")
-		_, finalResult, runtime, err := lattigo.runInstructions(operations)
+		_, finalResult, runtime, err := lattigo.runInstructions(len(operations))
 		if err != nil {
 			fmt.Printf("Error running instructions for %s: %v\n", inputFile, err)
 			continue
 		}
 
 		pt_results := lattigo.decode(finalResult)
+
+		// Print first 10 values from the output
+		fmt.Printf("  First 10 output values: [")
+		for i := 0; i < 10 && i < len(pt_results); i++ {
+			if i > 0 {
+				fmt.Printf(", ")
+			}
+			fmt.Printf("%.6f", pt_results[i])
+		}
+		fmt.Printf("]\n")
 
 		// Validate results if true labels are available
 		var predictedClass, trueClass int
@@ -580,7 +625,6 @@ func (lattigo *LattigoFHE) RunBatch() error {
 			continue
 		}
 
-		// Store runtime info for this file
 		runtimeInfos = append(runtimeInfos, RuntimeInfo{
 			OutputFileName: outputFileName,
 			Runtime:        runtime,
@@ -589,7 +633,6 @@ func (lattigo *LattigoFHE) RunBatch() error {
 			HasValidation:  hasValidation,
 		})
 
-		// Optional: Print accuracy for this input if expected values are available
 		if len(expected) > 0 {
 			accuracy := lattigo.calculateAccuracy(expected, finalResult)
 			fmt.Printf("  Accuracy: %.2f%%\n", accuracy)
@@ -598,7 +641,6 @@ func (lattigo *LattigoFHE) RunBatch() error {
 		fmt.Printf("  Runtime: %v\n\n", runtime)
 	}
 
-	// Calculate and print average runtime
 	if len(runtimeInfos) > 0 {
 		var totalDuration time.Duration
 		for _, info := range runtimeInfos {
@@ -611,7 +653,6 @@ func (lattigo *LattigoFHE) RunBatch() error {
 		fmt.Printf("\nAverage runtime per file: %v\n", avgDuration)
 		fmt.Printf("Output files written to: %s\n", outputDir)
 
-		// Print validation summary if true labels were used
 		if trueLabels != nil && (passedCount+failedCount) > 0 {
 			totalValidated := passedCount + failedCount
 			accuracy := float64(passedCount) / float64(totalValidated) * 100
@@ -622,12 +663,18 @@ func (lattigo *LattigoFHE) RunBatch() error {
 			fmt.Printf("\nAccuracy: %.2f%%\n", accuracy)
 		}
 
-		// Write runtimes to file
 		err = lattigo.writeRuntimesFile(outputDir, runtimeInfos, avgDuration)
 		if err != nil {
 			fmt.Printf("Warning: Error writing runtimes file: %v\n", err)
 		} else {
 			fmt.Printf("Runtimes written to: %s\n\n", filepath.Join(outputDir, "runtimes.txt"))
+		}
+	}
+
+	if lattigo.enableTiming {
+		err := lattigo.writeTimingReport()
+		if err != nil {
+			fmt.Printf("Warning: Failed to write timing report: %v\n", err)
 		}
 	}
 

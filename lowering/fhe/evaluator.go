@@ -3,10 +3,29 @@ package main
 import (
 	"fmt"
 	"math"
+	"time"
 
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/schemes/ckks"
 )
+
+func (lattigo *LattigoFHE) recordTiming(operation op, level int, duration time.Duration) {
+	if !lattigo.enableTiming || lattigo.timingStats == nil {
+		return
+	}
+
+	if lattigo.timingStats.OperationStats[operation] == nil {
+		lattigo.timingStats.OperationStats[operation] = make(map[int]*LevelStats)
+	}
+	if lattigo.timingStats.OperationStats[operation][level] == nil {
+		lattigo.timingStats.OperationStats[operation][level] = &LevelStats{}
+	}
+
+	stats := lattigo.timingStats.OperationStats[operation][level]
+	stats.Count++
+	stats.TotalTime += duration
+	lattigo.timingStats.TotalTime += duration
+}
 
 func (lattigo *LattigoFHE) evalDoubleAdd(ct1, ct2 *rlwe.Ciphertext) *rlwe.Ciphertext {
 	ct, _ := lattigo.eval.AddNew(ct1, ct2)
@@ -38,6 +57,11 @@ func (lattigo *LattigoFHE) evalSingleMul(ct1 *rlwe.Ciphertext, pt1 []float64, pt
 }
 
 func (lattigo *LattigoFHE) evalRot(ct1 *rlwe.Ciphertext, k int) *rlwe.Ciphertext {
+	ct, _ := lattigo.eval.RotateNew(ct1, k)
+	return ct
+}
+
+func (lattigo *LattigoFHE) evalRotPow2(ct1 *rlwe.Ciphertext, k int) *rlwe.Ciphertext {
 	absK := k
 	if absK < 0 {
 		absK = -absK
@@ -99,70 +123,91 @@ func (lattigo *LattigoFHE) evalBootstrap(ct1 *rlwe.Ciphertext, targetLevel int) 
 		fmt.Println("initial Q/Scale: ", float64(lattigo.params.Q()[ct_i.Level()])/ct_i.Scale.Float64())
 		panic(fmt.Sprintf("Bootstrap failed: %v", err))
 	}
-	// MAXLEVEL -
-	ct = lattigo.evalModswitch(ct, targetLevel)
+	ct = lattigo.evalModswitch(ct, lattigo.maxLevel-(lattigo.bootstrapMaxLevel-targetLevel))
 	return ct
 }
 
 func (lattigo *LattigoFHE) ensureEncoded(childID int) {
-	if !lattigo.terms[childID].Secret {
+	if lattigo.terms[childID].Secret {
 		if _, exists := lattigo.env[childID]; !exists {
-			lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
+			if lattigo.enableTiming {
+				start := time.Now()
+				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
+				duration := time.Since(start)
+				lattigo.recordTiming(CONST, lattigo.terms[childID].Level, duration)
+			} else {
+				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
+			}
 		}
 	}
 }
 
-func (lattigo *LattigoFHE) evalOp(term *Term, metadata string) *rlwe.Ciphertext {
-	md := lattigo.parseMetadata(metadata, term.Op)
+func (lattigo *LattigoFHE) evalOp(term *Term) *rlwe.Ciphertext {
+	md := term.Metadata
+
 	switch term.Op {
-	case PACK:
-		return lattigo.encode(md.PackedValue, nil, lattigo.params.MaxLevel())
-	case MASK:
-		return lattigo.encode(md.MaskedValue, nil, lattigo.params.MaxLevel())
+	case ADD, MUL:
+		lattigo.ensureEncoded(term.Children[0])
+		lattigo.ensureEncoded(term.Children[1])
+	case ROT, MODSWITCH, NEGATE, BOOTSTRAP, RESCALE, UPSCALE:
+		lattigo.ensureEncoded(term.Children[0])
 	case CONST:
 		return nil
+	}
+
+	var result *rlwe.Ciphertext
+	var start time.Time
+
+	if lattigo.enableTiming {
+		start = time.Now()
+	}
+
+	switch term.Op {
+	/* case PACK:
+		result = lattigo.encode(md.PackedValue, nil, lattigo.params.MaxLevel())
+	case MASK:
+		result = lattigo.encode(md.MaskedValue, nil, lattigo.params.MaxLevel()) */
 	case ADD:
 		a := term.Children[0]
 		b := term.Children[1]
 		if !lattigo.terms[a].Secret {
-			lattigo.ensureEncoded(a)
-			return lattigo.evalSingleAdd(lattigo.env[b], lattigo.ptEnv[a], lattigo.terms[a].Level, &lattigo.terms[a].Scale)
+			result = lattigo.evalSingleAdd(lattigo.env[b], lattigo.ptEnv[a], lattigo.terms[a].Level, &lattigo.terms[a].Scale)
 		} else if !lattigo.terms[b].Secret {
-			lattigo.ensureEncoded(b)
-			return lattigo.evalSingleAdd(lattigo.env[a], lattigo.ptEnv[b], lattigo.terms[b].Level, &lattigo.terms[b].Scale)
+			result = lattigo.evalSingleAdd(lattigo.env[a], lattigo.ptEnv[b], lattigo.terms[b].Level, &lattigo.terms[b].Scale)
+		} else {
+			result = lattigo.evalDoubleAdd(lattigo.env[a], lattigo.env[b])
 		}
-		return lattigo.evalDoubleAdd(lattigo.env[a], lattigo.env[b])
 	case MUL:
 		a := term.Children[0]
 		b := term.Children[1]
 		if !lattigo.terms[a].Secret {
-			lattigo.ensureEncoded(a)
-			return lattigo.evalSingleMul(lattigo.env[b], lattigo.ptEnv[a], lattigo.terms[a].Level, &lattigo.terms[a].Scale)
+			result = lattigo.evalSingleMul(lattigo.env[b], lattigo.ptEnv[a], lattigo.terms[a].Level, &lattigo.terms[a].Scale)
 		} else if !lattigo.terms[b].Secret {
-			lattigo.ensureEncoded(b)
-			return lattigo.evalSingleMul(lattigo.env[a], lattigo.ptEnv[b], lattigo.terms[b].Level, &lattigo.terms[b].Scale)
+			result = lattigo.evalSingleMul(lattigo.env[a], lattigo.ptEnv[b], lattigo.terms[b].Level, &lattigo.terms[b].Scale)
+		} else {
+			result = lattigo.evalDoubleMul(lattigo.env[a], lattigo.env[b])
 		}
-		return lattigo.evalDoubleMul(lattigo.env[a], lattigo.env[b])
 	case ROT:
-		lattigo.ensureEncoded(term.Children[0])
-		return lattigo.evalRot(lattigo.env[term.Children[0]], md.Offset)
+		result = lattigo.evalRotPow2(lattigo.env[term.Children[0]], md.Offset)
 	case MODSWITCH:
-		lattigo.ensureEncoded(term.Children[0])
-		return lattigo.evalModswitch(lattigo.env[term.Children[0]], md.DownFactor)
+		result = lattigo.evalModswitch(lattigo.env[term.Children[0]], md.DownFactor)
 	case NEGATE:
-		lattigo.ensureEncoded(term.Children[0])
-		return lattigo.evalNegate(lattigo.env[term.Children[0]])
+		result = lattigo.evalNegate(lattigo.env[term.Children[0]])
 	case BOOTSTRAP:
-		lattigo.ensureEncoded(term.Children[0])
-		return lattigo.evalBootstrap(lattigo.env[term.Children[0]], md.TargetLevel)
+		result = lattigo.evalBootstrap(lattigo.env[term.Children[0]], md.TargetLevel)
 	case RESCALE:
-		lattigo.ensureEncoded(term.Children[0])
-		return lattigo.evalRescale(lattigo.env[term.Children[0]])
+		result = lattigo.evalRescale(lattigo.env[term.Children[0]])
 	case UPSCALE:
-		lattigo.ensureEncoded(term.Children[0])
-		return lattigo.evalUpscale(lattigo.env[term.Children[0]], md.UpFactor)
+		result = lattigo.evalUpscale(lattigo.env[term.Children[0]], md.UpFactor)
 	default:
 		fmt.Printf("Unknown op: %v\n", term.Op)
 		return nil
 	}
+
+	if lattigo.enableTiming && result != nil {
+		duration := time.Since(start)
+		lattigo.recordTiming(term.Op, term.Level, duration)
+	}
+
+	return result
 }
