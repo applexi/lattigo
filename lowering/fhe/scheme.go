@@ -240,23 +240,34 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	pk := kgen.GenPublicKeyNew(sk)
 	rlk := kgen.GenRelinearizationKeyNew(sk)
 
-	evk := rlwe.NewMemEvaluationKeySet(rlk)
 	lattigo.enc = rlwe.NewEncryptor(params, pk)
 	lattigo.ecd = ckks.NewEncoder(params)
 	lattigo.dec = rlwe.NewDecryptor(params, sk)
-	eval := ckks.NewEvaluator(params, evk)
 
-	fmt.Println("Doing bootstrapping keys...")
-	btpEvk, _, _ := btpParams.GenEvaluationKeys(sk)
-	btpEval, _ := bootstrapping.NewEvaluator(btpParams, btpEvk)
-	lattigo.btpEval = btpEval
-
-	fmt.Println("Doing rotation keys...")
+	// NEW ROTATION KEY MANAGER:
+	fmt.Println("Creating rotation keys...")
 	galEls := make([]uint64, len(rots))
 	for i, rot := range rots {
 		galEls[i] = params.GaloisElement(rot)
 	}
-	lattigo.eval = eval.WithKey(rlwe.NewMemEvaluationKeySet(rlk, kgen.GenGaloisKeysNew(galEls, sk)...))
+	fmt.Println("Done creating rotation keys!")
+	diskLRU, _ := rlwe.NewDiskLRUEvaluationKeySet(50, rlk, "/Users/ejchen/code/placement/rotation_keys_cache")
+	fmt.Println("Adding Galios keys...")
+	// generate galois keys one by one
+	fmt.Println("Count: ", len(galEls))
+	for i, galEl := range galEls {
+		fmt.Println("Adding key: ", i)
+		diskLRU.AddGaloisKey(kgen.GenGaloisKeyNew(galEl, sk))
+	}
+	fmt.Println("Done adding Galios keys!")
+
+	lattigo.eval = ckks.NewEvaluator(params, diskLRU)
+
+	// BOOTSTRAPPING KEYS:
+	fmt.Println("Creating bootstrapping keys...")
+	btpEvk, _, _ := btpParams.GenEvaluationKeys(sk)
+	btpEval, _ := bootstrapping.NewEvaluator(btpParams, btpEvk)
+	lattigo.btpEval = btpEval
 
 	if lattigo.maxLevel != params.MaxLevel() {
 		fmt.Printf("Warning: maxLevel mismatch. Expected: %d, Actual: %d\n", params.MaxLevel(), lattigo.maxLevel)
@@ -284,16 +295,6 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 		}
 
 		switch term.Op {
-		/* case PACK:
-			pt := md.PackedValue
-			if !term.Secret {
-				lattigo.ptEnv[lineNum] = pt
-			}
-			lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-		case MASK:
-			pt := md.MaskedValue
-			lattigo.ptEnv[lineNum] = pt
-			lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel()) */
 		case CONST:
 			var pt []float64
 			if lattigo.constantsPath != "" {
@@ -305,56 +306,6 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 				}
 			}
 			lattigo.ptEnv[lineNum] = pt
-			// case ADD:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
-			// 			pt := make([]float64, lattigo.n)
-			// 			for i := 0; i < lattigo.n; i++ {
-			// 				pt[i] = a[i] + b[i]
-			// 			}
-			// 			lattigo.ptEnv[lineNum] = pt
-			// 			if lattigo.fileType == MLIR {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// 			} else {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-			// 			}
-			// 		}
-			// 	}
-			// case MUL:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
-			// 			pt := make([]float64, lattigo.n)
-			// 			for i := 0; i < lattigo.n; i++ {
-			// 				pt[i] = a[i] * b[i]
-			// 			}
-			// 			lattigo.ptEnv[lineNum] = pt
-			// 			if lattigo.fileType == MLIR {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// 			} else {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-			// 			}
-			// 		}
-			// 	}
-			// case ROT:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		rot := md.Offset
-			// 		pt := make([]float64, lattigo.n)
-			// 		for i := 0; i < lattigo.n; i++ {
-			// 			index := ((i+rot)%lattigo.n + lattigo.n) % lattigo.n
-			// 			pt[i] = a[index]
-			// 		}
-			// 		lattigo.ptEnv[lineNum] = pt
-			// 		lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// 	}
-			// case NEGATE:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		pt := make([]float64, lattigo.n)
-			// 		for i := 0; i < lattigo.n; i++ {
-			// 			pt[i] = -a[i]
-			// 		}
-			// 		lattigo.ptEnv[lineNum] = pt
-			// 		lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// 	}
 		}
 	}
 }
@@ -437,7 +388,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	var expected []float64
 
 	fmt.Println("\nFinding unique rots...")
-	rots := lattigo.findUniqueRotsPow2(operations)
+	rots := lattigo.findUniqueRots(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 	if len(inputs) > 0 {
@@ -494,7 +445,6 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 			fmt.Printf("Warning: Failed to write timing report: %v\n", err)
 		}
 	}
-
 	return pt_results, nil
 }
 
@@ -527,7 +477,7 @@ func (lattigo *LattigoFHE) RunBatch() error {
 
 	// Initialize context once for all inputs
 	fmt.Println("\nFinding unique rots...")
-	rots := lattigo.findUniqueRotsPow2(operations)
+	rots := lattigo.findUniqueRots(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 
