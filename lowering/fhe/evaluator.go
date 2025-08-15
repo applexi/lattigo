@@ -188,7 +188,30 @@ func (lattigo *LattigoFHE) evalOp(term *Term) *rlwe.Ciphertext {
 			result = lattigo.evalDoubleMul(lattigo.env[a], lattigo.env[b])
 		}
 	case ROT:
-		result = lattigo.evalRotPow2(lattigo.env[term.Children[0]], md.Offset)
+		childLineNum := term.Children[0]
+		offset := md.Offset
+
+		// Check if hoisted rotation exists
+		if hoistedMap, exists := lattigo.hoistedRots[childLineNum]; exists {
+			if hoistedCt, hoistedExists := hoistedMap[offset]; hoistedExists && hoistedCt != nil {
+				// Use existing hoisted rotation
+				result = hoistedCt
+			} else {
+				// Compute hoisted rotations for this childLineNum
+				lattigo.doHoisted(childLineNum)
+				result = lattigo.hoistedRots[childLineNum][offset]
+			}
+		} else {
+			panic(fmt.Sprintf("Hoisted rotation not found for childLineNum: %d, offset: %d", childLineNum, offset))
+		}
+
+		// Decrement rotation count
+		lattigo.rotCount[childLineNum]--
+		if lattigo.rotCount[childLineNum] <= 0 {
+			// Remove from rotCount and hoistedRots when no longer needed
+			delete(lattigo.rotCount, childLineNum)
+			delete(lattigo.hoistedRots, childLineNum)
+		}
 	case MODSWITCH:
 		result = lattigo.evalModswitch(lattigo.env[term.Children[0]], md.DownFactor)
 	case NEGATE:

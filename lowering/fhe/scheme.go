@@ -75,11 +75,13 @@ type TimingStats struct {
 type LattigoFHE struct {
 	params            *ckks.Parameters
 	btpParams         *bootstrapping.Parameters
-	terms             map[int]*Term            // stores term info
-	env               map[int]*rlwe.Ciphertext // stores ciphertexts
-	ptEnv             map[int][]float64        // stores plaintexts
-	constants         map[int][]float64        // stores constants by value
-	refCounts         map[int]int              // stores reference counts for memory management
+	terms             map[int]*Term                    // stores term info
+	env               map[int]*rlwe.Ciphertext         // stores ciphertexts
+	ptEnv             map[int][]float64                // stores plaintexts
+	constants         map[int][]float64                // stores constants by value
+	refCounts         map[int]int                      // stores reference counts for memory management
+	hoistedRots       map[int]map[int]*rlwe.Ciphertext // hoisted rotations: childlinenum -> offset -> ciphertext
+	rotCount          map[int]int                      // count of rotation uses: childlinenum -> count
 	n                 int
 	maxLevel          int
 	bootstrapMinLevel int
@@ -117,6 +119,8 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 		ptEnv:             make(map[int][]float64),
 		constants:         make(map[int][]float64),
 		refCounts:         make(map[int]int),
+		hoistedRots:       make(map[int]map[int]*rlwe.Ciphertext),
+		rotCount:          make(map[int]int),
 		n:                 n,
 		maxLevel:          maxLevel,
 		bootstrapMinLevel: bootstrapMinLevel,
@@ -277,6 +281,12 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 			lattigo.refCounts[child]++
 		}
 
+		// Count rotation operations for hoisted rotations
+		if term.Op == ROT {
+			childLineNum := term.Children[0]
+			lattigo.rotCount[childLineNum]++
+		}
+
 		md := term.Metadata
 
 		if term.Op != CONST {
@@ -356,6 +366,105 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 			// 		lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
 			// 	}
 		}
+	}
+
+	// Initialize hoistedRots by tracking unique rotation offsets per childlinenum
+	for _, line := range operations {
+		_, term := lattigo.parseOperation(line)
+		if term.Op == ROT {
+			childLineNum := term.Children[0]
+			offset := term.Metadata.Offset
+
+			// Initialize the map for this childLineNum if it doesn't exist
+			if lattigo.hoistedRots[childLineNum] == nil {
+				lattigo.hoistedRots[childLineNum] = make(map[int]*rlwe.Ciphertext)
+			}
+
+			// Mark that this offset is needed for this childLineNum (no ciphertext yet)
+			lattigo.hoistedRots[childLineNum][offset] = nil
+		}
+	}
+}
+
+func (lattigo *LattigoFHE) doHoisted(childLineNum int) {
+	baseCt := lattigo.env[childLineNum]
+
+	// Get all required offsets
+	offsets := make(map[int]bool)
+	for offset := range lattigo.hoistedRots[childLineNum] {
+		offsets[offset] = true
+	}
+
+	// Decompose all offsets into power-of-2 steps
+	decompositions := make(map[int][]int)
+	for offset, _ := range offsets {
+		decompositions[offset] = lattigo.decomposeRotation(offset)
+	}
+
+	// Process decompositions index by index (left to right)
+	results := lattigo.recurseHoisted(offsets, 0, decompositions, baseCt)
+
+	// Store final results in hoistedRots
+	for offset, finalCt := range results {
+		lattigo.hoistedRots[childLineNum][offset] = finalCt
+	}
+}
+
+func mergeMaps(src, dst map[int]*rlwe.Ciphertext) map[int]*rlwe.Ciphertext {
+	for key, value := range src {
+		dst[key] = value
+	}
+	return dst
+}
+
+func getKeys(m map[int]map[int]bool) []int {
+	if len(m) == 0 {
+		return []int{}
+	}
+	keys := make([]int, len(m))
+	i := 0
+	for k := range m {
+		keys[i] = k
+		i++
+	}
+	return keys
+}
+
+// recurseHoisted recursively processes decompositions and builds rotation paths
+func (lattigo *LattigoFHE) recurseHoisted(offsets map[int]bool, index int, decompositions map[int][]int, pathCiphertext *rlwe.Ciphertext) map[int]*rlwe.Ciphertext {
+	valueGroups := make(map[int]map[int]bool)
+	endedPaths := make(map[int]*rlwe.Ciphertext)
+	toRemove := make([]int, 0)
+
+	for offset := range offsets {
+		if index < len(decompositions[offset]) {
+			value := decompositions[offset][index]
+			if valueGroups[value] == nil {
+				valueGroups[value] = make(map[int]bool)
+			}
+			valueGroups[value][offset] = true
+		} else {
+			endedPaths[offset] = pathCiphertext
+			toRemove = append(toRemove, offset)
+		}
+	}
+
+	for _, offset := range toRemove {
+		delete(offsets, offset)
+		delete(decompositions, offset)
+	}
+
+	if len(valueGroups) == 1 {
+		pathCiphertext = lattigo.evalRot(pathCiphertext, getKeys(valueGroups)[0])
+		return mergeMaps(endedPaths, lattigo.recurseHoisted(offsets, index+1, decompositions, pathCiphertext))
+	} else {
+		rots, _ := lattigo.eval.RotateHoistedNew(pathCiphertext, getKeys(valueGroups))
+		for rot, ct := range rots {
+			rotOffsets := valueGroups[rot]
+			recursiveResult := lattigo.recurseHoisted(rotOffsets, index+1, decompositions, ct)
+			endedPaths = mergeMaps(endedPaths, recursiveResult)
+		}
+		return endedPaths
 	}
 }
 

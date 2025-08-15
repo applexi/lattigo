@@ -358,7 +358,7 @@ func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term) {
 		Secret:   secret,
 		Scale:    scale,
 		Level:    lattigo.bootstrapMaxLevel - level,
-		Metadata: parseMLIRMetadata(metadata, mlirOpToOp(op)),
+		Metadata: lattigo.parseMetadata(metadata, mlirOpToOp(op)),
 	}
 	if _, ok := lattigo.terms[lineNum]; !ok {
 		lattigo.terms[lineNum] = term
