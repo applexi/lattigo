@@ -189,6 +189,7 @@ func (lattigo *LattigoFHE) evalOp(term *Term) *rlwe.Ciphertext {
 		}
 	case ROT:
 		result = lattigo.evalRotPow2(lattigo.env[term.Children[0]], md.Offset)
+		// result = lattigo.evalRot(lattigo.env[term.Children[0]], md.Offset)
 	case MODSWITCH:
 		result = lattigo.evalModswitch(lattigo.env[term.Children[0]], md.DownFactor)
 	case NEGATE:

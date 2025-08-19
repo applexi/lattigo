@@ -157,6 +157,7 @@ func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []
 func (lattigo *LattigoFHE) processInputs(inputs []Term) {
 	// line num is -1 - index of input
 	for i, input := range inputs {
+
 		// read from lattigo.inputPath (path to a file)
 		readFile, err := os.ReadFile(lattigo.inputPath)
 		if err != nil {

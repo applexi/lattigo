@@ -244,24 +244,12 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	lattigo.ecd = ckks.NewEncoder(params)
 	lattigo.dec = rlwe.NewDecryptor(params, sk)
 
-	// NEW ROTATION KEY MANAGER:
 	fmt.Println("Creating rotation keys...")
 	galEls := make([]uint64, len(rots))
 	for i, rot := range rots {
 		galEls[i] = params.GaloisElement(rot)
 	}
-	fmt.Println("Done creating rotation keys!")
-	diskLRU, _ := rlwe.NewDiskLRUEvaluationKeySet(50, rlk, "/Users/ejchen/code/placement/rotation_keys_cache")
-	fmt.Println("Adding Galios keys...")
-	// generate galois keys one by one
-	fmt.Println("Count: ", len(galEls))
-	for i, galEl := range galEls {
-		fmt.Println("Adding key: ", i)
-		diskLRU.AddGaloisKey(kgen.GenGaloisKeyNew(galEl, sk))
-	}
-	fmt.Println("Done adding Galios keys!")
-
-	lattigo.eval = ckks.NewEvaluator(params, diskLRU)
+	lattigo.eval = ckks.NewEvaluator(params, rlwe.NewMemEvaluationKeySet(rlk, kgen.GenGaloisKeysNew(galEls, sk)...))
 
 	// BOOTSTRAPPING KEYS:
 	fmt.Println("Creating bootstrapping keys...")
@@ -388,7 +376,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	var expected []float64
 
 	fmt.Println("\nFinding unique rots...")
-	rots := lattigo.findUniqueRots(operations)
+	rots := lattigo.findUniqueRotsPow2(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 	if len(inputs) > 0 {
@@ -477,7 +465,7 @@ func (lattigo *LattigoFHE) RunBatch() error {
 
 	// Initialize context once for all inputs
 	fmt.Println("\nFinding unique rots...")
-	rots := lattigo.findUniqueRots(operations)
+	rots := lattigo.findUniqueRotsPow2(operations)
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 
