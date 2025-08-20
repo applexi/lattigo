@@ -16,36 +16,23 @@ import (
 
 var reInputFileNumber = regexp.MustCompile(`input(\d+)\.txt`)
 
-func (lattigo *LattigoFHE) calculateAccuracy(want []float64, ct *rlwe.Ciphertext) float64 {
+func (lattigo *LattigoFHE) calculateAccuracy(want []float64, ct *rlwe.Ciphertext) bool {
 	decrypted := lattigo.decode(ct)
 
-	totalRelativeError := 0.0
-	validComparisons := 0
+	if len(want) != len(decrypted) {
+		fmt.Printf("Length mismatch: want %d, decrypted %d\n", len(want), len(decrypted))
+		return false
+	}
 
-	for i := 0; i < len(want) && i < len(decrypted); i++ {
-		if math.Abs(want[i]) > 1e-10 {
-			relativeError := math.Abs((want[i] - decrypted[i]) / want[i])
-			totalRelativeError += relativeError
-			validComparisons++
-		} else {
-			absoluteError := math.Abs(decrypted[i])
-			if absoluteError < 1e-6 {
-				validComparisons++
-			} else {
-				totalRelativeError += 1.0
-				validComparisons++
-			}
+	for i := 0; i < len(want); i++ {
+		tolerance := 0.00005
+		if math.Abs(want[i]-decrypted[i]) > tolerance {
+			fmt.Printf("Value mismatch: want %f, decrypted %f on index %d\n", want[i], decrypted[i], i)
+			return false
 		}
 	}
 
-	if validComparisons == 0 {
-		return 0.0
-	}
-
-	avgRelativeError := totalRelativeError / float64(validComparisons)
-	accuracyPercent := math.Max(0, (1.0-avgRelativeError)*100.0)
-
-	return accuracyPercent
+	return true
 }
 
 func (lattigo *LattigoFHE) validateResult(result []float64, trueLabel int) (bool, int) {
@@ -66,32 +53,24 @@ func (lattigo *LattigoFHE) validateResult(result []float64, trueLabel int) (bool
 	return maxIndex == trueLabel, maxIndex
 }
 
-func (lattigo *LattigoFHE) decomposeRotation(rotation int) []int {
-	if rotation == 0 {
+func mergeMaps(src, dst map[int]*rlwe.Ciphertext) map[int]*rlwe.Ciphertext {
+	for key, value := range src {
+		dst[key] = value
+	}
+	return dst
+}
+
+func getKeys(m map[int]map[int]bool) []int {
+	if len(m) == 0 {
 		return []int{}
 	}
-
-	var decomposition []int
-	remaining := rotation
-	if remaining < 0 {
-		remaining = -remaining
+	keys := make([]int, len(m))
+	i := 0
+	for k := range m {
+		keys[i] = k
+		i++
 	}
-
-	for remaining > 0 {
-		power := 1
-		for power*2 <= remaining {
-			power *= 2
-		}
-
-		if rotation < 0 {
-			decomposition = append(decomposition, -power)
-		} else {
-			decomposition = append(decomposition, power)
-		}
-		remaining -= power
-	}
-
-	return decomposition
+	return keys
 }
 
 func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term) []float64 {
@@ -139,12 +118,19 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term) []float64 {
 		want = lattigo.ptEnv[lineNum]
 	}
 
-	decrypted := lattigo.decode(lattigo.env[lineNum])
+	// For CONST operations, use ptEnv directly instead of decrypting (constant lazy evaluation)
+	var decrypted []float64
+	var accuracyStats bool
 
-	accuracyStats := lattigo.calculateAccuracy(want, lattigo.env[lineNum])
+	if term.Op == CONST {
+		decrypted = lattigo.ptEnv[lineNum]
+		accuracyStats = true // Constants should always be accurate
+	} else {
+		decrypted = lattigo.decode(lattigo.env[lineNum])
+		accuracyStats = lattigo.calculateAccuracy(want, lattigo.env[lineNum])
+	}
 
-	// Only print debug information if accuracy is less than 99.99%
-	if accuracyStats < 101 {
+	if 0 == 0 {
 		// Create logs directory if it doesn't exist
 		err := os.MkdirAll("logs", 0755)
 		if err != nil {
@@ -198,7 +184,7 @@ func (lattigo *LattigoFHE) doPrecisionStats(lineNum int, term *Term) []float64 {
 			fmt.Fprintf(writer, ", ...")
 		}
 		fmt.Fprintf(writer, "]\n")
-		fmt.Fprintf(writer, "Accuracy: %.2f%%\n", accuracyStats)
+		fmt.Fprintf(writer, "Accuracy: %t\n", accuracyStats)
 		fmt.Fprintf(writer, "==============================\n\n")
 		writer.Flush()
 	}

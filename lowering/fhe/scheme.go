@@ -281,18 +281,7 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 			lattigo.refCounts[child]++
 		}
 
-		// Count rotation operations for hoisted rotations
-		if term.Op == ROT {
-			childLineNum := term.Children[0]
-			lattigo.rotCount[childLineNum]++
-		}
-
 		md := term.Metadata
-
-		if term.Op != CONST {
-			continue
-		}
-
 		switch term.Op {
 		/* case PACK:
 			pt := md.PackedValue
@@ -315,47 +304,49 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 				}
 			}
 			lattigo.ptEnv[lineNum] = pt
-			// case ADD:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
-			// 			pt := make([]float64, lattigo.n)
-			// 			for i := 0; i < lattigo.n; i++ {
-			// 				pt[i] = a[i] + b[i]
-			// 			}
-			// 			lattigo.ptEnv[lineNum] = pt
-			// 			if lattigo.fileType == MLIR {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// 			} else {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-			// 			}
-			// 		}
+		// case ADD:
+		// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+		// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
+		// 			pt := make([]float64, lattigo.n)
+		// 			for i := 0; i < lattigo.n; i++ {
+		// 				pt[i] = a[i] + b[i]
+		// 			}
+		// 			lattigo.ptEnv[lineNum] = pt
+		// 			if lattigo.fileType == MLIR {
+		// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+		// 			} else {
+		// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
+		// 			}
+		// 		}
+		// 	}
+		// case MUL:
+		// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+		// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
+		// 			pt := make([]float64, lattigo.n)
+		// 			for i := 0; i < lattigo.n; i++ {
+		// 				pt[i] = a[i] * b[i]
+		// 			}
+		// 			lattigo.ptEnv[lineNum] = pt
+		// 			if lattigo.fileType == MLIR {
+		// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+		// 			} else {
+		// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
+		// 			}
+		// 		}
+		// 	}
+		case ROT:
+			childLineNum := term.Children[0]
+			lattigo.rotCount[childLineNum]++
+			// if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+			// 	rot := md.Offset
+			// 	pt := make([]float64, lattigo.n)
+			// 	for i := 0; i < lattigo.n; i++ {
+			// 		index := ((i+rot)%lattigo.n + lattigo.n) % lattigo.n
+			// 		pt[i] = a[index]
 			// 	}
-			// case MUL:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
-			// 			pt := make([]float64, lattigo.n)
-			// 			for i := 0; i < lattigo.n; i++ {
-			// 				pt[i] = a[i] * b[i]
-			// 			}
-			// 			lattigo.ptEnv[lineNum] = pt
-			// 			if lattigo.fileType == MLIR {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// 			} else {
-			// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-			// 			}
-			// 		}
-			// 	}
-			// case ROT:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		rot := md.Offset
-			// 		pt := make([]float64, lattigo.n)
-			// 		for i := 0; i < lattigo.n; i++ {
-			// 			index := ((i+rot)%lattigo.n + lattigo.n) % lattigo.n
-			// 			pt[i] = a[index]
-			// 		}
-			// 		lattigo.ptEnv[lineNum] = pt
-			// 		lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// 	}
+			// 	lattigo.ptEnv[lineNum] = pt
+			// 	lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+			// }
 			// case NEGATE:
 			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
 			// 		pt := make([]float64, lattigo.n)
@@ -384,87 +375,9 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 			lattigo.hoistedRots[childLineNum][offset] = nil
 		}
 	}
-}
-
-func (lattigo *LattigoFHE) doHoisted(childLineNum int) {
-	baseCt := lattigo.env[childLineNum]
-
-	// Get all required offsets
-	offsets := make(map[int]bool)
-	for offset := range lattigo.hoistedRots[childLineNum] {
-		offsets[offset] = true
-	}
-
-	// Decompose all offsets into power-of-2 steps
-	decompositions := make(map[int][]int)
-	for offset, _ := range offsets {
-		decompositions[offset] = lattigo.decomposeRotation(offset)
-	}
-
-	// Process decompositions index by index (left to right)
-	results := lattigo.recurseHoisted(offsets, 0, decompositions, baseCt)
-
-	// Store final results in hoistedRots
-	for offset, finalCt := range results {
-		lattigo.hoistedRots[childLineNum][offset] = finalCt
-	}
-}
-
-func mergeMaps(src, dst map[int]*rlwe.Ciphertext) map[int]*rlwe.Ciphertext {
-	for key, value := range src {
-		dst[key] = value
-	}
-	return dst
-}
-
-func getKeys(m map[int]map[int]bool) []int {
-	if len(m) == 0 {
-		return []int{}
-	}
-	keys := make([]int, len(m))
-	i := 0
-	for k := range m {
-		keys[i] = k
-		i++
-	}
-	return keys
-}
-
-// recurseHoisted recursively processes decompositions and builds rotation paths
-func (lattigo *LattigoFHE) recurseHoisted(offsets map[int]bool, index int, decompositions map[int][]int, pathCiphertext *rlwe.Ciphertext) map[int]*rlwe.Ciphertext {
-	valueGroups := make(map[int]map[int]bool)
-	endedPaths := make(map[int]*rlwe.Ciphertext)
-	toRemove := make([]int, 0)
-
-	for offset := range offsets {
-		if index < len(decompositions[offset]) {
-			value := decompositions[offset][index]
-			if valueGroups[value] == nil {
-				valueGroups[value] = make(map[int]bool)
-			}
-			valueGroups[value][offset] = true
-		} else {
-			endedPaths[offset] = pathCiphertext
-			toRemove = append(toRemove, offset)
-		}
-	}
-
-	for _, offset := range toRemove {
-		delete(offsets, offset)
-		delete(decompositions, offset)
-	}
-
-	if len(valueGroups) == 1 {
-		pathCiphertext = lattigo.evalRot(pathCiphertext, getKeys(valueGroups)[0])
-		return mergeMaps(endedPaths, lattigo.recurseHoisted(offsets, index+1, decompositions, pathCiphertext))
-	} else {
-		rots, _ := lattigo.eval.RotateHoistedNew(pathCiphertext, getKeys(valueGroups))
-		for rot, ct := range rots {
-			rotOffsets := valueGroups[rot]
-			recursiveResult := lattigo.recurseHoisted(rotOffsets, index+1, decompositions, ct)
-			endedPaths = mergeMaps(endedPaths, recursiveResult)
-		}
-		return endedPaths
+	// clear lattigo.constants
+	for i := range lattigo.constants {
+		delete(lattigo.constants, i)
 	}
 }
 
@@ -489,20 +402,12 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 	for lineNum := range numOps {
 		term := lattigo.terms[lineNum]
 
-		if term.Op == CONST {
-			continue
-		}
-
 		if _, ok := lattigo.env[lineNum]; !ok {
 			lattigo.env[lineNum] = lattigo.evalOp(term)
 		}
 
 		finalResult = lattigo.env[lineNum]
 
-		if lattigo.env[lineNum].Level() != term.Level {
-			fmt.Printf("Warning: line %d op %v level mismatch. Expected: %d, Actual: %d, Children: %v\n", lineNum, term.Op, term.Level, lattigo.env[lineNum].Level(), term.Children)
-			return nil, nil, time.Duration(0), fmt.Errorf("level mismatch")
-		}
 		if lattigo.getStats {
 			want = lattigo.doPrecisionStats(lineNum, term)
 		}
@@ -554,8 +459,11 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		lattigo.processInputs(inputs)
 	}
 	if lattigo.constantsPath != "" {
-		fmt.Println("Processing constants...")
-		lattigo.processConstants()
+		fmt.Println("Loading constants...")
+		err := lattigo.loadConstants(lattigo.constantsPath)
+		if err != nil {
+			return nil, fmt.Errorf("error loading constants: %v", err)
+		}
 	}
 
 	fmt.Println("Preprocessing...")
@@ -572,7 +480,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		fmt.Printf("\nOverall Statistics:\n")
 		expected = parseFloatArray(expected_str)
 		accuracy := lattigo.calculateAccuracy(expected, lastResult)
-		if accuracy > 99 {
+		if accuracy {
 			fmt.Println("Passed! ")
 		} else {
 			fmt.Println("Failed... ")
@@ -642,8 +550,11 @@ func (lattigo *LattigoFHE) RunBatch() error {
 
 	// Process constants once for all inputs
 	if lattigo.constantsPath != "" {
-		fmt.Println("Processing constants...")
-		lattigo.processConstants()
+		fmt.Println("Loading constants...")
+		err := lattigo.loadConstants(lattigo.constantsPath)
+		if err != nil {
+			return fmt.Errorf("error loading constants: %v", err)
+		}
 	}
 
 	inputFiles, err := lattigo.findInputFiles()

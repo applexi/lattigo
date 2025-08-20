@@ -173,30 +173,6 @@ func (lattigo *LattigoFHE) processInputs(inputs []Term) {
 	}
 }
 
-func (lattigo *LattigoFHE) processConstants() {
-	constantMap, err := loadConstants(lattigo.constantsPath)
-	if err != nil {
-		log.Fatalf("Failed to load constants from cst file %s: %v", lattigo.constantsPath, err)
-	}
-
-	// Store constants directly (assuming they're already the correct size)
-	for value, data := range constantMap {
-		// Check for duplicates
-		if existing, ok := lattigo.constants[value]; ok {
-			if len(existing) != len(data) {
-				log.Fatalf("Constant value %d already exists with different length", value)
-			}
-			for i := range existing {
-				if math.Abs(existing[i]-data[i]) > 1e-10 {
-					log.Fatalf("Constant value %d already exists with different data", value)
-				}
-			}
-		} else {
-			lattigo.constants[value] = data
-		}
-	}
-}
-
 func parseFloatArray(s string) []float64 {
 	s = strings.Trim(s, "[]")
 	if s == "" {

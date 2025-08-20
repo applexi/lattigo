@@ -136,6 +136,16 @@ func (lattigo *LattigoFHE) ensureEncoded(childID int) {
 				duration := time.Since(start)
 				lattigo.recordTiming(CONST, lattigo.terms[childID].Level, duration)
 			} else {
+				// check if lattigo.ptEnv[childID] is all zero
+				allZero := true
+				for _, val := range lattigo.ptEnv[childID] {
+					if val != 0 {
+						allZero = false
+					}
+				}
+				if allZero {
+					fmt.Println("childID ", childID, " is all zero")
+				}
 				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
 			}
 		}

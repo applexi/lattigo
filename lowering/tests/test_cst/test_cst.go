@@ -54,7 +54,7 @@ func loadConstantFile(filename string) (int, int, []float64, error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	
+
 	// Read length (first line)
 	if !scanner.Scan() {
 		return 0, 0, nil, fmt.Errorf("failed to read length from %s", filename)
@@ -116,7 +116,7 @@ func compareConstants(constantMap ConstantMap, constantsFolder string) error {
 		}
 
 		fmt.Printf("Checking constant file: %s\n", file)
-		
+
 		length, id, expectedValues, err := loadConstantFile(file)
 		if err != nil {
 			fmt.Printf("ERROR: Failed to load constant file %s: %v\n", file, err)
@@ -148,7 +148,7 @@ func compareConstants(constantMap ConstantMap, constantsFolder string) error {
 				diff = -diff
 			}
 			if diff > tolerance {
-				fmt.Printf("ERROR: Value mismatch for ID %d at index %d. Expected: %f, Got: %f, Diff: %e\n", 
+				fmt.Printf("ERROR: Value mismatch for ID %d at index %d. Expected: %f, Got: %f, Diff: %e\n",
 					id, i, expected, actual, diff)
 				foundErrors = true
 			}
@@ -164,13 +164,14 @@ func compareConstants(constantMap ConstantMap, constantsFolder string) error {
 }
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Printf("Usage: %s <cst_file_path> <constants_folder_path>\n", os.Args[0])
+	if len(os.Args) < 2 {
+		fmt.Printf("Usage: %s <cst_file_path> [constants_folder_path]\n", os.Args[0])
+		fmt.Printf("  If only cst_file_path is provided, will print constant count and identify all-zero constants\n")
+		fmt.Printf("  If both arguments provided, will compare cst file with constants folder\n")
 		os.Exit(1)
 	}
 
 	cstFilePath := os.Args[1]
-	constantsFolderPath := os.Args[2]
 
 	fmt.Printf("Loading cst file: %s\n", cstFilePath)
 	constantMap, err := loadConstants(cstFilePath)
@@ -181,10 +182,48 @@ func main() {
 
 	fmt.Printf("Loaded %d constants from cst file\n", len(constantMap))
 
+	// If only one argument, just analyze the cst file
+	if len(os.Args) == 2 {
+		fmt.Printf("\nAnalyzing constants:\n")
+		allZeroCount := 0
+		maxID := -1
+
+		for id, values := range constantMap {
+			// Track max ID
+			if id > maxID {
+				maxID = id
+			}
+
+			allZero := true
+			for _, val := range values {
+				if val != 0 {
+					allZero = false
+					break
+				}
+			}
+
+			if allZero {
+				fmt.Printf("Constant ID %d is all zeros (length: %d)\n", id, len(values))
+				allZeroCount++
+			}
+		}
+
+		fmt.Printf("Max constant ID: %d\n", maxID)
+
+		if allZeroCount == 0 {
+			fmt.Printf("No all-zero constants found\n")
+		} else {
+			fmt.Printf("Found %d all-zero constants\n", allZeroCount)
+		}
+		return
+	}
+
+	// If two arguments, do the comparison
+	constantsFolderPath := os.Args[2]
 	fmt.Printf("Comparing with constants folder: %s\n", constantsFolderPath)
 	err = compareConstants(constantMap, constantsFolderPath)
 	if err != nil {
 		fmt.Printf("ERROR: %v\n", err)
 		os.Exit(1)
 	}
-} 
+}
