@@ -5,9 +5,18 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime/pprof"
 )
 
 func main() {
+	// Start CPU profiling
+	f, err := os.Create("output.pprof")
+    if err != nil {
+        panic(err)
+    }
+    pprof.StartCPUProfile(f)
+    defer pprof.StopCPUProfile()
+
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "  Runs and executes Lattigo FHE operations from Rotom instructions or Saturn MLIR file\n\n")
