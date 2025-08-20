@@ -13,7 +13,7 @@ import (
 	"github.com/tuneinsight/lattigo/v6/core/rlwe"
 	"github.com/tuneinsight/lattigo/v6/schemes/ckks"
 
-	"github.com/schollz/progressbar/v3"
+	// "github.com/schollz/progressbar/v3"
 	"github.com/tuneinsight/lattigo/v6/circuits/ckks/bootstrapping"
 	"github.com/tuneinsight/lattigo/v6/utils"
 )
@@ -385,20 +385,20 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 	var finalResult *rlwe.Ciphertext
 	want := make([]float64, lattigo.n)
 	var f *os.File
-	if lattigo.outputFile != "" {
-		f, _ = os.Create(filepath.Join("outputs", lattigo.outputFile) + ".prof")
-	} else {
-		f, _ = os.Create(filepath.Join("outputs", "profile.prof"))
-	}
+	// if lattigo.outputFile != "" {
+	// 	f, _ = os.Create(filepath.Join("outputs", lattigo.outputFile) + ".prof")
+	// } else {
+	// 	f, _ = os.Create(filepath.Join("outputs", "profile.prof"))
+	// }
+	f, _ = os.Create(filepath.Join("outputs", "profile.prof"))
 	pprof.StartCPUProfile(f)
-	bar := progressbar.NewOptions(numOps,
-		progressbar.OptionSetWidth(50),
-		progressbar.OptionShowCount(),
-		progressbar.OptionShowIts(),
-		progressbar.OptionSetItsString("ops"),
-	)
+	// bar := progressbar.NewOptions(numOps,
+	// 	progressbar.OptionSetWidth(50),
+	// 	progressbar.OptionShowCount(),
+	// 	progressbar.OptionShowIts(),
+	// 	progressbar.OptionSetItsString("ops"),
+	// )
 	startTime := time.Now()
-
 	for lineNum := range numOps {
 		term := lattigo.terms[lineNum]
 
@@ -419,10 +419,13 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 				delete(lattigo.refCounts, child)
 			}
 		}
-		bar.Set(lineNum + 1)
+		if lineNum%1000 == 0 {
+			fmt.Println("lineNum: ", lineNum)
+		}
+		// bar.Set(lineNum + 1)
 	}
 	runtime := time.Since(startTime)
-	bar.Finish()
+	// bar.Finish()
 	pprof.StopCPUProfile()
 	f.Close()
 	fmt.Println()
