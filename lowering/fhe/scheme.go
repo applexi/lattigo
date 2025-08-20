@@ -399,6 +399,7 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 	// 	progressbar.OptionSetItsString("ops"),
 	// )
 	startTime := time.Now()
+	fmt.Println("numOps: ", numOps)
 	for lineNum := range numOps {
 		term := lattigo.terms[lineNum]
 
