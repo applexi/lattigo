@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Start CPU profiling
-	f, err := os.Create("output.pprof")
+	f, err := os.Create("../../output.pprof")
     if err != nil {
         panic(err)
     }
