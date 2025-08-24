@@ -319,21 +319,16 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 		// 			}
 		// 		}
 		// 	}
-		// case MUL:
-		// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-		// 		if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
-		// 			pt := make([]float64, lattigo.n)
-		// 			for i := 0; i < lattigo.n; i++ {
-		// 				pt[i] = a[i] * b[i]
-		// 			}
-		// 			lattigo.ptEnv[lineNum] = pt
-		// 			if lattigo.fileType == MLIR {
-		// 				lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-		// 			} else {
-		// 				lattigo.env[lineNum] = lattigo.encode(pt, nil, lattigo.params.MaxLevel())
-		// 			}
-		// 		}
-		// 	}
+		case MUL:
+			if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+				if b, okb := lattigo.ptEnv[term.Children[1]]; okb && !lattigo.terms[term.Children[1]].Secret {
+					pt := make([]float64, lattigo.n)
+					for i := 0; i < lattigo.n; i++ {
+						pt[i] = a[i] * b[i]
+					}
+					lattigo.ptEnv[lineNum] = pt
+				}
+			}
 		case ROT:
 			childLineNum := term.Children[0]
 			lattigo.rotCount[childLineNum]++
@@ -354,8 +349,11 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 			// 			pt[i] = -a[i]
 			// 		}
 			// 		lattigo.ptEnv[lineNum] = pt
-			// 		lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
 			// 	}
+			case MODSWITCH, UPSCALE:
+				if !lattigo.terms[term.Children[0]].Secret {
+					lattigo.ptEnv[lineNum] = lattigo.ptEnv[term.Children[0]]
+				}
 		}
 	}
 

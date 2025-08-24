@@ -130,23 +130,16 @@ func (lattigo *LattigoFHE) evalBootstrap(ct1 *rlwe.Ciphertext, targetLevel int) 
 func (lattigo *LattigoFHE) ensureEncoded(childID int) {
 	if lattigo.terms[childID].Secret {
 		if _, exists := lattigo.env[childID]; !exists {
-			if lattigo.enableTiming {
+			if lattigo.enableTiming && lattigo.terms[childID].Op == CONST {
 				start := time.Now()
 				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
 				duration := time.Since(start)
 				lattigo.recordTiming(CONST, lattigo.terms[childID].Level, duration)
 			} else {
-				// check if lattigo.ptEnv[childID] is all zero
-				allZero := true
-				for _, val := range lattigo.ptEnv[childID] {
-					if val != 0 {
-						allZero = false
-					}
-				}
-				if allZero {
-					fmt.Println("childID ", childID, " is all zero")
-				}
 				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
+				if lattigo.terms[childID].Op != CONST {
+					fmt.Println("childID: ", childID, " child level: ", lattigo.env[childID].Level(), " child scale: ", math.Log2(lattigo.env[childID].Scale.Float64()))
+				}
 			}
 		}
 	}
@@ -157,9 +150,11 @@ func (lattigo *LattigoFHE) evalOp(term *Term) *rlwe.Ciphertext {
 
 	switch term.Op {
 	case ADD, MUL:
+		if !lattigo.terms[term.Children[0]].Secret && !lattigo.terms[term.Children[1]].Secret {return nil}
 		lattigo.ensureEncoded(term.Children[0])
 		lattigo.ensureEncoded(term.Children[1])
 	case ROT, MODSWITCH, NEGATE, BOOTSTRAP, RESCALE, UPSCALE:
+		if !lattigo.terms[term.Children[0]].Secret {return nil}
 		lattigo.ensureEncoded(term.Children[0])
 	case CONST:
 		return nil
