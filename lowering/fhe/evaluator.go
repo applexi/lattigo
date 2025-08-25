@@ -130,11 +130,11 @@ func (lattigo *LattigoFHE) evalBootstrap(ct1 *rlwe.Ciphertext, targetLevel int) 
 func (lattigo *LattigoFHE) ensureEncoded(childID int) {
 	if lattigo.terms[childID].Secret {
 		if _, exists := lattigo.env[childID]; !exists {
-			if lattigo.enableTiming && lattigo.terms[childID].Op == CONST {
+			if lattigo.enableTiming {
 				start := time.Now()
 				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
 				duration := time.Since(start)
-				lattigo.recordTiming(CONST, lattigo.terms[childID].Level, duration)
+				lattigo.recordTiming(lattigo.terms[childID].Op, lattigo.terms[childID].Level, duration)
 			} else {
 				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
 				if lattigo.terms[childID].Op != CONST {
