@@ -153,7 +153,7 @@ func (lattigo *LattigoFHE) findUniqueRots(operations []string) []int {
 				found = true
 			}
 		} else if strings.Contains(operation, "rotate") {
-			rot, found = extractRotateOffsetFromMLIRLine(operation)
+			rot, found = extractRotateOffsetFromMLIRLine(operation, lattigo.n)
 		}
 
 		if found {
@@ -183,7 +183,7 @@ func (lattigo *LattigoFHE) findUniqueRotsPow2(operations []string) []int {
 				found = true
 			}
 		} else if strings.Contains(operation, "rotate") {
-			rot, found = extractRotateOffsetFromMLIRLine(operation)
+			rot, found = extractRotateOffsetFromMLIRLine(operation, lattigo.n)
 		}
 
 		if found {

@@ -342,12 +342,12 @@ func (lattigo *LattigoFHE) parseMLIROperation(line string) (int, *Term) {
 	return lineNum, term
 }
 
-func extractRotateOffsetFromMLIRLine(line string) (int, bool) {
+func extractRotateOffsetFromMLIRLine(line string, n int) (int, bool) {
 	match := reRotateOffset.FindStringSubmatch(line)
 	if len(match) == 2 {
 		value, err := strconv.Atoi(match[1])
 		if err == nil {
-			return value, true
+			return value % n, true
 		}
 	}
 	return 0, false
