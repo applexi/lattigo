@@ -358,7 +358,7 @@ func (lattigo *LattigoFHE) parseMetadata(metadata string, op op) Metadata {
 	case Instructions:
 		return parseInstructionsMetadata(metadata, op)
 	case MLIR:
-		return parseMLIRMetadata(metadata, op)
+		return parseMLIRMetadata(metadata, op, lattigo.n)
 	default:
 		return Metadata{}
 	}
@@ -378,7 +378,7 @@ func parseInstructionsMetadata(metadata string, op op) Metadata {
 	return md
 }
 
-func parseMLIRMetadata(metadata string, op op) Metadata {
+func parseMLIRMetadata(metadata string, op op, n int) Metadata {
 	md := Metadata{}
 	switch op {
 	case CONST:
@@ -395,7 +395,7 @@ func parseMLIRMetadata(metadata string, op op) Metadata {
 	case ROT:
 		if match := reRotateOffset.FindStringSubmatch(metadata); len(match) == 2 {
 			if v, err := strconv.Atoi(match[1]); err == nil {
-				md.Offset = v
+				md.Offset = v % n
 			}
 		}
 	case UPSCALE:

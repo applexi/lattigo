@@ -137,9 +137,6 @@ func (lattigo *LattigoFHE) ensureEncoded(childID int) {
 				lattigo.recordTiming(lattigo.terms[childID].Op, lattigo.terms[childID].Level, duration)
 			} else {
 				lattigo.env[childID] = lattigo.encode(lattigo.ptEnv[childID], &lattigo.terms[childID].Scale, lattigo.terms[childID].Level)
-				if lattigo.terms[childID].Op != CONST {
-					fmt.Println("childID: ", childID, " child level: ", lattigo.env[childID].Level(), " child scale: ", math.Log2(lattigo.env[childID].Scale.Float64()))
-				}
 			}
 		}
 	}
