@@ -10,23 +10,27 @@ func (lattigo *LattigoFHE) decomposeRotation(rotation int) []int {
 	}
 
 	var decomposition []int
-	remaining := rotation
-	if remaining < 0 {
-		remaining = -remaining
+
+	sign := rotation < 0
+	value := rotation
+	if value < 0 {
+		value = -value
 	}
 
-	for remaining > 0 {
-		power := 1
-		for power*2 <= remaining {
-			power *= 2
+	for i := 0; value > 0; i++ {
+		zi := 0
+		if value&1 == 1 { 
+			zi = 2 - (value & 3) 
 		}
+		value = (value - zi) >> 1 
 
-		if rotation < 0 {
-			decomposition = append(decomposition, -power)
-		} else {
-			decomposition = append(decomposition, power)
+		if zi != 0 {
+			term := zi * (1 << i) 
+			if sign {
+				term = -term
+			}
+			decomposition = append(decomposition, term)
 		}
-		remaining -= power
 	}
 
 	return decomposition

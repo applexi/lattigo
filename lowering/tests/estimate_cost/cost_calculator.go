@@ -83,34 +83,36 @@ func getShortOpName(opType string) string {
 	}
 }
 
-// decomposeRotation decomposes a rotation into powers of two (simplified version)
+// decomposeRotation decomposes a rotation using Non-Adjacent Form (NAF) for efficiency
 func decomposeRotation(k int) []int {
 	if k == 0 {
 		return []int{0}
 	}
 
-	absK := k
-	if absK < 0 {
-		absK = -absK
+	var decomposition []int
+
+	// Record the sign of the original value and compute abs
+	sign := k < 0
+	value := k
+	if value < 0 {
+		value = -value
 	}
 
-	// Check if it's a power of two
-	if (absK & (absK - 1)) == 0 {
-		return []int{k}
-	}
-
-	// Simple decomposition: count number of 1s in binary representation
-	decomposition := []int{}
-	sign := 1
-	if k < 0 {
-		sign = -1
-	}
-
-	for i := 0; absK > 0; i++ {
-		if absK&1 == 1 {
-			decomposition = append(decomposition, sign*(1<<i))
+	// Transform to non-adjacent form (NAF)
+	for i := 0; value > 0; i++ {
+		zi := 0
+		if value&1 == 1 { // if value is odd
+			zi = 2 - (value & 3) // zi = 2 - (value mod 4)
 		}
-		absK >>= 1
+		value = (value - zi) >> 1 // value = (value - zi) / 2
+
+		if zi != 0 {
+			term := zi * (1 << i) // zi * 2^i
+			if sign {
+				term = -term
+			}
+			decomposition = append(decomposition, term)
+		}
 	}
 
 	return decomposition
