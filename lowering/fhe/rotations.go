@@ -19,17 +19,19 @@ func (lattigo *LattigoFHE) decomposeRotation(rotation int) []int {
 
 	for i := 0; value > 0; i++ {
 		zi := 0
-		if value&1 == 1 { 
-			zi = 2 - (value & 3) 
+		if value&1 == 1 {
+			zi = 2 - (value & 3)
 		}
-		value = (value - zi) >> 1 
+		value = (value - zi) >> 1
 
 		if zi != 0 {
-			term := zi * (1 << i) 
+			term := zi * (1 << i)
 			if sign {
 				term = -term
 			}
-			decomposition = append(decomposition, term)
+			if term%lattigo.n != 0 {
+				decomposition = append(decomposition, term)
+			}
 		}
 	}
 
