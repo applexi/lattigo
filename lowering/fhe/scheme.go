@@ -332,28 +332,28 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 		case ROT:
 			childLineNum := term.Children[0]
 			lattigo.rotCount[childLineNum]++
-			// if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 	rot := md.Offset
-			// 	pt := make([]float64, lattigo.n)
-			// 	for i := 0; i < lattigo.n; i++ {
-			// 		index := ((i+rot)%lattigo.n + lattigo.n) % lattigo.n
-			// 		pt[i] = a[index]
-			// 	}
-			// 	lattigo.ptEnv[lineNum] = pt
-			// 	lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
-			// }
-			// case NEGATE:
-			// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
-			// 		pt := make([]float64, lattigo.n)
-			// 		for i := 0; i < lattigo.n; i++ {
-			// 			pt[i] = -a[i]
-			// 		}
-			// 		lattigo.ptEnv[lineNum] = pt
-			// 	}
-			case MODSWITCH, UPSCALE:
-				if !lattigo.terms[term.Children[0]].Secret {
-					lattigo.ptEnv[lineNum] = lattigo.ptEnv[term.Children[0]]
-				}
+		// if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+		// 	rot := md.Offset
+		// 	pt := make([]float64, lattigo.n)
+		// 	for i := 0; i < lattigo.n; i++ {
+		// 		index := ((i+rot)%lattigo.n + lattigo.n) % lattigo.n
+		// 		pt[i] = a[index]
+		// 	}
+		// 	lattigo.ptEnv[lineNum] = pt
+		// 	lattigo.env[lineNum] = lattigo.encode(pt, &term.Scale, term.Level)
+		// }
+		// case NEGATE:
+		// 	if a, oka := lattigo.ptEnv[term.Children[0]]; oka && !lattigo.terms[term.Children[0]].Secret {
+		// 		pt := make([]float64, lattigo.n)
+		// 		for i := 0; i < lattigo.n; i++ {
+		// 			pt[i] = -a[i]
+		// 		}
+		// 		lattigo.ptEnv[lineNum] = pt
+		// 	}
+		case MODSWITCH, UPSCALE:
+			if !lattigo.terms[term.Children[0]].Secret {
+				lattigo.ptEnv[lineNum] = lattigo.ptEnv[term.Children[0]]
+			}
 		}
 	}
 
@@ -396,9 +396,33 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 	// 	progressbar.OptionShowIts(),
 	// 	progressbar.OptionSetItsString("ops"),
 	// )
+
+	order_list, _, _ := lattigo.getOptimalRunOrder(numOps)
+	naive_list := make([]int, numOps)
+	for i := range numOps {
+		naive_list[i] = i
+	}
+	working_size, err := lattigo.getMaxWorkingPoolSize(numOps, order_list)
+	if err != nil {
+		return nil, nil, 0, err
+	}
+	fmt.Printf("Optimized execution order working pool size: %v\n", working_size)
+
+	working_size_naive, err := lattigo.getMaxWorkingPoolSize(numOps, naive_list)
+	if err != nil {
+		return nil, nil, 0, err
+	}
+	fmt.Printf("Naive execution order working pool size: %v\n", working_size_naive)
+
+	// fmt.Println("Optimized execution order: ")
+	// for i := range numOps {
+	// 	fmt.Printf("Line %d, Op %v, Inputs %v\n", order_list[i], lattigo.terms[order_list[i]].Op, lattigo.terms[order_list[i]].Children)
+	// }
+
 	startTime := time.Now()
 	fmt.Println("numOps: ", numOps)
-	for lineNum := range numOps {
+	for i := range numOps {
+		lineNum := order_list[i]
 		term := lattigo.terms[lineNum]
 
 		if _, ok := lattigo.env[lineNum]; !ok {
@@ -418,8 +442,8 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 				delete(lattigo.refCounts, child)
 			}
 		}
-		if lineNum%1000 == 0 {
-			fmt.Println("lineNum: ", lineNum)
+		if i%1000 == 0 {
+			fmt.Println("lineNum: ", i)
 		}
 		// bar.Set(lineNum + 1)
 	}
@@ -430,6 +454,35 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 	fmt.Println()
 
 	return want, finalResult, runtime, nil
+}
+
+func (lattigo *LattigoFHE) testOptimalOrder(operations []string) {
+	numOps := len(operations)
+	for _, line := range operations {
+		lattigo.parseOperation(line)
+	}
+
+	order_list, depth, back_depth := lattigo.getOptimalRunOrder(numOps)
+	naive_list := make([]int, numOps)
+	for i := range numOps {
+		naive_list[i] = i
+	}
+	working_size, err := lattigo.getMaxWorkingPoolSize(numOps, order_list)
+	if err != nil {
+		fmt.Printf("Error calculating working pool size: %v\n", err)
+	}
+	fmt.Printf("Optimized execution order working pool size: %v\n", working_size)
+
+	working_size_naive, err := lattigo.getMaxWorkingPoolSize(numOps, naive_list)
+	if err != nil {
+		fmt.Printf("Error calculating working pool size: %v\n", err)
+	}
+	fmt.Printf("Naive execution order working pool size: %v\n", working_size_naive)
+
+	fmt.Println("Optimized execution order: ")
+	for i := range numOps {
+		fmt.Printf("Line %d, Op %v, Depth %v, Back-Depth %v, Inputs %v\n", order_list[i], lattigo.terms[order_list[i]].Op, depth[order_list[i]], back_depth[order_list[i]], lattigo.terms[order_list[i]].Children)
+	}
 }
 
 func (lattigo *LattigoFHE) Run() ([]float64, error) {
@@ -451,6 +504,10 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		return nil, fmt.Errorf("error reading file: %v", err)
 	}
 	var expected []float64
+
+	// lattigo.testOptimalOrder(operations)
+
+	// return nil, nil
 
 	fmt.Println("\nFinding unique rots...")
 	rots := lattigo.findUniqueRotsPow2(operations)
@@ -505,7 +562,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 		accuracy := lattigo.calculateAccuracy(want, lastResult)
 		fmt.Printf("Final Result Accuracy: %.2f%%\n", accuracy)
 	}
-	fmt.Printf("Runtime: %v\n", runtime)
+	fmt.Printf("Runtime: %.3f sec\n", runtime.Seconds())
 
 	if lattigo.enableTiming {
 		err := lattigo.writeTimingReport()
@@ -660,7 +717,7 @@ func (lattigo *LattigoFHE) RunBatch() error {
 			fmt.Printf("  Accuracy: %.2f%%\n", accuracy)
 		}
 
-		fmt.Printf("  Runtime: %v\n\n", runtime)
+		fmt.Printf("Runtime: %.3f sec\n\n", runtime.Seconds())
 	}
 
 	if len(runtimeInfos) > 0 {

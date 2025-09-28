@@ -38,6 +38,19 @@ func (lattigo *LattigoFHE) decomposeRotation(rotation int) []int {
 	return decomposition
 }
 
+func (lattigo *LattigoFHE) notdoHoisted(childLineNum int) {
+	baseCt := lattigo.env[childLineNum]
+
+	for offset := range lattigo.hoistedRots[childLineNum] {
+		decomposition := lattigo.decomposeRotation(offset)
+		ct := baseCt
+		for _, rot := range decomposition {
+			ct, _ = lattigo.eval.RotateNew(ct, rot)
+		}
+		lattigo.hoistedRots[childLineNum][offset] = ct
+	}
+}
+
 func (lattigo *LattigoFHE) doHoisted(childLineNum int) {
 	baseCt := lattigo.env[childLineNum]
 

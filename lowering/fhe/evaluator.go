@@ -87,15 +87,24 @@ func (lattigo *LattigoFHE) evalRotPow2(ct1 *rlwe.Ciphertext, k int) *rlwe.Cipher
 }
 
 func (lattigo *LattigoFHE) evalUpscale(ct1 *rlwe.Ciphertext, upFactor int) *rlwe.Ciphertext {
-	pt := ckks.NewPlaintext(*lattigo.params, ct1.Level())
-	pt.Scale = rlwe.NewScale(math.Pow(2, float64(upFactor)))
-	ones := make([]float64, lattigo.n)
-	for i := range ones {
-		ones[i] = 1
-	}
-	lattigo.ecd.Encode(ones, pt)
-	ct, _ := lattigo.eval.MulRelinNew(ct1, pt)
-	return ct
+
+	scaleup := rlwe.NewScale(math.Pow(2, float64(upFactor)))
+
+	ctout := ckks.NewCiphertext(*lattigo.params, ct1.Degree(), ct1.Level())
+	lattigo.eval.Mul(ct1, scaleup.Float64(), ctout)
+	ctout.Scale = ct1.Scale.Mul(scaleup)
+
+	return ctout
+
+	// pt := ckks.NewPlaintext(*lattigo.params, ct1.Level())
+	// pt.Scale = rlwe.NewScale(math.Pow(2, float64(upFactor)))
+	// ones := make([]float64, lattigo.n)
+	// for i := range ones {
+	// 	ones[i] = 1
+	// }
+	// lattigo.ecd.Encode(ones, pt)
+	// ct, _ := lattigo.eval.MulRelinNew(ct1, pt)
+	// return ct
 }
 
 func (lattigo *LattigoFHE) evalRescale(ct1 *rlwe.Ciphertext) *rlwe.Ciphertext {
@@ -147,11 +156,15 @@ func (lattigo *LattigoFHE) evalOp(term *Term) *rlwe.Ciphertext {
 
 	switch term.Op {
 	case ADD, MUL:
-		if !lattigo.terms[term.Children[0]].Secret && !lattigo.terms[term.Children[1]].Secret {return nil}
+		if !lattigo.terms[term.Children[0]].Secret && !lattigo.terms[term.Children[1]].Secret {
+			return nil
+		}
 		lattigo.ensureEncoded(term.Children[0])
 		lattigo.ensureEncoded(term.Children[1])
 	case ROT, MODSWITCH, NEGATE, BOOTSTRAP, RESCALE, UPSCALE:
-		if !lattigo.terms[term.Children[0]].Secret {return nil}
+		if !lattigo.terms[term.Children[0]].Secret {
+			return nil
+		}
 		lattigo.ensureEncoded(term.Children[0])
 	case CONST:
 		return nil
@@ -200,7 +213,7 @@ func (lattigo *LattigoFHE) evalOp(term *Term) *rlwe.Ciphertext {
 				result = hoistedCt
 			} else {
 				// Compute hoisted rotations for this childLineNum
-				lattigo.doHoisted(childLineNum)
+				lattigo.notdoHoisted(childLineNum)
 				result = lattigo.hoistedRots[childLineNum][offset]
 			}
 		} else {
