@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"math"
 	"os"
@@ -345,7 +346,7 @@ func gen_all_benchmarks(ctx *Context, run_time int) []Benchmark {
 			benchmarks = append(benchmarks, Benchmark{
 				OpName:    "earth.bootstrap_single",
 				Level:     level,
-				GoalRound: run_time / 4,
+				GoalRound: run_time / 10,
 				args: &BenchmarkArgs{
 					ctx:   ctx,
 					Level: level,
@@ -437,7 +438,7 @@ func eval_all_benchmarks(benchmarks []Benchmark) {
 	consume_load(benchmarks[0].args.ctx, sim_cts, sim_pls)
 }
 
-func gen_cost_model_json(ctx *Context, benchmarks []Benchmark) {
+func gen_cost_model_json(ctx *Context, benchmarks []Benchmark, n int, btsLb int, btsUb int) {
 	latencyTableRaw := make(map[string]map[int]float64)
 	stdevTableRaw := make(map[string]map[int]float64)
 	latencyTable := make(map[string][]float64)
@@ -482,7 +483,7 @@ func gen_cost_model_json(ctx *Context, benchmarks []Benchmark) {
 		"stdevTable":               stdevTable,
 	}
 
-	jsonFile, err := os.Create("lattigo_nepnew_64k.json")
+	jsonFile, err := os.Create(fmt.Sprintf("profiled_LATTIGONEW_CPU%dk_%d_%d.json", n, btsLb, btsUb))
 	if err != nil {
 		panic(err)
 	}
@@ -498,8 +499,23 @@ func gen_cost_model_json(ctx *Context, benchmarks []Benchmark) {
 }
 
 func main() {
-	ctx := createContext(65536, 29, 3, 16, 51)
+	var n int
+	var btsLb int
+	var btsUb int
+
+	flag.IntVar(&n, "n", 64, "The polynomial modulus degree")
+	flag.IntVar(&btsLb, "btsLb", 3, "The bootstrap level lower bound")
+	flag.IntVar(&btsUb, "btsUb", 16, "The bootstrap level upper bound")
+	flag.Parse()
+
+	// compute 2^n
+	pow2_of_n := 1
+	for i := 0; i < n; i++ {
+		pow2_of_n *= 2
+	}
+
+	ctx := createContext(pow2_of_n, btsUb, btsLb, btsUb, 51)
 	benchmarks := gen_all_benchmarks(ctx, 100)
 	eval_all_benchmarks(benchmarks)
-	gen_cost_model_json(ctx, benchmarks)
+	gen_cost_model_json(ctx, benchmarks, n, btsLb, btsUb)
 }
