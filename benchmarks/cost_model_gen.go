@@ -508,11 +508,7 @@ func main() {
 	flag.IntVar(&btsUb, "btsUb", 16, "The bootstrap level upper bound")
 	flag.Parse()
 
-	// compute 2^n
-	pow2_of_n := 1
-	for i := 0; i < n; i++ {
-		pow2_of_n *= 2
-	}
+	pow2_of_n := n * 1024
 
 	ctx := createContext(pow2_of_n, btsUb, btsLb, btsUb, 51)
 	benchmarks := gen_all_benchmarks(ctx, 100)
