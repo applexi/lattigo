@@ -1,0 +1,318 @@
+	RDAG: Squashing ['rescale', 'upscale', 'modswitch', 'bootstrap']!
+Built original DAG with 24117 nodes and 31523 edges.
+After Squashing, DAG has 20023 nodes and 27429 edges.
+After Compression, DAG has 5382 nodes and 7341 edges.
+PDAG #SqueezeNetReLU64k_comp_0 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_0
+  this_in_budgets: [(-1, {40: 0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 16 / 16 ILP tasks for PDAG #SqueezeNetReLU64k_comp_0
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_0: 0.03 seconds
+PDAG #SqueezeNetReLU64k_comp_1 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_1
+  this_in_budgets: [(1, {40: 9111029}), (2, {40: 12391195}), (3, {40: 14015101}), (4, {40: 16032542}), (5, {40: 20410219}), (6, {40: 22416955}), (7, {40: 24905595}), (8, {40: 30429018}), (9, {40: 32802270}), (10, {40: 35779063}), (11, {40: 42503789}), (12, {40: 45275771}), (13, {40: 48651963}), (14, {40: 56384471}), (15, {51: 83335751.0}), (16, {51: 83335751.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_1
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_1: 20.70 seconds
+PDAG #SqueezeNetReLU64k_comp_2 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_2
+  this_in_budgets: [(1, {40: 111939631.0}), (2, {40: 111943233.0}), (3, {40: 135677861.0}), (4, {40: 136253605.0}), (5, {40: 136571347.0}), (6, {40: 137313924.0}), (7, {40: 137584183.0}), (8, {43: 138122911.0}), (9, {40: 185156530.0}), (10, {40: 191398168.0}), (11, {40: 194627291.0}), (12, {40: 197772163.0}), (13, {40: 205375441.0}), (14, {51: 205119128.0}), (15, {51: 204870035.0}), (16, {51: 204875455.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_2
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_2: 47.71 seconds
+PDAG #SqueezeNetReLU64k_comp_3 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_3
+  this_in_budgets: [(1, {40: 270459582.0}), (2, {40: 270871885.0}), (3, {40: 284601693.0}), (4, {40: 285283396.0}), (5, {40: 285789680.0}), (6, {40: 286077908.0}), (7, {40: 286567349.0}), (8, {43: 287317037.0}), (9, {40: 344239945.0}), (10, {40: 347005993.0}), (11, {40: 353907716.0}), (12, {40: 354091948.0}), (13, {40: 354019703.0}), (14, {40: 354322319.0}), (15, {51: 354028497.0}), (16, {51: 353929314.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_3
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_3: 23.91 seconds
+PDAG #SqueezeNetReLU64k_comp_4 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_4
+  this_in_budgets: [(1, {40: 422475603.0}), (2, {40: 423335668.0}), (3, {40: 433304503.0}), (4, {40: 433411480.0}), (5, {40: 434054766.0}), (6, {40: 434382005.0}), (7, {40: 434856526.0}), (8, {43: 435456371.0}), (9, {40: 496481082.0}), (10, {40: 502037318.0}), (11, {40: 502115814.0}), (12, {40: 502132425.0}), (13, {40: 502323164.0}), (14, {40: 502356276.0}), (15, {40: 502533194.0}), (16, {51: 502308786.0})]
+PDAG #SqueezeNetReLU64k_comp_4 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.750.
+    Need to solve 64 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_4
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_4: 6.03 seconds
+PDAG #SqueezeNetReLU64k_comp_5 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_5
+  this_in_budgets: [(1, {40: 581098732.0}), (2, {40: 581511035.0}), (3, {40: 582035024.0}), (4, {40: 582910038.0}), (5, {40: 583370539.0}), (6, {40: 583511239.0}), (7, {40: 584000680.0}), (8, {43: 584998474.0}), (9, {40: 651022216.0}), (10, {40: 651366255.0}), (11, {40: 651358175.0}), (12, {40: 651525279.0}), (13, {40: 651592948.0}), (14, {40: 651732908.0}), (15, {51: 651642483.0}), (16, {51: 651362645.0})]
+PDAG #SqueezeNetReLU64k_comp_5 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_5
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_5: 0.47 seconds
+PDAG #SqueezeNetReLU64k_comp_6 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_6
+  this_in_budgets: [(1, {40: 730182009.0}), (2, {40: 730803588.0}), (3, {40: 731088883.0}), (4, {40: 731640559.0}), (5, {40: 732146843.0}), (6, {40: 732559611.0}), (7, {40: 733054539.0}), (8, {43: 733746158.0}), (9, {40: 800076075.0}), (10, {40: 800162089.0}), (11, {40: 800264879.0}), (12, {40: 800579138.0}), (13, {40: 800376866.0}), (14, {40: 800809509.0}), (15, {51: 800385660.0}), (16, {51: 800416504.0})]
+PDAG #SqueezeNetReLU64k_comp_6 is equivalent to PDAG #SqueezeNetReLU64k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_6
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_6: 0.50 seconds
+PDAG #SqueezeNetReLU64k_comp_7 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_7
+  this_in_budgets: [(1, {40: 878311733.0}), (2, {40: 879049120.0}), (3, {40: 879711425.0}), (4, {40: 879849630.0}), (5, {40: 880411929.0}), (6, {40: 880869195.0}), (7, {40: 881343716.0}), (8, {43: 881943561.0}), (9, {40: 948493536.0}), (10, {40: 948524508.0}), (11, {40: 948563412.0}), (12, {40: 948570541.0}), (13, {40: 948714527.0}), (14, {40: 948843466.0}), (15, {40: 949020384.0}), (16, {51: 948665949.0})]
+PDAG #SqueezeNetReLU64k_comp_7 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_7
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_7: 0.51 seconds
+PDAG #SqueezeNetReLU64k_comp_8 Basic, DAG size: 37 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_8
+  this_in_budgets: [(1, {40: 1027485313.0}), (2, {40: 1027998225.0}), (3, {40: 1028392187.0}), (4, {40: 1029316960.0}), (5, {40: 1029823244.0}), (6, {40: 1029868402.0}), (7, {40: 1030357843.0}), (8, {43: 1031422559.0}), (9, {40: 1097379379.0}), (10, {40: 1097744540.0}), (11, {40: 1097715338.0}), (12, {40: 1097882442.0}), (13, {40: 1097950111.0}), (14, {40: 1098112813.0}), (15, {51: 1098062061.0}), (16, {51: 1097719808.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_8
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_8: 2.14 seconds
+PDAG #SqueezeNetReLU64k_comp_9 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_9
+  this_in_budgets: [(1, {40: 1049205471.0}), (2, {40: 1053489491.0}), (3, {40: 1060576189.0}), (4, {40: 1064350895.0}), (5, {40: 1070308368.0}), (6, {40: 1125065064.0}), (7, {40: 1126060134.0}), (8, {40: 1128974981.0}), (9, {40: 1129969779.0}), (10, {40: 1129971111.0}), (11, {40: 1129977581.0}), (12, {40: 1129987747.0}), (13, {40: 1129990220.0}), (14, {40: 1129997916.0}), (15, {40: 1130011544.0}), (16, {51: 1129911089.0})]
+PDAG #SqueezeNetReLU64k_comp_9 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_9
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_9: 2.45 seconds
+PDAG #SqueezeNetReLU64k_comp_10 Basic, DAG size: 80 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_10
+  this_in_budgets: [(1, {40: 1208218075.0}), (2, {40: 1208667720.0}), (3, {40: 1209145771.0}), (4, {40: 1209389890.0}), (5, {40: 1209716990.0}), (6, {40: 1210334930.0}), (7, {40: 1211043288.0}), (8, {43: 1211497040.0}), (9, {40: 1278025137.0}), (10, {40: 1278195056.0}), (11, {40: 1278231933.0}), (12, {40: 1278365884.0}), (13, {40: 1278330494.0}), (14, {40: 1278397925.0}), (15, {51: 1278483480.0}), (16, {51: 1278274278.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_10
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_10: 3.76 seconds
+PDAG #SqueezeNetReLU64k_comp_11 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_11
+  this_in_budgets: [(1, {40: 1257709796.0}), (2, {40: 1275014518.0}), (3, {40: 1282624755.0}), (4, {40: 1290286861.0}), (5, {40: 1336446604.0}), (6, {40: 1337815822.0}), (7, {40: 1339247057.0}), (8, {40: 1343329450.0}), (9, {40: 1345086686.0}), (10, {40: 1346612448.0}), (11, {40: 1347032160.0}), (12, {40: 1346793249.0}), (13, {40: 1346799747.0}), (14, {40: 1346837699.0}), (15, {40: 1346844630.0}), (16, {51: 1346700810.0})]
+PDAG #SqueezeNetReLU64k_comp_11 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_11
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_11: 0.48 seconds
+PDAG #SqueezeNetReLU64k_comp_12 Basic, DAG size: 78 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_12
+  this_in_budgets: [(1, {40: 1424224047.0}), (2, {40: 1424227649.0}), (3, {40: 1425947880.0}), (4, {40: 1426179611.0}), (5, {40: 1426506711.0}), (6, {40: 1427124651.0}), (7, {40: 1427866985.0}), (8, {43: 1428330126.0}), (9, {40: 1494858223.0}), (10, {40: 1494984777.0}), (11, {40: 1495072672.0}), (12, {40: 1495198970.0}), (13, {40: 1495354321.0}), (14, {40: 1495231011.0}), (15, {51: 1495323263.0}), (16, {51: 1495107364.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_12
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_12: 3.40 seconds
+PDAG #SqueezeNetReLU64k_comp_13 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_13
+  this_in_budgets: [(1, {40: 1479970409.0}), (2, {40: 1499948733.0}), (3, {40: 1508743317.0}), (4, {40: 1517675656.0}), (5, {40: 1567594345.0}), (6, {40: 1570307134.0}), (7, {40: 1572993307.0}), (8, {40: 1572866335.0}), (9, {40: 1572917705.0}), (10, {40: 1572879642.0}), (11, {40: 1572986453.0}), (12, {40: 1572957360.0}), (13, {40: 1573017062.0}), (14, {40: 1572906890.0}), (15, {40: 1572915517.0}), (16, {51: 1572802948.0})]
+PDAG #SqueezeNetReLU64k_comp_13 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_13
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_13: 0.49 seconds
+PDAG #SqueezeNetReLU64k_comp_14 Basic, DAG size: 50 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_14
+  this_in_budgets: [(1, {40: 1651122048.0}), (2, {40: 1651830161.0}), (3, {40: 1652049744.0}), (4, {40: 1652281749.0}), (5, {40: 1652608849.0}), (6, {40: 1653226789.0}), (7, {40: 1653969123.0}), (8, {43: 1654401013.0}), (9, {40: 1720929110.0}), (10, {40: 1721086915.0}), (11, {40: 1721168783.0}), (12, {40: 1721269857.0}), (13, {40: 1721425208.0}), (14, {40: 1721301898.0}), (15, {51: 1721392454.0}), (16, {51: 1721178251.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_14
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_14: 1.85 seconds
+PDAG #SqueezeNetReLU64k_comp_15 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_15
+  this_in_budgets: [(1, {40: 1729658486.0}), (2, {40: 1740943066.0}), (3, {40: 1753051364.0}), (4, {40: 1785759169.0}), (5, {40: 1800196741.0}), (6, {40: 1879342203.0}), (7, {40: 1879289842.0}), (8, {40: 1879365348.0}), (9, {40: 1879244795.0}), (10, {40: 1879257576.0}), (11, {40: 1879265414.0}), (12, {40: 1879408275.0}), (13, {40: 1879641700.0}), (14, {40: 1879365373.0}), (15, {40: 1879308235.0}), (16, {51: 1822282461.0})]
+PDAG #SqueezeNetReLU64k_comp_15 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_15
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_15: 4.51 seconds
+PDAG #SqueezeNetReLU64k_comp_16 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_16
+  this_in_budgets: [(1, {40: 1901101825.0}), (2, {40: 1901723404.0}), (3, {40: 1902008699.0}), (4, {40: 1902656899.0}), (5, {40: 1903163183.0}), (6, {40: 1903484914.0}), (7, {40: 1903974355.0}), (8, {43: 1904762498.0}), (9, {40: 1970995891.0}), (10, {40: 1971178429.0}), (11, {40: 1971281219.0}), (12, {40: 1971498954.0}), (13, {40: 1971393206.0}), (14, {40: 1971729325.0}), (15, {51: 1971402000.0}), (16, {51: 1971336320.0})]
+PDAG #SqueezeNetReLU64k_comp_16 is equivalent to PDAG #SqueezeNetReLU64k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_16
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_16: 0.47 seconds
+PDAG #SqueezeNetReLU64k_comp_17 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_17
+  this_in_budgets: [(1, {40: 2049231549.0}), (2, {40: 2049968936.0}), (3, {40: 2050711509.0}), (4, {40: 2050818486.0}), (5, {40: 2051428269.0}), (6, {40: 2051789011.0}), (7, {40: 2052263532.0}), (8, {43: 2052863377.0}), (9, {40: 2119413352.0}), (10, {40: 2119444324.0}), (11, {40: 2119522820.0}), (12, {40: 2119539431.0}), (13, {40: 2119730170.0}), (14, {40: 2119763282.0}), (15, {40: 2119940200.0}), (16, {51: 2119682289.0})]
+PDAG #SqueezeNetReLU64k_comp_17 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_17
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_17: 0.51 seconds
+PDAG #SqueezeNetReLU64k_comp_18 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_18
+  this_in_budgets: [(1, {40: 2198501653.0}), (2, {40: 2198918041.0}), (3, {40: 2199408527.0}), (4, {40: 2200317044.0}), (5, {40: 2200777545.0}), (6, {40: 2200884742.0}), (7, {40: 2201374183.0}), (8, {43: 2202405480.0}), (9, {40: 2268395719.0}), (10, {40: 2268760880.0}), (11, {40: 2268731678.0}), (12, {40: 2268898782.0}), (13, {40: 2268966451.0}), (14, {40: 2269129153.0}), (15, {51: 2269049489.0}), (16, {51: 2268736148.0})]
+PDAG #SqueezeNetReLU64k_comp_18 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_18
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_18: 0.51 seconds
+PDAG #SqueezeNetReLU64k_comp_19 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_19
+  this_in_budgets: [(1, {40: 2347555512.0}), (2, {40: 2348177091.0}), (3, {40: 2348462386.0}), (4, {40: 2349014062.0}), (5, {40: 2349520346.0}), (6, {40: 2349933114.0}), (7, {40: 2350428042.0}), (8, {43: 2351119661.0}), (9, {40: 2417449578.0}), (10, {40: 2417535592.0}), (11, {40: 2417638382.0}), (12, {40: 2417952641.0}), (13, {40: 2417750369.0}), (14, {40: 2418183012.0}), (15, {51: 2417759163.0}), (16, {51: 2417790007.0})]
+PDAG #SqueezeNetReLU64k_comp_19 is equivalent to PDAG #SqueezeNetReLU64k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_19
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_19: 0.51 seconds
+PDAG #SqueezeNetReLU64k_comp_20 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_20
+  this_in_budgets: [(1, {40: 2495685236.0}), (2, {40: 2496422623.0}), (3, {40: 2497084928.0}), (4, {40: 2497223133.0}), (5, {40: 2497785432.0}), (6, {40: 2498242698.0}), (7, {40: 2498717219.0}), (8, {43: 2499317064.0}), (9, {40: 2565867039.0}), (10, {40: 2565898011.0}), (11, {40: 2565936915.0}), (12, {40: 2565944044.0}), (13, {40: 2566088030.0}), (14, {40: 2566216969.0}), (15, {40: 2566393887.0}), (16, {51: 2566039452.0})]
+PDAG #SqueezeNetReLU64k_comp_20 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_20
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_20: 0.52 seconds
+PDAG #SqueezeNetReLU64k_comp_21 Basic, DAG size: 43 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_21
+  this_in_budgets: [(1, {40: 2644858816.0}), (2, {40: 2645371728.0}), (3, {40: 2645765690.0}), (4, {40: 2646690463.0}), (5, {40: 2647196747.0}), (6, {40: 2647241905.0}), (7, {40: 2647731346.0}), (8, {43: 2648796062.0}), (9, {40: 2714752882.0}), (10, {40: 2715118043.0}), (11, {40: 2715088841.0}), (12, {40: 2715255945.0}), (13, {40: 2715323614.0}), (14, {40: 2715486316.0}), (15, {51: 2715435564.0}), (16, {51: 2715093311.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_21
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_21: 2.31 seconds
+PDAG #SqueezeNetReLU64k_comp_22 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_22
+  this_in_budgets: [(1, {40: 2691028368.0}), (2, {40: 2700830574.0}), (3, {40: 2708272392.0}), (4, {40: 2725479871.0}), (5, {40: 2738626202.0}), (6, {40: 2776676388.0}), (7, {40: 2779340074.0}), (8, {40: 2777534249.0}), (9, {40: 2777564742.0}), (10, {40: 2777568596.0}), (11, {40: 2777566888.0}), (12, {40: 2777609033.0}), (13, {40: 2777626068.0}), (14, {40: 2777592138.0}), (15, {40: 2777609962.0}), (16, {51: 2777495355.0})]
+PDAG #SqueezeNetReLU64k_comp_22 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_22
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_22: 0.45 seconds
+PDAG #SqueezeNetReLU64k_comp_23 Basic, DAG size: 90 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_23
+  this_in_budgets: [(1, {40: 2855816493.0}), (2, {40: 2856363923.0}), (3, {40: 2856742425.0}), (4, {40: 2856974156.0}), (5, {40: 2857301256.0}), (6, {40: 2857919196.0}), (7, {40: 2858661530.0}), (8, {43: 2859095458.0}), (9, {40: 2925623555.0}), (10, {40: 2925779322.0}), (11, {40: 2925863228.0}), (12, {40: 2925964302.0}), (13, {40: 2926026697.0}), (14, {40: 2925996343.0}), (15, {51: 2926077702.0}), (16, {51: 2925872696.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_23
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_23: 6.00 seconds
+PDAG #SqueezeNetReLU64k_comp_24 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_24
+  this_in_budgets: [(1, {40: 2977530715.0}), (2, {40: 3021692833.0}), (3, {40: 3040150831.0}), (4, {40: 3060924228.0}), (5, {40: 3069827878.0}), (6, {40: 3073441500.0}), (7, {40: 3077208013.0}), (8, {40: 3088575384.0}), (9, {40: 3093042590.0}), (10, {40: 3095501698.0}), (11, {40: 3095429563.0}), (12, {40: 3095411859.0}), (13, {40: 3095521263.0}), (14, {40: 3095559280.0}), (15, {40: 3095447366.0}), (16, {51: 3095350906.0})]
+PDAG #SqueezeNetReLU64k_comp_24 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_24
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_24: 0.48 seconds
+PDAG #SqueezeNetReLU64k_comp_25 Basic, DAG size: 86 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_25
+  this_in_budgets: [(1, {40: 3172179951.0}), (2, {40: 3172183553.0}), (3, {40: 3174581593.0}), (4, {40: 3174829707.0}), (5, {40: 3175156807.0}), (6, {40: 3175774747.0}), (7, {40: 3176517081.0}), (8, {43: 3176932862.0}), (9, {40: 3243460959.0}), (10, {40: 3243634873.0}), (11, {40: 3243700632.0}), (12, {40: 3243801706.0}), (13, {40: 3243957057.0}), (14, {40: 3243833747.0}), (15, {51: 3244034756.0}), (16, {51: 3243710100.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_25
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_25: 6.58 seconds
+PDAG #SqueezeNetReLU64k_comp_26 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_26
+  this_in_budgets: [(1, {40: 3364191162.0}), (2, {40: 3432859161.0}), (3, {40: 3449188729.0}), (4, {40: 3453742048.0}), (5, {40: 3467111173.0}), (6, {40: 3471701509.0}), (7, {40: 3477195285.0}), (8, {40: 3493363761.0}), (9, {40: 3499322207.0}), (10, {40: 3506180561.0}), (11, {40: 3508471407.0}), (12, {40: 3508487256.0}), (13, {40: 3508803871.0}), (14, {40: 3508499968.0}), (15, {40: 3508812126.0}), (16, {51: 3508393048.0})]
+PDAG #SqueezeNetReLU64k_comp_26 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_26
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_26: 0.49 seconds
+PDAG #SqueezeNetReLU64k_comp_27 Basic, DAG size: 86 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_27
+  this_in_budgets: [(1, {40: 3578459568.0}), (2, {40: 3578463170.0}), (3, {40: 3587640118.0}), (4, {40: 3587871849.0}), (5, {40: 3588198949.0}), (6, {40: 3588816889.0}), (7, {40: 3589559223.0}), (8, {43: 3590036528.0}), (9, {40: 3655558028.0}), (10, {40: 3656677015.0}), (11, {40: 3656764910.0}), (12, {40: 3657166466.0}), (13, {40: 3657321817.0}), (14, {40: 3657198507.0}), (15, {51: 3656985532.0}), (16, {51: 3656990952.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_27
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_27: 6.57 seconds
+PDAG #SqueezeNetReLU64k_comp_28 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_28
+  this_in_budgets: [(1, {40: 3784550088.0}), (2, {40: 3856984423.0}), (3, {40: 3875160761.0}), (4, {40: 3881074208.0}), (5, {40: 3898802856.0}), (6, {40: 3906150448.0}), (7, {40: 3913315707.0}), (8, {40: 3934456349.0}), (9, {40: 3934119190.0}), (10, {40: 3934122121.0}), (11, {40: 3934128638.0}), (12, {40: 3934238677.0}), (13, {40: 3934459879.0}), (14, {40: 3934598812.0}), (15, {40: 3934714004.0}), (16, {51: 3934048254.0})]
+PDAG #SqueezeNetReLU64k_comp_28 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_28
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_28: 0.48 seconds
+PDAG #SqueezeNetReLU64k_comp_29 Basic, DAG size: 58 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_29
+  this_in_budgets: [(1, {40: 4012686191.0}), (2, {40: 4013075467.0}), (3, {40: 4013295324.0}), (4, {40: 4013527055.0}), (5, {40: 4013854155.0}), (6, {40: 4014472095.0}), (7, {40: 4015214429.0}), (8, {43: 4015691734.0}), (9, {40: 4082556365.0}), (10, {40: 4082332221.0}), (11, {40: 4082420116.0}), (12, {40: 4083023646.0}), (13, {40: 4082993914.0}), (14, {40: 4083100385.0}), (15, {51: 4082751324.0}), (16, {51: 4082942494.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_29
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_29: 2.50 seconds
+PDAG #SqueezeNetReLU64k_comp_30 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_30
+  this_in_budgets: [(1, {40: 4190474250.0}), (2, {40: 4215576286.0}), (3, {40: 4243851438.0}), (4, {40: 4321391754.0}), (5, {40: 4354841965.0}), (6, {40: 4354335642.0}), (7, {40: 4354344031.0}), (8, {40: 4354714350.0}), (9, {40: 4354648942.0}), (10, {40: 4354311367.0}), (11, {40: 4354388721.0}), (12, {40: 4354336914.0}), (13, {40: 4354469926.0}), (14, {40: 4354452555.0}), (15, {40: 4354360399.0}), (16, {51: 4312455115.0})]
+PDAG #SqueezeNetReLU64k_comp_30 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_30
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_30: 0.52 seconds
+PDAG #SqueezeNetReLU64k_comp_31 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_31
+  this_in_budgets: [(1, {40: 4391274479.0}), (2, {40: 4391896058.0}), (3, {40: 4392181353.0}), (4, {40: 4393340140.0}), (5, {40: 4393676055.0}), (6, {40: 4393657568.0}), (7, {40: 4394147009.0}), (8, {43: 4395236849.0}), (9, {40: 4461168545.0}), (10, {40: 4461533706.0}), (11, {40: 4461504504.0}), (12, {40: 4461671608.0}), (13, {40: 4461739277.0}), (14, {40: 4461901979.0}), (15, {51: 4461947122.0}), (16, {51: 4461508974.0})]
+PDAG #SqueezeNetReLU64k_comp_31 is equivalent to PDAG #SqueezeNetReLU64k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_31
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_31: 0.51 seconds
+PDAG #SqueezeNetReLU64k_comp_32 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_32
+  this_in_budgets: [(1, {40: 4539404203.0}), (2, {40: 4540141590.0}), (3, {40: 4540884163.0}), (4, {40: 4540991140.0}), (5, {40: 4541655660.0}), (6, {40: 4541961665.0}), (7, {40: 4542436186.0}), (8, {43: 4543036031.0}), (9, {40: 4609586006.0}), (10, {40: 4609616978.0}), (11, {40: 4609695474.0}), (12, {40: 4609712085.0}), (13, {40: 4609902824.0}), (14, {40: 4609935936.0}), (15, {40: 4610112854.0}), (16, {51: 4610227411.0})]
+PDAG #SqueezeNetReLU64k_comp_32 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_32
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_32: 0.52 seconds
+PDAG #SqueezeNetReLU64k_comp_33 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_33
+  this_in_budgets: [(1, {40: 4688678392.0}), (2, {40: 4689090695.0}), (3, {40: 4689953649.0}), (4, {40: 4690489698.0}), (5, {40: 4690950199.0}), (6, {40: 4691408750.0}), (7, {40: 4691919305.0}), (8, {43: 4692578134.0}), (9, {40: 4758940841.0}), (10, {40: 4758945915.0}), (11, {40: 4759114018.0}), (12, {40: 4759219682.0}), (13, {40: 4759226005.0}), (14, {40: 4759312568.0}), (15, {51: 4759222143.0}), (16, {51: 4759192871.0})]
+PDAG #SqueezeNetReLU64k_comp_33 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_33
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_33: 0.47 seconds
+PDAG #SqueezeNetReLU64k_comp_34 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_34
+  this_in_budgets: [(1, {40: 4838007329.0}), (2, {40: 4838419632.0}), (3, {40: 4838919109.0}), (4, {40: 4839559184.0}), (5, {40: 4840065468.0}), (6, {40: 4840395324.0}), (7, {40: 4840884765.0}), (8, {43: 4841664783.0}), (9, {40: 4907906301.0}), (10, {40: 4908080714.0}), (11, {40: 4908183504.0}), (12, {40: 4908409364.0}), (13, {40: 4908295491.0}), (14, {40: 4908639735.0}), (15, {51: 4908304285.0}), (16, {51: 4908246730.0})]
+PDAG #SqueezeNetReLU64k_comp_34 is equivalent to PDAG #SqueezeNetReLU64k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_34
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_34: 0.51 seconds
+PDAG #SqueezeNetReLU64k_comp_35 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_35
+  this_in_budgets: [(1, {40: 4986141959.0}), (2, {40: 4986879346.0}), (3, {40: 4987621919.0}), (4, {40: 4987728896.0}), (5, {40: 4988330554.0}), (6, {40: 4988699421.0}), (7, {40: 4989173942.0}), (8, {43: 4989773787.0}), (9, {40: 5056323762.0}), (10, {40: 5056354734.0}), (11, {40: 5056433230.0}), (12, {40: 5056449841.0}), (13, {40: 5056633152.0}), (14, {40: 5056673692.0}), (15, {40: 5056850610.0}), (16, {51: 5056584574.0})]
+PDAG #SqueezeNetReLU64k_comp_35 is equivalent to PDAG #SqueezeNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_35
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_35: 0.51 seconds
+PDAG #SqueezeNetReLU64k_comp_36 Basic, DAG size: 49 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_36
+  this_in_budgets: [(1, {40: 5135403938.0}), (2, {40: 5135828451.0}), (3, {40: 5136310812.0}), (4, {40: 5137227454.0}), (5, {40: 5137687955.0}), (6, {40: 5137787027.0}), (7, {40: 5138276468.0}), (8, {43: 5139315890.0}), (9, {40: 5205298004.0}), (10, {40: 5205663165.0}), (11, {40: 5205633963.0}), (12, {40: 5205801067.0}), (13, {40: 5205868736.0}), (14, {40: 5206031438.0}), (15, {51: 5205959899.0}), (16, {51: 5205638433.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_36
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_36: 2.78 seconds
+PDAG #SqueezeNetReLU64k_comp_37 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_37
+  this_in_budgets: [(1, {40: 5192627611.0}), (2, {40: 5206973966.0}), (3, {40: 5216291030.0}), (4, {40: 5236990357.0}), (5, {40: 5256087845.0}), (6, {40: 5285653399.0}), (7, {40: 5285680324.0}), (8, {40: 5285669999.0}), (9, {40: 5285678640.0}), (10, {40: 5285680463.0}), (11, {40: 5285726912.0}), (12, {40: 5285699316.0}), (13, {40: 5285725778.0}), (14, {40: 5285760955.0}), (15, {40: 5285744499.0}), (16, {51: 5285626242.0})]
+PDAG #SqueezeNetReLU64k_comp_37 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_37
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_37: 0.48 seconds
+PDAG #SqueezeNetReLU64k_comp_38 Basic, DAG size: 104 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_38
+  this_in_budgets: [(1, {40: 5363951030.0}), (2, {40: 5364382561.0}), (3, {40: 5364873312.0}), (4, {40: 5365105043.0}), (5, {40: 5365432143.0}), (6, {40: 5366050083.0}), (7, {40: 5366758129.0}), (8, {43: 5367229995.0}), (9, {40: 5433758092.0}), (10, {40: 5433910209.0}), (11, {40: 5433946774.0}), (12, {40: 5434098839.0}), (13, {40: 5434045335.0}), (14, {40: 5434130880.0}), (15, {51: 5434246519.0}), (16, {51: 5434007233.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_38
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_38: 22.88 seconds
+PDAG #SqueezeNetReLU64k_comp_39 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_39
+  this_in_budgets: [(1, {40: 5614306526.0}), (2, {40: 5703719369.0}), (3, {40: 5687441635.0}), (4, {40: 5687461496.0}), (5, {40: 5688997817.0}), (6, {40: 5689757813.0}), (7, {40: 5690457010.0}), (8, {40: 5692400162.0}), (9, {40: 5693336130.0}), (10, {40: 5694805788.0}), (11, {40: 5696619138.0}), (12, {40: 5697611368.0}), (13, {40: 5698624906.0}), (14, {40: 5701280853.0}), (15, {40: 5756332875.0}), (16, {51: 5756761112.0})]
+PDAG #SqueezeNetReLU64k_comp_39 is equivalent to PDAG #SqueezeNetReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_39
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_39: 0.49 seconds
+PDAG #SqueezeNetReLU64k_comp_40 Basic, DAG size: 13 nodes
+Adding QBP for PDAG #SqueezeNetReLU64k_comp_40
+  this_in_budgets: [(1, {40: 5772473491.0}), (2, {40: 5772477093.0}), (3, {40: 5780574243.0}), (4, {40: 5781149987.0}), (5, {40: 5781467729.0}), (6, {40: 5782210306.0}), (7, {40: 5782480565.0}), (8, {43: 5783019293.0}), (9, {40: 5844183255.0}), (10, {40: 5845513517.0}), (11, {40: 5846962888.0}), (12, {40: 5847745106.0}), (13, {40: 5850271823.0}), (14, {51: 5850015510.0}), (15, {51: 5849766417.0}), (16, {51: 5849771837.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #SqueezeNetReLU64k_comp_40
+Partition solving time for PDAG #SqueezeNetReLU64k_comp_40: 0.43 seconds
+Final Choice: input (l,s)=(16,40), output (l,s)=(1,80), cost=5773466763.0
+Final cost (aggregated partition cost): 5773.467 sec.
+Final assignment latency: 5773.469 sec.
+	RDAG: Squashing ['dummy']!
+Final tdag latency: 5772.105 sec. (accurate estimation)
+Final tdag latency breakdown (number of operations):
+  add_double: 6651 ops.
+  add_single: 328 ops.
+  bootstrap_single: 55 ops.
+  modswitch_single: 974 ops.
+  mul_double: 756 ops.
+  mul_single: 5346 ops.
+  negate_single: 130 ops.
+  rescale_single: 1816 ops.
+  rotate_single: 12413 ops.
+  upscale_single: 2034 ops.
+========================================
+Final tdag latency breakdown (in sec):
+  add_double: 9.560 sec.
+  add_single: 14.215 sec.
+  bootstrap_single: 3812.636 sec.
+  modswitch_single: 1.279 sec.
+  mul_double: 162.315 sec.
+  mul_single: 221.603 sec.
+  negate_single: 0.539 sec.
+  rescale_single: 68.339 sec.
+  rotate_single: 1474.724 sec.
+  upscale_single: 6.895 sec.
+========================================
+Saturn Compilation time: 199.554 sec.
+Timestamps breakdown:
+  'DAG Load Time': 0.534 sec.
+  'DAG Compression Time': 0.472 sec.
+  'QBP Manager Init Time': 0.000 sec.
+  'ILP-QBP Time': 197.946 sec.
+  'Final Assignment Time': 0.000 sec.
+  'DAG Decode Time': 0.495 sec.
+  'DAG Write Time': 0.106 sec.
+========================================

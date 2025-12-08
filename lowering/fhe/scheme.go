@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
-	"os"
 	"path/filepath"
-	"runtime/pprof"
 	"strconv"
 	"strings"
 	"time"
@@ -382,20 +380,10 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphertext, time.Duration, error) {
 	var finalResult *rlwe.Ciphertext
 	want := make([]float64, lattigo.n)
-	var f *os.File
-	// if lattigo.outputFile != "" {
-	// 	f, _ = os.Create(filepath.Join("outputs", lattigo.outputFile) + ".prof")
-	// } else {
-	// 	f, _ = os.Create(filepath.Join("outputs", "profile.prof"))
-	// }
-	f, _ = os.Create(filepath.Join("outputs", "profile.prof"))
-	pprof.StartCPUProfile(f)
-	// bar := progressbar.NewOptions(numOps,
-	// 	progressbar.OptionSetWidth(50),
-	// 	progressbar.OptionShowCount(),
-	// 	progressbar.OptionShowIts(),
-	// 	progressbar.OptionSetItsString("ops"),
-	// )
+	// var f *os.File
+
+	// f, _ = os.Create(filepath.Join("outputs", "profile.prof"))
+	// pprof.StartCPUProfile(f)
 
 	order_list, _, _ := lattigo.getOptimalRunOrder(numOps)
 	naive_list := make([]int, numOps)
@@ -445,12 +433,10 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 		if i%1000 == 0 {
 			fmt.Println("lineNum: ", i)
 		}
-		// bar.Set(lineNum + 1)
 	}
 	runtime := time.Since(startTime)
-	// bar.Finish()
-	pprof.StopCPUProfile()
-	f.Close()
+	// pprof.StopCPUProfile()
+	// f.Close()
 	fmt.Println()
 
 	return want, finalResult, runtime, nil

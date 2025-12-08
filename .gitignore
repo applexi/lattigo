@@ -53,3 +53,7 @@ _testmain.go
 # generated
 /Coding
 
+lowering/fhe_binary
+lowering/inputs/
+lowering/mlir_const/
+lowering/execution_res/

@@ -1,0 +1,191 @@
+	RDAG: Squashing ['rescale', 'upscale', 'modswitch', 'bootstrap']!
+Built original DAG with 17965 nodes and 24000 edges.
+After Squashing, DAG has 14812 nodes and 20847 edges.
+After Compression, DAG has 3454 nodes and 4703 edges.
+PDAG #ResNetReLU16k_comp_0 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_0
+  this_in_budgets: [(-1, {40: 0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 16 / 16 ILP tasks for PDAG #ResNetReLU16k_comp_0
+Set parameter WLSAccessID
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Freeing default Gurobi environment
+Partition solving time for PDAG #ResNetReLU16k_comp_0: 2.03 seconds
+PDAG #ResNetReLU16k_comp_1 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_1
+  this_in_budgets: [(1, {40: 992800}), (2, {40: 1269247}), (3, {40: 1428969}), (4, {40: 1666845}), (5, {40: 2028389}), (6, {40: 2231238}), (7, {40: 2525605}), (8, {40: 2973239}), (9, {40: 3200105}), (10, {40: 3547581}), (11, {40: 4087200}), (12, {40: 4344244}), (13, {40: 4740580}), (14, {40: 5348052}), (15, {69: 5463209}), (16, {51: 15482298.538461538})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_1
+Partition solving time for PDAG #ResNetReLU16k_comp_1: 20.19 seconds
+PDAG #ResNetReLU16k_comp_2 Basic, DAG size: 194 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_2
+  this_in_budgets: [(1, {40: 19359294.538461536}), (2, {40: 19534708.538461536}), (3, {40: 21636883.538461536}), (4, {40: 21751164.538461536}), (5, {40: 21923243.538461536}), (6, {40: 22023737.538461536}), (7, {40: 22136244.538461536}), (8, {43: 22216926.538461536}), (9, {40: 33996670.07692307}), (10, {40: 34549657.07692307}), (11, {40: 34792091.07692307}), (12, {40: 35123431.07692307}), (13, {40: 35700326.07692307}), (14, {51: 35590340.07692307}), (15, {51: 35623509.07692307}), (16, {51: 35625428.07692307})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_2
+Partition solving time for PDAG #ResNetReLU16k_comp_2: 48.26 seconds
+PDAG #ResNetReLU16k_comp_3 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_3
+  this_in_budgets: [(1, {40: 58460246.61538461}), (2, {40: 59280246.61538461}), (3, {40: 59687997.61538461}), (4, {40: 60372868.61538461}), (5, {40: 61441789.61538461}), (6, {40: 62254723.61538461}), (7, {40: 76251031.15384614}), (8, {40: 82540378.15384614}), (9, {40: 84422889.15384614}), (10, {40: 85478699.15384614}), (11, {40: 89043214.15384614}), (12, {40: 89668888.15384614}), (13, {40: 90328274.15384614}), (14, {40: 92067042.15384614}), (15, {51: 73714882.15384614}), (16, {51: 73730934.15384614})]
+PDAG #ResNetReLU16k_comp_3 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_3
+Partition solving time for PDAG #ResNetReLU16k_comp_3: 2.42 seconds
+PDAG #ResNetReLU16k_comp_4 Basic, DAG size: 194 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_4
+  this_in_budgets: [(1, {40: 89728962.69230768}), (2, {40: 89881413.69230768}), (3, {40: 89973336.69230768}), (4, {40: 90045580.69230768}), (5, {40: 90179388.69230768}), (6, {40: 90347596.69230768}), (7, {40: 90502513.69230768}), (8, {43: 90505380.69230768}), (9, {40: 103921460.23076922}), (10, {40: 103954006.23076922}), (11, {40: 103999843.23076922}), (12, {40: 103879998.23076922}), (13, {40: 103984974.23076922}), (14, {40: 104046870.23076922}), (15, {51: 104022091.23076922}), (16, {51: 103912804.23076922})]
+PDAG #ResNetReLU16k_comp_4 is equivalent to PDAG #ResNetReLU16k_comp_2
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_4
+Partition solving time for PDAG #ResNetReLU16k_comp_4: 5.99 seconds
+PDAG #ResNetReLU16k_comp_5 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_5
+  this_in_budgets: [(1, {40: 126716391.76923075}), (2, {40: 127566309.76923075}), (3, {40: 127944142.76923075}), (4, {40: 128629013.76923075}), (5, {40: 129697934.76923075}), (6, {40: 130554905.76923075}), (7, {40: 144539485.3076923}), (8, {40: 151296945.3076923}), (9, {40: 152668973.3076923}), (10, {40: 153766075.3076923}), (11, {40: 157379667.3076923}), (12, {40: 157956264.3076923}), (13, {40: 158615650.3076923}), (14, {40: 160354418.3076923}), (15, {51: 141971027.3076923}), (16, {51: 141987079.3076923})]
+PDAG #ResNetReLU16k_comp_5 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_5
+Partition solving time for PDAG #ResNetReLU16k_comp_5: 0.45 seconds
+PDAG #ResNetReLU16k_comp_6 Basic, DAG size: 194 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_6
+  this_in_budgets: [(1, {40: 157985107.84615383}), (2, {40: 158137558.84615383}), (3, {40: 158229481.84615383}), (4, {40: 158301725.84615383}), (5, {40: 158435533.84615383}), (6, {40: 158603741.84615383}), (7, {40: 158758658.84615383}), (8, {43: 158761525.84615383}), (9, {40: 172177605.38461536}), (10, {40: 172210151.38461536}), (11, {40: 172255988.38461536}), (12, {40: 172136143.38461536}), (13, {40: 172241119.38461536}), (14, {40: 172303015.38461536}), (15, {51: 172278236.38461536}), (16, {51: 172168949.38461536})]
+PDAG #ResNetReLU16k_comp_6 is equivalent to PDAG #ResNetReLU16k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_6
+Partition solving time for PDAG #ResNetReLU16k_comp_6: 0.57 seconds
+PDAG #ResNetReLU16k_comp_7 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_7
+  this_in_budgets: [(1, {40: 194972536.9230769}), (2, {40: 195822454.9230769}), (3, {40: 196200287.9230769}), (4, {40: 196885158.9230769}), (5, {40: 197954079.9230769}), (6, {40: 198811050.9230769}), (7, {40: 212795630.46153843}), (8, {40: 219553090.46153843}), (9, {40: 220925118.46153843}), (10, {40: 222022220.46153843}), (11, {40: 225635812.46153843}), (12, {40: 226212409.46153843}), (13, {40: 226871795.46153843}), (14, {40: 228610563.46153843}), (15, {51: 210227172.46153843}), (16, {51: 210243224.46153843})]
+PDAG #ResNetReLU16k_comp_7 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_7
+Partition solving time for PDAG #ResNetReLU16k_comp_7: 0.48 seconds
+PDAG #ResNetReLU16k_comp_8 Basic, DAG size: 207 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_8
+  this_in_budgets: [(1, {40: 226241252.99999997}), (2, {40: 226393703.99999997}), (3, {40: 226485626.99999997}), (4, {40: 226557870.99999997}), (5, {40: 226691678.99999997}), (6, {40: 226859886.99999997}), (7, {40: 227014803.99999997}), (8, {43: 227017670.99999997}), (9, {40: 240433750.5384615}), (10, {40: 240466296.5384615}), (11, {40: 240512133.5384615}), (12, {40: 240392288.5384615}), (13, {40: 240497264.5384615}), (14, {40: 240559160.5384615}), (15, {51: 240534381.5384615}), (16, {51: 240425094.5384615})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_8
+Partition solving time for PDAG #ResNetReLU16k_comp_8: 43.00 seconds
+PDAG #ResNetReLU16k_comp_9 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_9
+  this_in_budgets: [(1, {40: 268620346.076923}), (2, {40: 270307060.076923}), (3, {40: 271089323.076923}), (4, {40: 272253695.076923}), (5, {40: 274027881.076923}), (6, {40: 275553581.076923}), (7, {40: 286209102.6153846}), (8, {40: 299033681.15384614}), (9, {40: 299229132.15384614}), (10, {40: 299212062.15384614}), (11, {40: 299247541.15384614}), (12, {40: 299135304.15384614}), (13, {40: 299134568.15384614}), (14, {40: 299109782.15384614}), (15, {40: 299147209.15384614}), (16, {51: 285102919.6153846})]
+PDAG #ResNetReLU16k_comp_9 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_9
+Partition solving time for PDAG #ResNetReLU16k_comp_9: 2.04 seconds
+PDAG #ResNetReLU16k_comp_10 Basic, DAG size: 202 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_10
+  this_in_budgets: [(1, {40: 301199799.1538461}), (2, {40: 301326470.1538461}), (3, {40: 301417511.1538461}), (4, {40: 301530252.15384614}), (5, {40: 301580714.1538461}), (6, {40: 301724504.15384614}), (7, {40: 301874499.15384614}), (8, {43: 301906706.1538461}), (9, {40: 315311334.69230765}), (10, {40: 315410370.69230765}), (11, {40: 315401168.69230765}), (12, {40: 315417669.69230765}), (13, {40: 315356959.69230765}), (14, {40: 315537648.69230765}), (15, {51: 315456920.69230765}), (16, {51: 315414308.69230765})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_10
+Partition solving time for PDAG #ResNetReLU16k_comp_10: 42.90 seconds
+PDAG #ResNetReLU16k_comp_11 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_11
+  this_in_budgets: [(1, {40: 340540273.23076916}), (2, {40: 341844256.23076916}), (3, {40: 342654957.2307692}), (4, {40: 343335589.23076916}), (5, {40: 345192345.23076916}), (6, {40: 346119857.2307692}), (7, {40: 356903600.7692307}), (8, {40: 370354285.3076923}), (9, {40: 370404124.3076923}), (10, {40: 370405674.3076922}), (11, {40: 370402002.3076923}), (12, {40: 370401332.3076923}), (13, {40: 370504421.3076923}), (14, {40: 370505466.3076923}), (15, {40: 370694661.3076923}), (16, {51: 356497170.7692307})]
+PDAG #ResNetReLU16k_comp_11 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_11
+Partition solving time for PDAG #ResNetReLU16k_comp_11: 0.45 seconds
+PDAG #ResNetReLU16k_comp_12 Basic, DAG size: 202 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_12
+  this_in_budgets: [(1, {40: 372673264.3076923}), (2, {40: 372758649.3076923}), (3, {40: 372856852.3076923}), (4, {40: 372924503.3076923}), (5, {40: 373029218.3076923}), (6, {40: 373118755.3076923}), (7, {40: 373268750.3076923}), (8, {43: 373411118.3076923}), (9, {40: 386705585.8461538}), (10, {40: 386804621.8461538}), (11, {40: 386829825.8461538}), (12, {40: 386811920.8461538}), (13, {40: 386751210.8461538}), (14, {40: 386931899.8461538}), (15, {51: 386881655.8461538}), (16, {51: 386833397.8461538})]
+PDAG #ResNetReLU16k_comp_12 is equivalent to PDAG #ResNetReLU16k_comp_10
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_12
+Partition solving time for PDAG #ResNetReLU16k_comp_12: 0.60 seconds
+PDAG #ResNetReLU16k_comp_13 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_13
+  this_in_budgets: [(1, {40: 411988777.38461536}), (2, {40: 413292760.38461536}), (3, {40: 414049208.38461536}), (4, {40: 414784093.38461536}), (5, {40: 416640849.38461536}), (6, {40: 417514108.38461536}), (7, {40: 428304040.92307687}), (8, {40: 441748536.46153843}), (9, {40: 441798375.46153843}), (10, {40: 441845015.46153843}), (11, {40: 441796253.46153843}), (12, {40: 441795583.46153843}), (13, {40: 441929156.46153843}), (14, {40: 441930201.46153843}), (15, {40: 442088912.46153843}), (16, {51: 427945674.92307687})]
+PDAG #ResNetReLU16k_comp_13 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_13
+Partition solving time for PDAG #ResNetReLU16k_comp_13: 0.44 seconds
+PDAG #ResNetReLU16k_comp_14 Basic, DAG size: 217 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_14
+  this_in_budgets: [(1, {40: 444121768.46153843}), (2, {40: 444207153.46153843}), (3, {40: 444305356.46153843}), (4, {40: 444373007.46153843}), (5, {40: 444477722.46153843}), (6, {40: 444567259.46153843}), (7, {40: 444717254.46153843}), (8, {43: 444859622.46153843}), (9, {40: 458154089.99999994}), (10, {40: 458253125.99999994}), (11, {40: 458278329.99999994}), (12, {40: 458260424.99999994}), (13, {40: 458199714.99999994}), (14, {40: 458380403.99999994}), (15, {51: 458330159.99999994}), (16, {51: 458281901.99999994})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_14
+Partition solving time for PDAG #ResNetReLU16k_comp_14: 48.95 seconds
+PDAG #ResNetReLU16k_comp_15 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_15
+  this_in_budgets: [(1, {40: 492472584.5384615}), (2, {40: 494926675.5384615}), (3, {40: 496397382.5384615}), (4, {40: 497825576.5384615}), (5, {40: 501274993.5384615}), (6, {40: 503460544.5384615}), (7, {40: 511607825.076923}), (8, {40: 524488569.6153846}), (9, {40: 524382795.6153846}), (10, {40: 524301914.6153846}), (11, {40: 524441620.6153846}), (12, {40: 524374430.6153846}), (13, {40: 524408038.6153846}), (14, {40: 524598789.6153846}), (15, {40: 524386887.6153846}), (16, {51: 510513929.076923})]
+PDAG #ResNetReLU16k_comp_15 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_15
+Partition solving time for PDAG #ResNetReLU16k_comp_15: 0.48 seconds
+PDAG #ResNetReLU16k_comp_16 Basic, DAG size: 210 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_16
+  this_in_budgets: [(1, {40: 526507858.6153846}), (2, {40: 526634529.6153846}), (3, {40: 526725570.6153846}), (4, {40: 526902478.6153846}), (5, {40: 526888773.6153846}), (6, {40: 527135513.6153846}), (7, {40: 527247858.6153846}), (8, {43: 527214765.6153846}), (9, {40: 540630845.1538461}), (10, {40: 540759076.1538461}), (11, {40: 540709228.1538461}), (12, {40: 540789046.1538461}), (13, {40: 540722851.1538461}), (14, {40: 540927144.1538461}), (15, {51: 540764980.1538461}), (16, {51: 540722368.1538461})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_16
+Partition solving time for PDAG #ResNetReLU16k_comp_16: 51.49 seconds
+PDAG #ResNetReLU16k_comp_17 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_17
+  this_in_budgets: [(1, {40: 571574329.6923077}), (2, {40: 573923115.6923077}), (3, {40: 575229063.6923077}), (4, {40: 576401915.6923077}), (5, {40: 579541663.6923077}), (6, {40: 581259269.6923077}), (7, {40: 589349233.2307692}), (8, {40: 602760336.7692307}), (9, {40: 602713247.7692307}), (10, {40: 602790073.7692307}), (11, {40: 602780747.7692307}), (12, {40: 602822935.7692307}), (13, {40: 602870202.7692307}), (14, {40: 602811757.7692307}), (15, {40: 602878381.7692307}), (16, {51: 589102902.2307692})]
+PDAG #ResNetReLU16k_comp_17 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_17
+Partition solving time for PDAG #ResNetReLU16k_comp_17: 0.48 seconds
+PDAG #ResNetReLU16k_comp_18 Basic, DAG size: 210 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_18
+  this_in_budgets: [(1, {40: 605278995.7692307}), (2, {40: 605364380.7692307}), (3, {40: 605462583.7692307}), (4, {40: 605530234.7692307}), (5, {40: 605634949.7692307}), (6, {40: 605724486.7692307}), (7, {40: 605874481.7692307}), (8, {43: 606016849.7692307}), (9, {40: 619311317.3076923}), (10, {40: 619410353.3076923}), (11, {40: 619435557.3076923}), (12, {40: 619417652.3076923}), (13, {40: 619356942.3076923}), (14, {40: 619537631.3076923}), (15, {51: 619487387.3076923}), (16, {51: 619439129.3076923})]
+PDAG #ResNetReLU16k_comp_18 is equivalent to PDAG #ResNetReLU16k_comp_16
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_18
+Partition solving time for PDAG #ResNetReLU16k_comp_18: 0.62 seconds
+PDAG #ResNetReLU16k_comp_19 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_19
+  this_in_budgets: [(1, {40: 650320505.8461537}), (2, {40: 652655319.8461537}), (3, {40: 653975239.8461537}), (4, {40: 655148091.8461537}), (5, {40: 658287839.8461537}), (6, {40: 659935668.8461537}), (7, {40: 668021754.3846153}), (8, {40: 681440808.9230769}), (9, {40: 681393719.9230769}), (10, {40: 681458173.9230769}), (11, {40: 681476446.9230769}), (12, {40: 681457026.9230769}), (13, {40: 681605410.9230769}), (14, {40: 681548770.9230769}), (15, {40: 681595142.9230769}), (16, {51: 667774232.3846153})]
+PDAG #ResNetReLU16k_comp_19 is equivalent to PDAG #ResNetReLU16k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_19
+Partition solving time for PDAG #ResNetReLU16k_comp_19: 0.45 seconds
+PDAG #ResNetReLU16k_comp_20 Basic, DAG size: 32 nodes
+Adding QBP for PDAG #ResNetReLU16k_comp_20
+  this_in_budgets: [(1, {40: 683950325.9230769}), (2, {40: 684035710.9230769}), (3, {40: 684133913.9230769}), (4, {40: 684201564.9230769}), (5, {40: 684306279.9230769}), (6, {40: 684395816.9230769}), (7, {40: 684545811.9230769}), (8, {43: 684688179.9230769}), (9, {40: 697982647.4615384}), (10, {40: 698081683.4615384}), (11, {40: 698106887.4615384}), (12, {40: 698088982.4615384}), (13, {40: 698028272.4615384}), (14, {40: 698208961.4615384}), (15, {51: 698158717.4615384}), (16, {51: 698110459.4615384})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #ResNetReLU16k_comp_20
+Partition solving time for PDAG #ResNetReLU16k_comp_20: 1.15 seconds
+Final Choice: input (l,s)=(16,40), output (l,s)=(1,58), cost=685483574.9230769
+Final cost (aggregated partition cost): 685.484 sec.
+Final assignment latency: 685.484 sec.
+	RDAG: Squashing ['dummy']!
+Final tdag latency: 685.186 sec. (accurate estimation)
+Final tdag latency breakdown (number of operations):
+  add_double: 5523 ops.
+  add_single: 229 ops.
+  bootstrap_single: 37 ops.
+  modswitch_single: 727 ops.
+  mul_double: 513 ops.
+  mul_single: 4442 ops.
+  negate_single: 76 ops.
+  rescale_single: 1211 ops.
+  rotate_single: 3910 ops.
+  upscale_single: 1346 ops.
+========================================
+Final tdag latency breakdown (in sec):
+  add_double: 1.899 sec.
+  add_single: 2.302 sec.
+  bootstrap_single: 517.202 sec.
+  modswitch_single: 0.280 sec.
+  mul_double: 26.594 sec.
+  mul_single: 40.980 sec.
+  negate_single: 0.078 sec.
+  rescale_single: 10.101 sec.
+  rotate_single: 84.600 sec.
+  upscale_single: 1.149 sec.
+========================================
+Saturn Compilation time: 285.971 sec.
+Timestamps breakdown:
+  'DAG Load Time': 0.577 sec.
+  'DAG Compression Time': 0.317 sec.
+  'QBP Manager Init Time': 0.000 sec.
+  'ILP-QBP Time': 284.632 sec.
+  'Final Assignment Time': 0.000 sec.
+  'DAG Decode Time': 0.367 sec.
+  'DAG Write Time': 0.079 sec.
+========================================

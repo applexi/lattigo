@@ -1,0 +1,317 @@
+	RDAG: Squashing ['rescale', 'upscale', 'modswitch', 'bootstrap']!
+Built original DAG with 46182 nodes and 61008 edges.
+After Squashing, DAG has 37384 nodes and 52210 edges.
+After Compression, DAG has 4512 nodes and 6173 edges.
+PDAG #VGG16ReLU64k_comp_0 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_0
+  this_in_budgets: [(-1, {51: 0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 16 / 16 ILP tasks for PDAG #VGG16ReLU64k_comp_0
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Partition solving time for PDAG #VGG16ReLU64k_comp_0: 0.03 seconds
+PDAG #VGG16ReLU64k_comp_1 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_1
+  this_in_budgets: [(1, {51: 9103305}), (2, {51: 12381470}), (3, {51: 14003368}), (4, {51: 16018807}), (5, {51: 20394476}), (6, {51: 22399230}), (7, {51: 24885863}), (8, {51: 30407275}), (9, {51: 32778781}), (10, {51: 35753634}), (11, {51: 42476395}), (12, {51: 45246402}), (13, {51: 48620646}), (14, {51: 56351162}), (15, {51: 83324018.0}), (16, {51: 83324018.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_1
+Partition solving time for PDAG #VGG16ReLU64k_comp_1: 7.61 seconds
+PDAG #VGG16ReLU64k_comp_2 Basic, DAG size: 22 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_2
+  this_in_budgets: [(1, {51: 181224828.0}), (2, {51: 181629316.0}), (3, {51: 182068990.0}), (4, {51: 182480366.0}), (5, {51: 182952415.0}), (6, {51: 183456460.0}), (7, {51: 251069968.0}), (8, {51: 251124518.0}), (9, {51: 251142540.0}), (10, {51: 251404845.0}), (11, {51: 251403290.0}), (12, {51: 252411937.0}), (13, {51: 251402951.0}), (14, {51: 251401396.0}), (15, {51: 251401396.0}), (16, {51: 251404845.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_2
+Partition solving time for PDAG #VGG16ReLU64k_comp_2: 0.74 seconds
+PDAG #VGG16ReLU64k_comp_3 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_3
+  this_in_budgets: [(1, {51: 222301051.0}), (2, {51: 234898144.0}), (3, {51: 241784783.0}), (4, {51: 261226327.0}), (5, {51: 311105433.0}), (6, {51: 313974873.0}), (7, {51: 313974873.0}), (8, {51: 313974873.0}), (9, {51: 313974873.0}), (10, {51: 313974873.0}), (11, {51: 313974873.0}), (12, {51: 313974873.0}), (13, {51: 313974873.0}), (14, {51: 313974873.0}), (15, {51: 313974873.0}), (16, {51: 313974873.0})]
+PDAG #VGG16ReLU64k_comp_3 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_3
+Partition solving time for PDAG #VGG16ReLU64k_comp_3: 0.45 seconds
+PDAG #VGG16ReLU64k_comp_4 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_4
+  this_in_budgets: [(1, {51: 456578110.0}), (2, {51: 456982872.0}), (3, {51: 457422344.0}), (4, {51: 457832165.0}), (5, {51: 458345139.0}), (6, {51: 458809814.0}), (7, {51: 526420010.0}), (8, {51: 526476317.0}), (9, {51: 526500761.0}), (10, {51: 526521190.0}), (11, {51: 526588637.0}), (12, {51: 526616514.0}), (13, {51: 526643761.0}), (14, {51: 526716067.0}), (15, {51: 526754750.0}), (16, {51: 526758199.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_4
+Partition solving time for PDAG #VGG16ReLU64k_comp_4: 11.65 seconds
+PDAG #VGG16ReLU64k_comp_5 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_5
+  this_in_budgets: [(1, {51: 672237149.0}), (2, {51: 672643169.0}), (3, {51: 673085591.0}), (4, {51: 673496681.0}), (5, {51: 673972162.0}), (6, {51: 674476513.0}), (7, {51: 742104669.0}), (8, {51: 742161456.0}), (9, {51: 742183399.0}), (10, {51: 742299394.0}), (11, {51: 742423980.0}), (12, {51: 742425874.0}), (13, {51: 742423980.0}), (14, {51: 742423980.0}), (15, {51: 742425535.0}), (16, {51: 742425874.0})]
+PDAG #VGG16ReLU64k_comp_5 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_5
+Partition solving time for PDAG #VGG16ReLU64k_comp_5: 0.52 seconds
+PDAG #VGG16ReLU64k_comp_6 Basic, DAG size: 32 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_6
+  this_in_budgets: [(1, {51: 887959295.0}), (2, {51: 888362624.0}), (3, {51: 888863795.0}), (4, {51: 889274885.0}), (5, {51: 889750366.0}), (6, {51: 890254717.0}), (7, {51: 957882873.0}), (8, {51: 957939660.0}), (9, {51: 957961603.0}), (10, {51: 958121749.0}), (11, {51: 958202184.0}), (12, {51: 958204078.0}), (13, {51: 958202184.0}), (14, {51: 958202184.0}), (15, {51: 958203739.0}), (16, {51: 958204078.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_6
+Partition solving time for PDAG #VGG16ReLU64k_comp_6: 1.02 seconds
+PDAG #VGG16ReLU64k_comp_7 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_7
+  this_in_budgets: [(1, {51: 945504912.0}), (2, {51: 963801537.0}), (3, {51: 977897098.0}), (4, {51: 1045985161.0}), (5, {51: 1047220169.0}), (6, {51: 1047220169.0}), (7, {51: 1047220169.0}), (8, {51: 1047220169.0}), (9, {51: 1047220169.0}), (10, {51: 1047220169.0}), (11, {51: 1047220169.0}), (12, {51: 1047240870.0}), (13, {51: 1047243664.0}), (14, {51: 1047220169.0}), (15, {51: 1042997546.0}), (16, {51: 1047251006.0})]
+PDAG #VGG16ReLU64k_comp_7 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_7
+Partition solving time for PDAG #VGG16ReLU64k_comp_7: 0.51 seconds
+PDAG #VGG16ReLU64k_comp_8 Basic, DAG size: 26 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_8
+  this_in_budgets: [(1, {51: 1188470295.0}), (2, {51: 1188873228.0}), (3, {51: 1189314796.0}), (4, {51: 1189724278.0}), (5, {51: 1190198483.0}), (6, {51: 1190701927.0}), (7, {51: 1258313678.0}), (8, {51: 1258368430.0}), (9, {51: 1258391319.0}), (10, {51: 1258413303.0}), (11, {51: 1258478993.0}), (12, {51: 1258505315.0}), (13, {51: 1258532562.0}), (14, {51: 1258607781.0}), (15, {51: 1258646863.0}), (16, {51: 1258646863.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_8
+Partition solving time for PDAG #VGG16ReLU64k_comp_8: 0.88 seconds
+PDAG #VGG16ReLU64k_comp_9 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_9
+  this_in_budgets: [(1, {51: 1267887914.0}), (2, {51: 1271472771.0}), (3, {51: 1282560832.0}), (4, {51: 1320110000.0}), (5, {51: 1351883903.0}), (6, {51: 1351883903.0}), (7, {51: 1351883903.0}), (8, {51: 1351898657.0}), (9, {51: 1351883903.0}), (10, {51: 1351904522.0}), (11, {51: 1351907468.0}), (12, {51: 1351908118.0}), (13, {51: 1351911186.0}), (14, {51: 1351909638.0}), (15, {51: 1351912122.0}), (16, {51: 1351914740.0})]
+PDAG #VGG16ReLU64k_comp_9 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_9
+Partition solving time for PDAG #VGG16ReLU64k_comp_9: 0.46 seconds
+PDAG #VGG16ReLU64k_comp_10 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_10
+  this_in_budgets: [(1, {51: 1497354159.0}), (2, {51: 1497758921.0}), (3, {51: 1498198393.0}), (4, {51: 1498608214.0}), (5, {51: 1499103303.0}), (6, {51: 1499585863.0}), (7, {51: 1567196059.0}), (8, {51: 1567252366.0}), (9, {51: 1567276810.0}), (10, {51: 1567297239.0}), (11, {51: 1567364686.0}), (12, {51: 1567392563.0}), (13, {51: 1567419810.0}), (14, {51: 1567492116.0}), (15, {51: 1567530799.0}), (16, {51: 1567534248.0})]
+PDAG #VGG16ReLU64k_comp_10 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_10
+Partition solving time for PDAG #VGG16ReLU64k_comp_10: 0.54 seconds
+PDAG #VGG16ReLU64k_comp_11 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_11
+  this_in_budgets: [(1, {51: 1713013198.0}), (2, {51: 1713419218.0}), (3, {51: 1713861640.0}), (4, {51: 1714272730.0}), (5, {51: 1714748211.0}), (6, {51: 1715252562.0}), (7, {51: 1782880718.0}), (8, {51: 1782937505.0}), (9, {51: 1782959448.0}), (10, {51: 1783075443.0}), (11, {51: 1783200029.0}), (12, {51: 1783201923.0}), (13, {51: 1783200029.0}), (14, {51: 1783200029.0}), (15, {51: 1783201584.0}), (16, {51: 1783201923.0})]
+PDAG #VGG16ReLU64k_comp_11 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_11
+Partition solving time for PDAG #VGG16ReLU64k_comp_11: 0.53 seconds
+PDAG #VGG16ReLU64k_comp_12 Basic, DAG size: 38 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_12
+  this_in_budgets: [(1, {51: 1928735344.0}), (2, {51: 1929138673.0}), (3, {51: 1929639844.0}), (4, {51: 1930050934.0}), (5, {51: 1930526415.0}), (6, {51: 1931030766.0}), (7, {51: 1998658922.0}), (8, {51: 1998715709.0}), (9, {51: 1998737652.0}), (10, {51: 1998897798.0}), (11, {51: 1998978233.0}), (12, {51: 1998980127.0}), (13, {51: 1998978233.0}), (14, {51: 1998978233.0}), (15, {51: 1998979788.0}), (16, {51: 1998980127.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_12
+Partition solving time for PDAG #VGG16ReLU64k_comp_12: 1.34 seconds
+PDAG #VGG16ReLU64k_comp_13 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_13
+  this_in_budgets: [(1, {51: 2021582155.0}), (2, {51: 2057537590.0}), (3, {51: 2080571237.0}), (4, {51: 2144678738.0}), (5, {51: 2144677314.0}), (6, {51: 2144677314.0}), (7, {51: 2144677314.0}), (8, {51: 2144677314.0}), (9, {51: 2144677314.0}), (10, {51: 2144677314.0}), (11, {51: 2144677314.0}), (12, {51: 2144677314.0}), (13, {51: 2144674893.0}), (14, {51: 2144677314.0}), (15, {51: 2144677314.0}), (16, {51: 2144677314.0})]
+PDAG #VGG16ReLU64k_comp_13 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_13
+Partition solving time for PDAG #VGG16ReLU64k_comp_13: 0.51 seconds
+PDAG #VGG16ReLU64k_comp_14 Basic, DAG size: 30 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_14
+  this_in_budgets: [(1, {51: 2290147642.0}), (2, {51: 2290550575.0}), (3, {51: 2290991804.0}), (4, {51: 2291404046.0}), (5, {51: 2291875830.0}), (6, {51: 2292380140.0}), (7, {51: 2359991227.0}), (8, {51: 2360044020.0}), (9, {51: 2360066220.0}), (10, {51: 2360090650.0}), (11, {51: 2360156340.0}), (12, {51: 2360180768.0}), (13, {51: 2360212048.0}), (14, {51: 2360287549.0}), (15, {51: 2360325076.0}), (16, {51: 2360324210.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_14
+Partition solving time for PDAG #VGG16ReLU64k_comp_14: 1.06 seconds
+PDAG #VGG16ReLU64k_comp_15 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_15
+  this_in_budgets: [(1, {51: 2389263189.0}), (2, {51: 2432242524.0}), (3, {51: 2451233777.0}), (4, {51: 2472119389.0}), (5, {51: 2520557024.0}), (6, {51: 2520557024.0}), (7, {51: 2520557024.0}), (8, {51: 2520557024.0}), (9, {51: 2520557024.0}), (10, {51: 2520557024.0}), (11, {51: 2520557024.0}), (12, {51: 2520557024.0}), (13, {51: 2520584307.0}), (14, {51: 2520557024.0}), (15, {51: 2520557024.0}), (16, {51: 2520557024.0})]
+PDAG #VGG16ReLU64k_comp_15 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_15
+Partition solving time for PDAG #VGG16ReLU64k_comp_15: 0.52 seconds
+PDAG #VGG16ReLU64k_comp_16 Basic, DAG size: 30 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_16
+  this_in_budgets: [(1, {51: 2666027104.0}), (2, {51: 2666431866.0}), (3, {51: 2666871338.0}), (4, {51: 2667281159.0}), (5, {51: 2667755805.0}), (6, {51: 2668258808.0}), (7, {51: 2735869004.0}), (8, {51: 2735925311.0}), (9, {51: 2735945930.0}), (10, {51: 2735970184.0}), (11, {51: 2736036714.0}), (12, {51: 2736064793.0}), (13, {51: 2736091758.0}), (14, {51: 2736165061.0}), (15, {51: 2736203744.0}), (16, {51: 2736206341.0})]
+PDAG #VGG16ReLU64k_comp_16 is equivalent to PDAG #VGG16ReLU64k_comp_14
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_16
+Partition solving time for PDAG #VGG16ReLU64k_comp_16: 0.10 seconds
+PDAG #VGG16ReLU64k_comp_17 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_17
+  this_in_budgets: [(1, {51: 2765142723.0}), (2, {51: 2808122499.0}), (3, {51: 2827113752.0}), (4, {51: 2847998057.0}), (5, {51: 2896436999.0}), (6, {51: 2896436999.0}), (7, {51: 2896436999.0}), (8, {51: 2896436999.0}), (9, {51: 2896436999.0}), (10, {51: 2896436999.0}), (11, {51: 2896436999.0}), (12, {51: 2896436999.0}), (13, {51: 2896464282.0}), (14, {51: 2896436999.0}), (15, {51: 2896436999.0}), (16, {51: 2896436999.0})]
+PDAG #VGG16ReLU64k_comp_17 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_17
+Partition solving time for PDAG #VGG16ReLU64k_comp_17: 0.46 seconds
+PDAG #VGG16ReLU64k_comp_18 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_18
+  this_in_budgets: [(1, {51: 3041907079.0}), (2, {51: 3042311841.0}), (3, {51: 3042751313.0}), (4, {51: 3043161134.0}), (5, {51: 3043635780.0}), (6, {51: 3044138783.0}), (7, {51: 3111748979.0}), (8, {51: 3111805286.0}), (9, {51: 3111825905.0}), (10, {51: 3111850159.0}), (11, {51: 3111916689.0}), (12, {51: 3111944768.0}), (13, {51: 3111971733.0}), (14, {51: 3112045036.0}), (15, {51: 3112083719.0}), (16, {51: 3112086316.0})]
+PDAG #VGG16ReLU64k_comp_18 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_18
+Partition solving time for PDAG #VGG16ReLU64k_comp_18: 0.53 seconds
+PDAG #VGG16ReLU64k_comp_19 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_19
+  this_in_budgets: [(1, {51: 3257566118.0}), (2, {51: 3257972138.0}), (3, {51: 3258414560.0}), (4, {51: 3258825650.0}), (5, {51: 3259301131.0}), (6, {51: 3259805482.0}), (7, {51: 3327433638.0}), (8, {51: 3327490425.0}), (9, {51: 3327512368.0}), (10, {51: 3327627446.0}), (11, {51: 3327752949.0}), (12, {51: 3327754843.0}), (13, {51: 3327752949.0}), (14, {51: 3327752949.0}), (15, {51: 3327754504.0}), (16, {51: 3327754843.0})]
+PDAG #VGG16ReLU64k_comp_19 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_19
+Partition solving time for PDAG #VGG16ReLU64k_comp_19: 0.52 seconds
+PDAG #VGG16ReLU64k_comp_20 Basic, DAG size: 44 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_20
+  this_in_budgets: [(1, {51: 3473288264.0}), (2, {51: 3473691593.0}), (3, {51: 3474191847.0}), (4, {51: 3474602937.0}), (5, {51: 3475078418.0}), (6, {51: 3475582769.0}), (7, {51: 3543210925.0}), (8, {51: 3543267712.0}), (9, {51: 3543289655.0}), (10, {51: 3543450718.0}), (11, {51: 3543530236.0}), (12, {51: 3543532130.0}), (13, {51: 3543530236.0}), (14, {51: 3543530236.0}), (15, {51: 3543531791.0}), (16, {51: 3543532130.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_20
+Partition solving time for PDAG #VGG16ReLU64k_comp_20: 1.54 seconds
+PDAG #VGG16ReLU64k_comp_21 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_21
+  this_in_budgets: [(1, {51: 3640928452.0}), (2, {51: 3714956149.0}), (3, {51: 3748233674.0}), (4, {51: 3817556745.0}), (5, {51: 3817559260.0}), (6, {51: 3817556745.0}), (7, {51: 3817556745.0}), (8, {51: 3817568034.0}), (9, {51: 3817556745.0}), (10, {51: 3817556745.0}), (11, {51: 3817556745.0}), (12, {51: 3817556745.0}), (13, {51: 3817556745.0}), (14, {51: 3817556745.0}), (15, {51: 3817556745.0}), (16, {51: 3817556745.0})]
+PDAG #VGG16ReLU64k_comp_21 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_21
+Partition solving time for PDAG #VGG16ReLU64k_comp_21: 0.51 seconds
+PDAG #VGG16ReLU64k_comp_22 Basic, DAG size: 34 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_22
+  this_in_budgets: [(1, {51: 3963027001.0}), (2, {51: 3963431763.0}), (3, {51: 3963871235.0}), (4, {51: 3964281056.0}), (5, {51: 3964755526.0}), (6, {51: 3965258705.0}), (7, {51: 4032868901.0}), (8, {51: 4032925208.0}), (9, {51: 4032945651.0}), (10, {51: 4032970081.0}), (11, {51: 4033036435.0}), (12, {51: 4033062620.0}), (13, {51: 4033091479.0}), (14, {51: 4033164958.0}), (15, {51: 4033203641.0}), (16, {51: 4033206062.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_22
+Partition solving time for PDAG #VGG16ReLU64k_comp_22: 1.19 seconds
+PDAG #VGG16ReLU64k_comp_23 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_23
+  this_in_budgets: [(1, {51: 4136294380.0}), (2, {51: 4216846799.0}), (3, {51: 4252377207.0}), (4, {51: 4321712107.0}), (5, {51: 4321712107.0}), (6, {51: 4321712107.0}), (7, {51: 4321712107.0}), (8, {51: 4321712107.0}), (9, {51: 4321712107.0}), (10, {51: 4321712107.0}), (11, {51: 4321712107.0}), (12, {51: 4322222954.0}), (13, {51: 4321712107.0}), (14, {51: 4321712107.0}), (15, {51: 4321712107.0}), (16, {51: 4321712107.0})]
+PDAG #VGG16ReLU64k_comp_23 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_23
+Partition solving time for PDAG #VGG16ReLU64k_comp_23: 0.46 seconds
+PDAG #VGG16ReLU64k_comp_24 Basic, DAG size: 34 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_24
+  this_in_budgets: [(1, {51: 4467170534.0}), (2, {51: 4467575296.0}), (3, {51: 4468014768.0}), (4, {51: 4468424589.0}), (5, {51: 4468910888.0}), (6, {51: 4469402238.0}), (7, {51: 4537012434.0}), (8, {51: 4537068741.0}), (9, {51: 4537093185.0}), (10, {51: 4537113614.0}), (11, {51: 4537181061.0}), (12, {51: 4537208938.0}), (13, {51: 4537236185.0}), (14, {51: 4537308491.0}), (15, {51: 4537347174.0}), (16, {51: 4537350623.0})]
+PDAG #VGG16ReLU64k_comp_24 is equivalent to PDAG #VGG16ReLU64k_comp_22
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_24
+Partition solving time for PDAG #VGG16ReLU64k_comp_24: 0.16 seconds
+PDAG #VGG16ReLU64k_comp_25 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_25
+  this_in_budgets: [(1, {51: 4640437913.0}), (2, {51: 4720990332.0}), (3, {51: 4756532569.0}), (4, {51: 4825867469.0}), (5, {51: 4825867469.0}), (6, {51: 4825867469.0}), (7, {51: 4825867469.0}), (8, {51: 4825867469.0}), (9, {51: 4825867469.0}), (10, {51: 4825867469.0}), (11, {51: 4825867469.0}), (12, {51: 4826366487.0}), (13, {51: 4825867469.0}), (14, {51: 4825867469.0}), (15, {51: 4825867469.0}), (16, {51: 4825867469.0})]
+PDAG #VGG16ReLU64k_comp_25 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_25
+Partition solving time for PDAG #VGG16ReLU64k_comp_25: 0.45 seconds
+PDAG #VGG16ReLU64k_comp_26 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_26
+  this_in_budgets: [(1, {51: 4971325896.0}), (2, {51: 4971730658.0}), (3, {51: 4972170130.0}), (4, {51: 4972579951.0}), (5, {51: 4973066250.0}), (6, {51: 4973557600.0}), (7, {51: 5041167796.0}), (8, {51: 5041224103.0}), (9, {51: 5041248547.0}), (10, {51: 5041268976.0}), (11, {51: 5041336423.0}), (12, {51: 5041364300.0}), (13, {51: 5041391547.0}), (14, {51: 5041463853.0}), (15, {51: 5041502536.0}), (16, {51: 5041505985.0})]
+PDAG #VGG16ReLU64k_comp_26 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_26
+Partition solving time for PDAG #VGG16ReLU64k_comp_26: 0.53 seconds
+PDAG #VGG16ReLU64k_comp_27 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_27
+  this_in_budgets: [(1, {51: 5186984935.0}), (2, {51: 5187390955.0}), (3, {51: 5187833377.0}), (4, {51: 5188244467.0}), (5, {51: 5188719948.0}), (6, {51: 5189224299.0}), (7, {51: 5256852455.0}), (8, {51: 5256909242.0}), (9, {51: 5256931185.0}), (10, {51: 5257047180.0}), (11, {51: 5257171766.0}), (12, {51: 5257173660.0}), (13, {51: 5257171766.0}), (14, {51: 5257171766.0}), (15, {51: 5257173321.0}), (16, {51: 5257173660.0})]
+PDAG #VGG16ReLU64k_comp_27 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_27
+Partition solving time for PDAG #VGG16ReLU64k_comp_27: 0.53 seconds
+PDAG #VGG16ReLU64k_comp_28 Basic, DAG size: 52 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_28
+  this_in_budgets: [(1, {51: 5402707081.0}), (2, {51: 5403110410.0}), (3, {51: 5403611581.0}), (4, {51: 5404022671.0}), (5, {51: 5404498152.0}), (6, {51: 5405002503.0}), (7, {51: 5472630659.0}), (8, {51: 5472687446.0}), (9, {51: 5472709389.0}), (10, {51: 5472869535.0}), (11, {51: 5472949970.0}), (12, {51: 5472951864.0}), (13, {51: 5472949970.0}), (14, {51: 5472949970.0}), (15, {51: 5472951525.0}), (16, {51: 5472951864.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_28
+Partition solving time for PDAG #VGG16ReLU64k_comp_28: 2.03 seconds
+PDAG #VGG16ReLU64k_comp_29 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_29
+  this_in_budgets: [(1, {51: 5575207753.0}), (2, {51: 5652620194.0}), (3, {51: 5688015566.0}), (4, {51: 5757312910.0}), (5, {51: 5757312910.0}), (6, {51: 5757312910.0}), (7, {51: 5757312910.0}), (8, {51: 5757312910.0}), (9, {51: 5757328221.0}), (10, {51: 5757312910.0}), (11, {51: 5757312910.0}), (12, {51: 5757312910.0}), (13, {51: 5757312910.0}), (14, {51: 5757312910.0}), (15, {51: 5757312910.0}), (16, {51: 5757312910.0})]
+PDAG #VGG16ReLU64k_comp_29 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_29
+Partition solving time for PDAG #VGG16ReLU64k_comp_29: 0.52 seconds
+PDAG #VGG16ReLU64k_comp_30 Basic, DAG size: 38 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_30
+  this_in_budgets: [(1, {51: 5902784032.0}), (2, {51: 5903188592.0}), (3, {51: 5903628266.0}), (4, {51: 5904039642.0}), (5, {51: 5904511691.0}), (6, {51: 5905015736.0}), (7, {51: 5972627487.0}), (8, {51: 5972682037.0}), (9, {51: 5972701816.0}), (10, {51: 5972727040.0}), (11, {51: 5972792600.0}), (12, {51: 5972818785.0}), (13, {51: 5972847644.0}), (14, {51: 5972923145.0}), (15, {51: 5972960672.0}), (16, {51: 5972962227.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_30
+Partition solving time for PDAG #VGG16ReLU64k_comp_30: 1.40 seconds
+PDAG #VGG16ReLU64k_comp_31 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_31
+  this_in_budgets: [(1, {51: 6053697274.0}), (2, {51: 6128495795.0}), (3, {51: 6160800500.0}), (4, {51: 6230121150.0}), (5, {51: 6230121150.0}), (6, {51: 6230121150.0}), (7, {51: 6230121150.0}), (8, {51: 6230121150.0}), (9, {51: 6230121150.0}), (10, {51: 6230121150.0}), (11, {51: 6230158706.0}), (12, {51: 6230121150.0}), (13, {51: 6230158706.0}), (14, {51: 6230121150.0}), (15, {51: 6230158706.0}), (16, {51: 6230319774.0})]
+PDAG #VGG16ReLU64k_comp_31 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_31
+Partition solving time for PDAG #VGG16ReLU64k_comp_31: 0.51 seconds
+PDAG #VGG16ReLU64k_comp_32 Basic, DAG size: 38 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_32
+  this_in_budgets: [(1, {51: 6375592272.0}), (2, {51: 6375996832.0}), (3, {51: 6376436506.0}), (4, {51: 6376847882.0}), (5, {51: 6377319931.0}), (6, {51: 6377823976.0}), (7, {51: 6445435727.0}), (8, {51: 6445492034.0}), (9, {51: 6445510056.0}), (10, {51: 6445536907.0}), (11, {51: 6445600840.0}), (12, {51: 6445632231.0}), (13, {51: 6445655884.0}), (14, {51: 6445731784.0}), (15, {51: 6445768912.0}), (16, {51: 6445770467.0})]
+PDAG #VGG16ReLU64k_comp_32 is equivalent to PDAG #VGG16ReLU64k_comp_30
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_32
+Partition solving time for PDAG #VGG16ReLU64k_comp_32: 0.12 seconds
+PDAG #VGG16ReLU64k_comp_33 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_33
+  this_in_budgets: [(1, {51: 6526505514.0}), (2, {51: 6601304035.0}), (3, {51: 6633608740.0}), (4, {51: 6702929390.0}), (5, {51: 6702929390.0}), (6, {51: 6702929390.0}), (7, {51: 6702929390.0}), (8, {51: 6702929390.0}), (9, {51: 6702929390.0}), (10, {51: 6702929390.0}), (11, {51: 6702966946.0}), (12, {51: 6702929390.0}), (13, {51: 6702966946.0}), (14, {51: 6702929390.0}), (15, {51: 6702966946.0}), (16, {51: 6703128014.0})]
+PDAG #VGG16ReLU64k_comp_33 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_33
+Partition solving time for PDAG #VGG16ReLU64k_comp_33: 0.50 seconds
+PDAG #VGG16ReLU64k_comp_34 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_34
+  this_in_budgets: [(1, {51: 6848400512.0}), (2, {51: 6848805072.0}), (3, {51: 6849244746.0}), (4, {51: 6849656122.0}), (5, {51: 6850128171.0}), (6, {51: 6850632216.0}), (7, {51: 6918243967.0}), (8, {51: 6918300274.0}), (9, {51: 6918318296.0}), (10, {51: 6918345147.0}), (11, {51: 6918409080.0}), (12, {51: 6918440471.0}), (13, {51: 6918464124.0}), (14, {51: 6918540024.0}), (15, {51: 6918577152.0}), (16, {51: 6918578707.0})]
+PDAG #VGG16ReLU64k_comp_34 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_34
+Partition solving time for PDAG #VGG16ReLU64k_comp_34: 0.48 seconds
+PDAG #VGG16ReLU64k_comp_35 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_35
+  this_in_budgets: [(1, {51: 7064061106.0}), (2, {51: 7064467126.0}), (3, {51: 7064909548.0}), (4, {51: 7065320638.0}), (5, {51: 7065796119.0}), (6, {51: 7066300470.0}), (7, {51: 7133928626.0}), (8, {51: 7133985413.0}), (9, {51: 7134007356.0}), (10, {51: 7134119837.0}), (11, {51: 7134247937.0}), (12, {51: 7134249831.0}), (13, {51: 7134247937.0}), (14, {51: 7134247937.0}), (15, {51: 7134249492.0}), (16, {51: 7134249831.0})]
+PDAG #VGG16ReLU64k_comp_35 is equivalent to PDAG #VGG16ReLU64k_comp_4
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_35
+Partition solving time for PDAG #VGG16ReLU64k_comp_35: 0.53 seconds
+PDAG #VGG16ReLU64k_comp_36 Basic, DAG size: 28 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_36
+  this_in_budgets: [(1, {51: 7279783252.0}), (2, {51: 7280186581.0}), (3, {51: 7280684238.0}), (4, {51: 7281095328.0}), (5, {51: 7281570809.0}), (6, {51: 7282075160.0}), (7, {51: 7349703316.0}), (8, {51: 7349760103.0}), (9, {51: 7349782046.0}), (10, {51: 7349945706.0}), (11, {51: 7350022627.0}), (12, {51: 7350024521.0}), (13, {51: 7350022627.0}), (14, {51: 7350022627.0}), (15, {51: 7350024182.0}), (16, {51: 7350024521.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_36
+Partition solving time for PDAG #VGG16ReLU64k_comp_36: 0.90 seconds
+PDAG #VGG16ReLU64k_comp_37 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_37
+  this_in_budgets: [(1, {51: 7336684921.0}), (2, {51: 7361372959.0}), (3, {51: 7374813956.0}), (4, {51: 7444148504.0}), (5, {51: 7444148504.0}), (6, {51: 7444148504.0}), (7, {51: 7444148504.0}), (8, {51: 7444148504.0}), (9, {51: 7444148504.0}), (10, {51: 7444148504.0}), (11, {51: 7444148504.0}), (12, {51: 7444148504.0}), (13, {51: 7444148504.0}), (14, {51: 7444148504.0}), (15, {51: 7442216024.0}), (16, {51: 7444148504.0})]
+PDAG #VGG16ReLU64k_comp_37 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_37
+Partition solving time for PDAG #VGG16ReLU64k_comp_37: 0.51 seconds
+PDAG #VGG16ReLU64k_comp_38 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_38
+  this_in_budgets: [(1, {51: 7587688773.0}), (2, {51: 7588091706.0}), (3, {51: 7588533274.0}), (4, {51: 7588942756.0}), (5, {51: 7589416961.0}), (6, {51: 7589920405.0}), (7, {51: 7657532156.0}), (8, {51: 7657586908.0}), (9, {51: 7657609797.0}), (10, {51: 7657631781.0}), (11, {51: 7657697471.0}), (12, {51: 7657723793.0}), (13, {51: 7657751040.0}), (14, {51: 7657826259.0}), (15, {51: 7657865341.0}), (16, {51: 7657865341.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_38
+Partition solving time for PDAG #VGG16ReLU64k_comp_38: 0.35 seconds
+PDAG #VGG16ReLU64k_comp_39 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_39
+  this_in_budgets: [(1, {51: 7610281134.0}), (2, {51: 7621069392.0}), (3, {51: 7626058275.0}), (4, {51: 7631319418.0}), (5, {51: 7695392823.0}), (6, {51: 7695392823.0}), (7, {51: 7695392823.0}), (8, {51: 7695392823.0}), (9, {51: 7695392823.0}), (10, {51: 7695392823.0}), (11, {51: 7695392823.0}), (12, {51: 7695392823.0}), (13, {51: 7695392823.0}), (14, {51: 7695392823.0}), (15, {51: 7695392823.0}), (16, {51: 7695392823.0})]
+PDAG #VGG16ReLU64k_comp_39 is equivalent to PDAG #VGG16ReLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_39
+Partition solving time for PDAG #VGG16ReLU64k_comp_39: 0.51 seconds
+PDAG #VGG16ReLU64k_comp_40 Basic, DAG size: 22 nodes
+Adding QBP for PDAG #VGG16ReLU64k_comp_40
+  this_in_budgets: [(1, {51: 7840851602.0}), (2, {51: 7841256364.0}), (3, {51: 7841695836.0}), (4, {51: 7842105657.0}), (5, {51: 7842591604.0}), (6, {51: 7843083306.0}), (7, {51: 7910693502.0}), (8, {51: 7910749809.0}), (9, {51: 7910774253.0}), (10, {51: 7910794682.0}), (11, {51: 7910862129.0}), (12, {51: 7910890006.0}), (13, {51: 7910917253.0}), (14, {51: 7910989559.0}), (15, {51: 7911028242.0}), (16, {51: 7911031691.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #VGG16ReLU64k_comp_40
+Partition solving time for PDAG #VGG16ReLU64k_comp_40: 0.65 seconds
+Final Choice: input (l,s)=(16,51), output (l,s)=(1,51), cost=7843651413.0
+Final cost (aggregated partition cost): 7843.651 sec.
+Final assignment latency: 7843.651 sec.
+	RDAG: Squashing ['dummy']!
+Final tdag latency: 7843.300 sec. (accurate estimation)
+Final tdag latency breakdown (number of operations):
+  add_double: 14152 ops.
+  add_single: 282 ops.
+  bootstrap_single: 74 ops.
+  modswitch_single: 1075 ops.
+  mul_double: 675 ops.
+  mul_single: 10733 ops.
+  negate_single: 110 ops.
+  rescale_single: 1865 ops.
+  rotate_single: 23290 ops.
+========================================
+Final tdag latency breakdown (in sec):
+  add_double: 16.530 sec.
+  add_single: 10.889 sec.
+  bootstrap_single: 5129.728 sec.
+  modswitch_single: 1.200 sec.
+  mul_double: 111.924 sec.
+  mul_single: 394.926 sec.
+  negate_single: 0.347 sec.
+  rescale_single: 58.100 sec.
+  rotate_single: 2119.656 sec.
+========================================
+Saturn Compilation time: 62.563 sec.
+Timestamps breakdown:
+  'DAG Load Time': 1.096 sec.
+  'DAG Compression Time': 0.963 sec.
+  'QBP Manager Init Time': 0.000 sec.
+  'ILP-QBP Time': 59.352 sec.
+  'Final Assignment Time': 0.000 sec.
+  'DAG Decode Time': 0.946 sec.
+  'DAG Write Time': 0.206 sec.
+========================================

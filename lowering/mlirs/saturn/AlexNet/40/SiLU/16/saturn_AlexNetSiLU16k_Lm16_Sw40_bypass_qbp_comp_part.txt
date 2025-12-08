@@ -1,0 +1,142 @@
+	RDAG: Squashing ['rescale', 'upscale', 'modswitch', 'bootstrap']!
+Built original DAG with 104959 nodes and 140929 edges.
+After Squashing, DAG has 79865 nodes and 115835 edges.
+After Compression, DAG has 1430 nodes and 1988 edges.
+PDAG #AlexNetSiLU16k_comp_0 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_0
+  this_in_budgets: [(-1, {40: 0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 16 / 16 ILP tasks for PDAG #AlexNetSiLU16k_comp_0
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Partition solving time for PDAG #AlexNetSiLU16k_comp_0: 0.03 seconds
+PDAG #AlexNetSiLU16k_comp_1 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_1
+  this_in_budgets: [(1, {40: 4864440}), (2, {40: 6362307}), (3, {40: 7149624}), (4, {40: 8040555}), (5, {40: 10002144}), (6, {40: 10999503}), (7, {40: 12080415}), (8, {40: 14512959}), (9, {40: 15612315}), (10, {40: 16851096}), (11, {40: 19791795}), (12, {40: 21026439}), (13, {40: 22427085}), (14, {40: 25759512}), (15, {69: 26450454}), (16, {51: 91469601.23076923})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_1
+Partition solving time for PDAG #AlexNetSiLU16k_comp_1: 17.84 seconds
+PDAG #AlexNetSiLU16k_comp_2 Basic, DAG size: 31 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_2
+  this_in_budgets: [(1, {40: 31895433}), (2, {40: 36403578}), (3, {40: 38887662}), (4, {40: 104812035.23076923}), (5, {53: 105424131.23076923}), (6, {40: 120899589.23076923}), (7, {40: 120397821.23076923}), (8, {40: 120535065.23076923}), (9, {40: 120474555.23076923}), (10, {40: 120590649.23076923}), (11, {40: 120906369.23076923}), (12, {40: 120718119.23076923}), (13, {40: 120961365.23076923}), (14, {51: 121581939.23076923}), (15, {51: 121511097.23076923}), (16, {51: 122399343.23076923})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_2
+Partition solving time for PDAG #AlexNetSiLU16k_comp_2: 1.02 seconds
+PDAG #AlexNetSiLU16k_comp_3 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_3
+  this_in_budgets: [(1, {40: 177975915.23076922}), (2, {40: 206896547.23076922}), (3, {40: 215389101.23076922}), (4, {40: 226609367.23076922}), (5, {40: 244670643.23076922}), (6, {40: 259906816.3076923}), (7, {40: 269699312.3076923}), (8, {40: 287748226.3076923}), (9, {40: 297734148.3076923}), (10, {40: 308321138.3076923}), (11, {40: 329142906.3076923}), (12, {40: 338386838.3076923}), (13, {40: 350630242.3076923}), (14, {40: 372674434.3076923}), (15, {51: 243723760.3076923}), (16, {51: 243949262.3076923})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_3
+Partition solving time for PDAG #AlexNetSiLU16k_comp_3: 11.32 seconds
+PDAG #AlexNetSiLU16k_comp_4 Basic, DAG size: 35 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_4
+  this_in_budgets: [(1, {40: 246475248.3076923}), (2, {40: 246874066.3076923}), (3, {40: 247442644.3076923}), (4, {40: 247856658.3076923}), (5, {53: 248146148.3076923}), (6, {40: 274819883.38461536}), (7, {40: 274883473.38461536}), (8, {40: 275091149.38461536}), (9, {40: 275036825.38461536}), (10, {40: 275036457.38461536}), (11, {40: 275038165.38461536}), (12, {40: 275051371.38461536}), (13, {40: 275024107.38461536}), (14, {40: 275005761.38461536}), (15, {51: 275327205.38461536}), (16, {51: 275183233.38461536})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_4
+Partition solving time for PDAG #AlexNetSiLU16k_comp_4: 1.05 seconds
+PDAG #AlexNetSiLU16k_comp_5 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_5
+  this_in_budgets: [(1, {40: 353501860.84615386}), (2, {40: 384580686.84615386}), (3, {40: 399719892.84615386}), (4, {40: 415755493.84615386}), (5, {40: 457760474.84615386}), (6, {40: 477566223.84615386}), (7, {40: 496893894.84615386}), (8, {40: 553601564.8461539}), (9, {40: 570496550.8461539}), (10, {40: 593170644.8461539}), (11, {40: 659196897.8461539}), (12, {40: 684219800.8461539}), (13, {40: 708762066.8461539}), (14, {40: 783153077.8461539}), (15, {51: 426688220.92307687}), (16, {51: 442410831.46153843})]
+PDAG #AlexNetSiLU16k_comp_5 is equivalent to PDAG #AlexNetSiLU16k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_5
+Partition solving time for PDAG #AlexNetSiLU16k_comp_5: 0.65 seconds
+PDAG #AlexNetSiLU16k_comp_6 Basic, DAG size: 26 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_6
+  this_in_budgets: [(1, {40: 429992608.92307687}), (2, {40: 430228354.92307687}), (3, {40: 430548698.92307687}), (4, {40: 432187449.9230769}), (5, {53: 432476939.9230769}), (6, {40: 458318611.99999994}), (7, {40: 458213667.99999994}), (8, {40: 458398363.99999994}), (9, {40: 458259337.99999994}), (10, {40: 458310559.99999994}), (11, {40: 458285927.99999994}), (12, {40: 458393697.99999994}), (13, {40: 458274443.99999994}), (14, {40: 458362955.99999994}), (15, {51: 458500165.99999994}), (16, {51: 458647667.99999994})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_6
+Partition solving time for PDAG #AlexNetSiLU16k_comp_6: 0.83 seconds
+PDAG #AlexNetSiLU16k_comp_7 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_7
+  this_in_budgets: [(1, {40: 541699219.9230769}), (2, {40: 576021087.9230769}), (3, {40: 619315374.0}), (4, {40: 637655100.0}), (5, {40: 682719366.0}), (6, {40: 705455194.0}), (7, {40: 727126954.0}), (8, {40: 783291942.0}), (9, {40: 807768212.0}), (10, {40: 833064484.0}), (11, {40: 900820370.0}), (12, {40: 928274824.0}), (13, {40: 956280570.0}), (14, {40: 1032924590.0}), (15, {51: 621684995.0}), (16, {51: 649435011.076923})]
+PDAG #AlexNetSiLU16k_comp_7 is equivalent to PDAG #AlexNetSiLU16k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_7
+Partition solving time for PDAG #AlexNetSiLU16k_comp_7: 0.55 seconds
+PDAG #AlexNetSiLU16k_comp_8 Basic, DAG size: 26 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_8
+  this_in_budgets: [(1, {40: 624989383.0}), (2, {40: 625225129.0}), (3, {40: 625545473.0}), (4, {53: 626159099.0}), (5, {40: 653180654.0769231}), (6, {40: 653315386.0769231}), (7, {40: 653210442.0769231}), (8, {40: 653395138.0769231}), (9, {40: 653256112.0769231}), (10, {40: 653307334.0769231}), (11, {40: 653282702.0769231}), (12, {40: 653390472.0769231}), (13, {40: 653271218.0769231}), (14, {40: 653359730.0769231}), (15, {51: 653496940.0769231}), (16, {51: 653644442.0769231})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_8
+Partition solving time for PDAG #AlexNetSiLU16k_comp_8: 0.83 seconds
+PDAG #AlexNetSiLU16k_comp_9 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_9
+  this_in_budgets: [(1, {40: 699177634.0}), (2, {40: 722105251.0}), (3, {40: 761005538.0769231}), (4, {40: 773220509.0769231}), (5, {40: 803336259.0769231}), (6, {40: 818557609.0769231}), (7, {40: 833113096.0769231}), (8, {40: 870657934.0769231}), (9, {40: 886943655.0769231}), (10, {40: 904031996.0769231}), (11, {40: 949313657.0769231}), (12, {40: 967712764.0769231}), (13, {40: 986585782.0769231}), (14, {40: 1037815292.0769231}), (15, {51: 774978820.6153847}), (16, {51: 776425849.6153847})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_9
+Partition solving time for PDAG #AlexNetSiLU16k_comp_9: 12.16 seconds
+PDAG #AlexNetSiLU16k_comp_10 Basic, DAG size: 25 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_10
+  this_in_budgets: [(1, {40: 776545623.6153847}), (2, {40: 776768889.6153847}), (3, {40: 776933183.6153847}), (4, {40: 777217224.6153847}), (5, {53: 777410710.6153847}), (6, {40: 790809615.1538463}), (7, {40: 790726041.1538463}), (8, {40: 790773258.1538463}), (9, {40: 790739858.1538463}), (10, {40: 790829216.1538463}), (11, {40: 790764488.1538463}), (12, {40: 790774110.1538463}), (13, {40: 790819893.1538463}), (14, {40: 790816289.1538463}), (15, {51: 790910364.1538463}), (16, {51: 790888641.1538463})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_10
+Partition solving time for PDAG #AlexNetSiLU16k_comp_10: 0.93 seconds
+PDAG #AlexNetSiLU16k_comp_11 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_11
+  this_in_budgets: [(1, {40: 895126623.6153847}), (2, {40: 964492393.1538463}), (3, {40: 988329443.1538463}), (4, {40: 1002287870.6923077}), (5, {40: 1002332855.6923077}), (6, {40: 1002331423.6923077}), (7, {40: 1002343007.6923077}), (8, {40: 1002357736.6923077}), (9, {40: 1002362566.6923077}), (10, {40: 1002367874.6923077}), (11, {40: 1002349777.6923077}), (12, {40: 1002361921.6923077}), (13, {40: 1002396806.6923077}), (14, {40: 1002415184.6923077}), (15, {40: 1002421405.6923077}), (16, {51: 1002544647.6923077})]
+PDAG #AlexNetSiLU16k_comp_11 is equivalent to PDAG #AlexNetSiLU16k_comp_9
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_11
+Partition solving time for PDAG #AlexNetSiLU16k_comp_11: 2.11 seconds
+PDAG #AlexNetSiLU16k_comp_12 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_12
+  this_in_budgets: [(1, {40: 1003869528.6923078}), (2, {40: 1004095383.6923078}), (3, {40: 1004271454.6923078}), (4, {40: 1004541129.6923078}), (5, {53: 1004734615.6923078}), (6, {40: 1018145195.2307694}), (7, {40: 1018124784.2307694}), (8, {40: 1018120902.2307694}), (9, {40: 1018128494.2307694}), (10, {40: 1018153121.2307694}), (11, {40: 1018174294.2307694}), (12, {40: 1018162580.2307694}), (13, {40: 1018186819.2307694}), (14, {40: 1018140194.2307694}), (15, {51: 1018268400.2307694}), (16, {51: 1018212546.2307694})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_12
+Partition solving time for PDAG #AlexNetSiLU16k_comp_12: 0.35 seconds
+PDAG #AlexNetSiLU16k_comp_13 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_13
+  this_in_budgets: [(1, {40: 1056330040.6923078}), (2, {40: 1082428551.692308}), (3, {40: 1093639956.692308}), (4, {40: 1107632986.2307694}), (5, {40: 1107643643.2307694}), (6, {40: 1107647453.2307694}), (7, {40: 1107653096.2307694}), (8, {40: 1107666112.2307694}), (9, {40: 1107672004.2307694}), (10, {40: 1108221073.2307694}), (11, {40: 1107709410.2307694}), (12, {40: 1107709484.2307694}), (13, {40: 1107706895.2307694}), (14, {40: 1107743243.2307694}), (15, {40: 1107742588.2307694}), (16, {51: 1107622079.2307694})]
+PDAG #AlexNetSiLU16k_comp_13 is equivalent to PDAG #AlexNetSiLU16k_comp_9
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_13
+Partition solving time for PDAG #AlexNetSiLU16k_comp_13: 0.55 seconds
+PDAG #AlexNetSiLU16k_comp_14 Basic, DAG size: 24 nodes
+Adding QBP for PDAG #AlexNetSiLU16k_comp_14
+  this_in_budgets: [(1, {40: 1109180042.2307694}), (2, {40: 1109402414.2307694}), (3, {40: 1109581968.2307694}), (4, {40: 1109851643.2307694}), (5, {53: 1110019974.2307694}), (6, {40: 1123335275.7692308}), (7, {40: 1123367137.7692308}), (8, {40: 1123381429.7692308}), (9, {40: 1123391972.7692308}), (10, {40: 1123463634.769231}), (11, {40: 1123484807.769231}), (12, {40: 1123429152.7692308}), (13, {40: 1123397731.7692308}), (14, {40: 1123450707.769231}), (15, {51: 1123480935.7692308}), (16, {51: 1123523059.769231})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetSiLU16k_comp_14
+Partition solving time for PDAG #AlexNetSiLU16k_comp_14: 0.81 seconds
+Final Choice: input (l,s)=(16,40), output (l,s)=(2,120), cost=1109823079.2307694
+Final cost (aggregated partition cost): 1109.823 sec.
+Final assignment latency: 1109.823 sec.
+	RDAG: Squashing ['dummy']!
+Final tdag latency: 1109.107 sec. (accurate estimation)
+Final tdag latency breakdown (number of operations):
+  add_double: 35686 ops.
+  add_single: 121 ops.
+  bootstrap_single: 19 ops.
+  modswitch_single: 502 ops.
+  mul_double: 285 ops.
+  mul_single: 27046 ops.
+  negate_single: 60 ops.
+  rescale_single: 1865 ops.
+  rotate_single: 26346 ops.
+  upscale_single: 1811 ops.
+========================================
+Final tdag latency breakdown (in sec):
+  add_double: 11.702 sec.
+  add_single: 1.223 sec.
+  bootstrap_single: 265.590 sec.
+  modswitch_single: 0.168 sec.
+  mul_double: 14.125 sec.
+  mul_single: 238.423 sec.
+  negate_single: 0.063 sec.
+  rescale_single: 12.797 sec.
+  rotate_single: 563.648 sec.
+  upscale_single: 1.368 sec.
+========================================
+Saturn Compilation time: 74.580 sec.
+Timestamps breakdown:
+  'DAG Load Time': 2.574 sec.
+  'DAG Compression Time': 7.339 sec.
+  'QBP Manager Init Time': 1.367 sec.
+  'ILP-QBP Time': 57.004 sec.
+  'QBP Save Time': 3.480 sec.
+  'Final Assignment Time': 0.000 sec.
+  'DAG Decode Time': 2.259 sec.
+  'DAG Write Time': 0.556 sec.
+========================================

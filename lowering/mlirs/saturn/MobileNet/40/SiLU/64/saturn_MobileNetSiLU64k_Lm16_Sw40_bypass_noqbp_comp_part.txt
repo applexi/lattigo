@@ -1,0 +1,411 @@
+	RDAG: Squashing ['rescale', 'upscale', 'modswitch', 'bootstrap']!
+Built original DAG with 46238 nodes and 60841 edges.
+After Squashing, DAG has 38574 nodes and 53177 edges.
+After Compression, DAG has 5420 nodes and 7576 edges.
+PDAG #MobileNetSiLU64k_comp_0 Basic, DAG size: 14 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_0
+  this_in_budgets: [(-1, {40: 0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 16 / 16 ILP tasks for PDAG #MobileNetSiLU64k_comp_0
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Partition solving time for PDAG #MobileNetSiLU64k_comp_0: 0.05 seconds
+PDAG #MobileNetSiLU64k_comp_1 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_1
+  this_in_budgets: [(1, {40: 5045274}), (2, {40: 6758258}), (3, {40: 7647696}), (4, {40: 8892226}), (5, {40: 11173839}), (6, {40: 12274103}), (7, {40: 13820667}), (8, {40: 16694693}), (9, {40: 17998532}), (10, {40: 19857352}), (11, {40: 23352722}), (12, {40: 24875540}), (13, {40: 26995256}), (14, {40: 31001640}), (15, {40: 78145159.0}), (16, {51: 76970767.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_1
+Partition solving time for PDAG #MobileNetSiLU64k_comp_1: 18.01 seconds
+PDAG #MobileNetSiLU64k_comp_2 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_2
+  this_in_budgets: [(1, {40: 33689199}), (2, {40: 38698496}), (3, {43: 39650235}), (4, {40: 86465119.0}), (5, {53: 87187826.0}), (6, {40: 107925389.0}), (7, {40: 108348154.0}), (8, {40: 107960792.0}), (9, {40: 108088110.0}), (10, {40: 108093309.0}), (11, {40: 108229584.0}), (12, {40: 107993085.0}), (13, {40: 108478461.0}), (14, {51: 109085087.0}), (15, {51: 109182482.0}), (16, {51: 108983179.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_2
+Partition solving time for PDAG #MobileNetSiLU64k_comp_2: 0.34 seconds
+PDAG #MobileNetSiLU64k_comp_3 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_3
+  this_in_budgets: [(1, {40: 41871765}), (2, {72: 41960677}), (3, {40: 89973250.0}), (4, {40: 111307102.0}), (5, {40: 111668547.0}), (6, {40: 111984199.0}), (7, {40: 112768777.0}), (8, {40: 113122756.0}), (9, {40: 113494046.0}), (10, {40: 114357137.0}), (11, {40: 115245233.0}), (12, {40: 116170156.0}), (13, {40: 117149769.0}), (14, {40: 117565070.0}), (15, {40: 159399346.0}), (16, {51: 159352625.0})]
+PDAG #MobileNetSiLU64k_comp_3 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_3
+Partition solving time for PDAG #MobileNetSiLU64k_comp_3: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_4 Basic, DAG size: 19 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_4
+  this_in_budgets: [(1, {40: 123843712.0}), (2, {40: 125261926.0}), (3, {43: 126213665.0}), (4, {40: 168790673.0}), (5, {53: 169549396.0}), (6, {40: 194488819.0}), (7, {40: 194911584.0}), (8, {40: 194524222.0}), (9, {40: 194651540.0}), (10, {40: 194656739.0}), (11, {40: 194793014.0}), (12, {40: 194556515.0}), (13, {40: 195041891.0}), (14, {51: 195648517.0}), (15, {51: 195745912.0}), (16, {51: 195546609.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_4
+Partition solving time for PDAG #MobileNetSiLU64k_comp_4: 0.61 seconds
+PDAG #MobileNetSiLU64k_comp_5 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_5
+  this_in_budgets: [(1, {40: 140850694.0}), (2, {120: 139208945.0}), (3, {40: 193872644.0}), (4, {40: 221919759.0}), (5, {40: 230926169.0}), (6, {40: 234656897.0}), (7, {40: 238622506.0}), (8, {40: 250038797.0}), (9, {40: 254421505.0}), (10, {40: 259095977.0}), (11, {40: 273503414.0}), (12, {40: 279082057.0}), (13, {40: 284316536.0}), (14, {40: 300467952.0}), (15, {51: 263322894.0}), (16, {51: 263322894.0})]
+PDAG #MobileNetSiLU64k_comp_5 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_5
+Partition solving time for PDAG #MobileNetSiLU64k_comp_5: 2.61 seconds
+PDAG #MobileNetSiLU64k_comp_6 Basic, DAG size: 14 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_6
+  this_in_budgets: [(1, {40: 269827231.0}), (2, {40: 270691971.0}), (3, {40: 271704842.0}), (4, {40: 272690067.0}), (5, {53: 273448790.0}), (6, {40: 339999411.0}), (7, {40: 340402439.0}), (8, {40: 340580144.0}), (9, {40: 340240543.0}), (10, {40: 340436167.0}), (11, {40: 340310588.0}), (12, {40: 340371267.0}), (13, {40: 340608938.0}), (14, {40: 340618624.0}), (15, {51: 340679816.0}), (16, {51: 341205239.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_6
+Partition solving time for PDAG #MobileNetSiLU64k_comp_6: 0.47 seconds
+PDAG #MobileNetSiLU64k_comp_7 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_7
+  this_in_budgets: [(1, {40: 282684047.0}), (2, {40: 288421236.0}), (3, {40: 291347025.0}), (4, {40: 360500650.0}), (5, {40: 360707144.0}), (6, {40: 360843545.0}), (7, {40: 360722653.0}), (8, {40: 360859479.0}), (9, {40: 360867041.0}), (10, {40: 360868711.0}), (11, {40: 360881881.0}), (12, {40: 360766104.0}), (13, {40: 360905341.0}), (14, {40: 360776620.0}), (15, {40: 360777567.0}), (16, {51: 360672121.0})]
+PDAG #MobileNetSiLU64k_comp_7 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_7
+Partition solving time for PDAG #MobileNetSiLU64k_comp_7: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_8 Basic, DAG size: 23 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_8
+  this_in_budgets: [(1, {40: 367301612.0}), (2, {40: 368093070.0}), (3, {40: 369144638.0}), (4, {40: 370164448.0}), (5, {53: 370889180.0}), (6, {40: 437473792.0}), (7, {40: 437876820.0}), (8, {40: 437735772.0}), (9, {40: 437772017.0}), (10, {40: 437785394.0}), (11, {40: 437847552.0}), (12, {40: 437768065.0}), (13, {40: 437931458.0}), (14, {40: 438169844.0}), (15, {51: 438091758.0}), (16, {51: 438299904.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_8
+Partition solving time for PDAG #MobileNetSiLU64k_comp_8: 0.82 seconds
+PDAG #MobileNetSiLU64k_comp_9 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_9
+  this_in_budgets: [(1, {40: 399911156.0}), (2, {40: 415750922.0}), (3, {40: 422844082.0}), (4, {40: 492328837.0}), (5, {40: 492207323.0}), (6, {40: 492678431.0}), (7, {40: 492296351.0}), (8, {40: 492482250.0}), (9, {40: 492492428.0}), (10, {40: 492319630.0}), (11, {40: 492321836.0}), (12, {40: 492258991.0}), (13, {40: 492270556.0}), (14, {40: 492346996.0}), (15, {40: 492274222.0}), (16, {51: 492428378.0})]
+PDAG #MobileNetSiLU64k_comp_9 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_9
+Partition solving time for PDAG #MobileNetSiLU64k_comp_9: 0.57 seconds
+PDAG #MobileNetSiLU64k_comp_10 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_10
+  this_in_budgets: [(1, {40: 498798669.0}), (2, {40: 499589725.0}), (3, {40: 500676280.0}), (4, {40: 501661505.0}), (5, {53: 502420228.0}), (6, {40: 568970849.0}), (7, {40: 569373877.0}), (8, {40: 569306148.0}), (9, {40: 569268672.0}), (10, {40: 569289490.0}), (11, {40: 569393169.0}), (12, {40: 569338441.0}), (13, {40: 569428113.0}), (14, {40: 569666499.0}), (15, {51: 569651254.0}), (16, {51: 569796559.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_10
+Partition solving time for PDAG #MobileNetSiLU64k_comp_10: 0.35 seconds
+PDAG #MobileNetSiLU64k_comp_11 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_11
+  this_in_budgets: [(1, {40: 504042768.0}), (2, {40: 505397565.0}), (3, {40: 506340500.0}), (4, {40: 573585234.0}), (5, {40: 574308587.0}), (6, {40: 574735531.0}), (7, {40: 575547233.0}), (8, {40: 575838038.0}), (9, {40: 575849665.0}), (10, {40: 575856748.0}), (11, {40: 575742085.0}), (12, {40: 575876513.0}), (13, {40: 575756589.0}), (14, {40: 575953756.0}), (15, {40: 575965358.0}), (16, {51: 575657100.0})]
+PDAG #MobileNetSiLU64k_comp_11 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_11
+Partition solving time for PDAG #MobileNetSiLU64k_comp_11: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_12 Basic, DAG size: 25 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_12
+  this_in_budgets: [(1, {40: 582295087.0}), (2, {40: 583142149.0}), (3, {40: 584129617.0}), (4, {40: 585157923.0}), (5, {53: 585874159.0}), (6, {40: 652467267.0}), (7, {40: 652870295.0}), (8, {40: 652912908.0}), (9, {40: 652925782.0}), (10, {40: 652770373.0}), (11, {40: 652832531.0}), (12, {40: 652834095.0}), (13, {40: 652951632.0}), (14, {40: 653180813.0}), (15, {51: 653076737.0}), (16, {51: 653487695.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_12
+Partition solving time for PDAG #MobileNetSiLU64k_comp_12: 0.87 seconds
+PDAG #MobileNetSiLU64k_comp_13 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_13
+  this_in_budgets: [(1, {40: 626279047.0}), (2, {40: 648010804.0}), (3, {40: 657296218.0}), (4, {40: 726801853.0}), (5, {40: 726808805.0}), (6, {40: 726788053.0}), (7, {40: 726966318.0}), (8, {40: 726883055.0}), (9, {40: 727022804.0}), (10, {40: 726997349.0}), (11, {40: 726695912.0}), (12, {40: 726708706.0}), (13, {40: 726715805.0}), (14, {40: 726870063.0}), (15, {40: 729914251.0}), (16, {51: 726878093.0})]
+PDAG #MobileNetSiLU64k_comp_13 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_13
+Partition solving time for PDAG #MobileNetSiLU64k_comp_13: 0.56 seconds
+PDAG #MobileNetSiLU64k_comp_14 Basic, DAG size: 16 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_14
+  this_in_budgets: [(1, {40: 733250805.0}), (2, {40: 734115545.0}), (3, {40: 735128416.0}), (4, {40: 736113641.0}), (5, {53: 736872364.0}), (6, {40: 803422985.0}), (7, {40: 803826013.0}), (8, {40: 803829215.0}), (9, {40: 803881500.0}), (10, {40: 803942104.0}), (11, {40: 803845305.0}), (12, {40: 803861508.0}), (13, {40: 804032512.0}), (14, {40: 804136531.0}), (15, {51: 804103390.0}), (16, {51: 804628813.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_14
+Partition solving time for PDAG #MobileNetSiLU64k_comp_14: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_15 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_15
+  this_in_budgets: [(1, {40: 746592793.0}), (2, {40: 749857709.0}), (3, {40: 756352397.0}), (4, {40: 825704630.0}), (5, {40: 825586662.0}), (6, {40: 825717356.0}), (7, {40: 825733349.0}), (8, {40: 825739454.0}), (9, {40: 825846434.0}), (10, {40: 825751449.0}), (11, {40: 825894444.0}), (12, {40: 825637826.0}), (13, {40: 825876583.0}), (14, {40: 825885701.0}), (15, {40: 825782559.0}), (16, {51: 825545874.0})]
+PDAG #MobileNetSiLU64k_comp_15 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_15
+Partition solving time for PDAG #MobileNetSiLU64k_comp_15: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_16 Basic, DAG size: 27 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_16
+  this_in_budgets: [(1, {40: 832306984.0}), (2, {40: 833030923.0}), (3, {40: 834018391.0}), (4, {40: 835102097.0}), (5, {53: 835762933.0}), (6, {40: 902479164.0}), (7, {40: 902882192.0}), (8, {40: 902844853.0}), (9, {40: 902777009.0}), (10, {40: 902659147.0}), (11, {40: 902721305.0}), (12, {40: 902722869.0}), (13, {40: 902840406.0}), (14, {40: 903174836.0}), (15, {51: 902965511.0}), (16, {51: 903304896.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_16
+Partition solving time for PDAG #MobileNetSiLU64k_comp_16: 0.98 seconds
+PDAG #MobileNetSiLU64k_comp_17 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_17
+  this_in_budgets: [(1, {40: 898631704.0}), (2, {40: 931765760.0}), (3, {40: 946590672.0}), (4, {40: 1015433351.0}), (5, {40: 1015948497.0}), (6, {40: 1015571958.0}), (7, {40: 1015448551.0}), (8, {40: 1015591224.0}), (9, {40: 1015546652.0}), (10, {40: 1015597192.0}), (11, {40: 1015557393.0}), (12, {40: 1015624539.0}), (13, {40: 1015578073.0}), (14, {40: 1015579305.0}), (15, {40: 1015589458.0}), (16, {51: 1015591944.0})]
+PDAG #MobileNetSiLU64k_comp_17 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_17
+Partition solving time for PDAG #MobileNetSiLU64k_comp_17: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_18 Basic, DAG size: 14 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_18
+  this_in_budgets: [(1, {40: 1022197711.0}), (2, {40: 1022904961.0}), (3, {40: 1024064461.0}), (4, {40: 1025148167.0}), (5, {53: 1025809003.0}), (6, {40: 1092394984.0}), (7, {40: 1092839382.0}), (8, {40: 1092538457.0}), (9, {40: 1092583908.0}), (10, {40: 1092604726.0}), (11, {40: 1092767375.0}), (12, {40: 1092570750.0}), (13, {40: 1092743349.0}), (14, {40: 1092981735.0}), (15, {51: 1093011581.0}), (16, {51: 1093111795.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_18
+Partition solving time for PDAG #MobileNetSiLU64k_comp_18: 0.43 seconds
+PDAG #MobileNetSiLU64k_comp_19 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_19
+  this_in_budgets: [(1, {40: 1027444835.0}), (2, {40: 1028686376.0}), (3, {40: 1029724092.0}), (4, {40: 1097010431.0}), (5, {40: 1097579653.0}), (6, {40: 1097995308.0}), (7, {40: 1098884776.0}), (8, {40: 1099335703.0}), (9, {40: 1099248044.0}), (10, {40: 1099246585.0}), (11, {40: 1099264369.0}), (12, {40: 1099138720.0}), (13, {40: 1099275351.0}), (14, {40: 1099160199.0}), (15, {40: 1099288147.0}), (16, {51: 1099205349.0})]
+PDAG #MobileNetSiLU64k_comp_19 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_19
+Partition solving time for PDAG #MobileNetSiLU64k_comp_19: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_20 Basic, DAG size: 29 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_20
+  this_in_budgets: [(1, {40: 1105678679.0}), (2, {40: 1106543419.0}), (3, {40: 1107556290.0}), (4, {40: 1108541515.0}), (5, {53: 1109300238.0}), (6, {40: 1175850859.0}), (7, {40: 1176253887.0}), (8, {40: 1176119351.0}), (9, {40: 1176246669.0}), (10, {40: 1176251868.0}), (11, {40: 1176273179.0}), (12, {40: 1176151644.0}), (13, {40: 1176442038.0}), (14, {40: 1176564405.0}), (15, {51: 1176531264.0}), (16, {51: 1176810484.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_20
+Partition solving time for PDAG #MobileNetSiLU64k_comp_20: 1.11 seconds
+PDAG #MobileNetSiLU64k_comp_21 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_21
+  this_in_budgets: [(1, {40: 1188386211.0}), (2, {40: 1229796922.0}), (3, {40: 1247715474.0}), (4, {40: 1317478585.0}), (5, {40: 1317076126.0}), (6, {40: 1317339506.0}), (7, {40: 1317505855.0}), (8, {40: 1317255998.0}), (9, {40: 1317257014.0}), (10, {40: 1317263064.0}), (11, {40: 1317282664.0}), (12, {40: 1317290403.0}), (13, {40: 1317400786.0}), (14, {40: 1317820969.0}), (15, {40: 1317413757.0}), (16, {51: 1317044796.0})]
+PDAG #MobileNetSiLU64k_comp_21 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_21
+Partition solving time for PDAG #MobileNetSiLU64k_comp_21: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_22 Basic, DAG size: 18 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_22
+  this_in_budgets: [(1, {40: 1323670061.0}), (2, {40: 1324529845.0}), (3, {40: 1325517313.0}), (4, {40: 1326532897.0}), (5, {53: 1327261855.0}), (6, {40: 1393842241.0}), (7, {40: 1394245269.0}), (8, {40: 1394409751.0}), (9, {40: 1394300756.0}), (10, {40: 1394158069.0}), (11, {40: 1394220227.0}), (12, {40: 1394221791.0}), (13, {40: 1394339328.0}), (14, {40: 1394555787.0}), (15, {51: 1394464433.0}), (16, {51: 1394936094.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_22
+Partition solving time for PDAG #MobileNetSiLU64k_comp_22: 0.71 seconds
+PDAG #MobileNetSiLU64k_comp_23 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_23
+  this_in_budgets: [(1, {40: 1338176598.0}), (2, {40: 1341731554.0}), (3, {40: 1349009414.0}), (4, {40: 1418361647.0}), (5, {40: 1418370489.0}), (6, {40: 1418378262.0}), (7, {40: 1418381594.0}), (8, {40: 1418264851.0}), (9, {40: 1418269168.0}), (10, {40: 1418285400.0}), (11, {40: 1418522586.0}), (12, {40: 1418422273.0}), (13, {40: 1418431225.0}), (14, {40: 1418306829.0}), (15, {40: 1418449546.0}), (16, {51: 1418204516.0})]
+PDAG #MobileNetSiLU64k_comp_23 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_23
+Partition solving time for PDAG #MobileNetSiLU64k_comp_23: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_24 Basic, DAG size: 31 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_24
+  this_in_budgets: [(1, {40: 1424925235.0}), (2, {40: 1425689565.0}), (3, {40: 1426677033.0}), (4, {40: 1427760739.0}), (5, {53: 1428421575.0}), (6, {40: 1495136181.0}), (7, {40: 1495539209.0}), (8, {40: 1495265981.0}), (9, {40: 1495393299.0}), (10, {40: 1495317789.0}), (11, {40: 1495379947.0}), (12, {40: 1495298274.0}), (13, {40: 1495499048.0}), (14, {40: 1495835972.0}), (15, {51: 1495624153.0}), (16, {51: 1495971883.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_24
+Partition solving time for PDAG #MobileNetSiLU64k_comp_24: 1.30 seconds
+PDAG #MobileNetSiLU64k_comp_25 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_25
+  this_in_budgets: [(1, {40: 1563826279.0}), (2, {40: 1634103279.0}), (3, {40: 1664169944.0}), (4, {40: 1733584141.0}), (5, {40: 1733531453.0}), (6, {40: 1733546556.0}), (7, {40: 1733481762.0}), (8, {40: 1733692366.0}), (9, {40: 1733576288.0}), (10, {40: 1733763218.0}), (11, {40: 1733596245.0}), (12, {40: 1733515486.0}), (13, {40: 1733733381.0}), (14, {40: 1733546381.0}), (15, {40: 1733754950.0}), (16, {51: 1733535681.0})]
+PDAG #MobileNetSiLU64k_comp_25 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_25
+Partition solving time for PDAG #MobileNetSiLU64k_comp_25: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_26 Basic, DAG size: 16 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_26
+  this_in_budgets: [(1, {40: 1740124531.0}), (2, {40: 1740989271.0}), (3, {40: 1742002142.0}), (4, {40: 1742987367.0}), (5, {53: 1743746090.0}), (6, {40: 1810296711.0}), (7, {40: 1810699739.0}), (8, {40: 1810505533.0}), (9, {40: 1810632851.0}), (10, {40: 1810638050.0}), (11, {40: 1810711112.0}), (12, {40: 1810537826.0}), (13, {40: 1810830213.0}), (14, {40: 1811010257.0}), (15, {51: 1810955318.0}), (16, {51: 1811277287.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_26
+Partition solving time for PDAG #MobileNetSiLU64k_comp_26: 0.58 seconds
+PDAG #MobileNetSiLU64k_comp_27 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_27
+  this_in_budgets: [(1, {40: 1745461562.0}), (2, {40: 1746576357.0}), (3, {40: 1747740225.0}), (4, {40: 1815002857.0}), (5, {40: 1815649842.0}), (6, {40: 1816104321.0}), (7, {40: 1817008778.0}), (8, {40: 1817145280.0}), (9, {40: 1817147284.0}), (10, {40: 1817145763.0}), (11, {40: 1817157534.0}), (12, {40: 1817180684.0}), (13, {40: 1817315193.0}), (14, {40: 1817248256.0}), (15, {40: 1817322697.0}), (16, {51: 1817202298.0})]
+PDAG #MobileNetSiLU64k_comp_27 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_27
+Partition solving time for PDAG #MobileNetSiLU64k_comp_27: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_28 Basic, DAG size: 33 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_28
+  this_in_budgets: [(1, {40: 1823694812.0}), (2, {40: 1824559552.0}), (3, {40: 1825572423.0}), (4, {40: 1826557648.0}), (5, {53: 1827316371.0}), (6, {40: 1893866992.0}), (7, {40: 1894270020.0}), (8, {40: 1894207408.0}), (9, {40: 1894317147.0}), (10, {40: 1894315571.0}), (11, {40: 1894289312.0}), (12, {40: 1894239701.0}), (13, {40: 1894476519.0}), (14, {40: 1894580538.0}), (15, {51: 1894547397.0}), (16, {51: 1894845034.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_28
+Partition solving time for PDAG #MobileNetSiLU64k_comp_28: 1.30 seconds
+PDAG #MobileNetSiLU64k_comp_29 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_29
+  this_in_budgets: [(1, {40: 1980564493.0}), (2, {40: 2060710451.0}), (3, {40: 2094264169.0}), (4, {40: 2163619500.0}), (5, {40: 2163629716.0}), (6, {40: 2163893455.0}), (7, {40: 2163379174.0}), (8, {40: 2163389604.0}), (9, {40: 2163684588.0}), (10, {40: 2163667986.0}), (11, {40: 2163671626.0}), (12, {40: 2163420310.0}), (13, {40: 2163584383.0}), (14, {40: 2163441076.0}), (15, {40: 2163664227.0}), (16, {51: 2163361078.0})]
+PDAG #MobileNetSiLU64k_comp_29 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_29
+Partition solving time for PDAG #MobileNetSiLU64k_comp_29: 0.56 seconds
+PDAG #MobileNetSiLU64k_comp_30 Basic, DAG size: 16 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_30
+  this_in_budgets: [(1, {40: 2170059482.0}), (2, {40: 2170846127.0}), (3, {40: 2171833595.0}), (4, {40: 2172917301.0}), (5, {53: 2173578137.0}), (6, {40: 2240364825.0}), (7, {40: 2240787590.0}), (8, {40: 2240400228.0}), (9, {40: 2240527546.0}), (10, {40: 2240474351.0}), (11, {40: 2240536509.0}), (12, {40: 2240432521.0}), (13, {40: 2240655610.0}), (14, {40: 2240992534.0}), (15, {51: 2240780715.0}), (16, {51: 2241186564.0})]
+PDAG #MobileNetSiLU64k_comp_30 is equivalent to PDAG #MobileNetSiLU64k_comp_26
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_30
+Partition solving time for PDAG #MobileNetSiLU64k_comp_30: 0.03 seconds
+PDAG #MobileNetSiLU64k_comp_31 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_31
+  this_in_budgets: [(1, {40: 2175293015.0}), (2, {40: 2176506291.0}), (3, {40: 2177572272.0}), (4, {40: 2245070971.0}), (5, {40: 2245544537.0}), (6, {40: 2245999016.0}), (7, {40: 2246903473.0}), (8, {40: 2246977327.0}), (9, {40: 2246979331.0}), (10, {40: 2246977810.0}), (11, {40: 2246989581.0}), (12, {40: 2247012731.0}), (13, {40: 2247147240.0}), (14, {40: 2247080303.0}), (15, {40: 2247154744.0}), (16, {51: 2247034345.0})]
+PDAG #MobileNetSiLU64k_comp_31 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_31
+Partition solving time for PDAG #MobileNetSiLU64k_comp_31: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_32 Basic, DAG size: 33 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_32
+  this_in_budgets: [(1, {40: 2253526859.0}), (2, {40: 2254391599.0}), (3, {40: 2255404470.0}), (4, {40: 2256389695.0}), (5, {53: 2257148418.0}), (6, {40: 2323699039.0}), (7, {40: 2324102067.0}), (8, {40: 2324039455.0}), (9, {40: 2324149194.0}), (10, {40: 2324147618.0}), (11, {40: 2324121359.0}), (12, {40: 2324071748.0}), (13, {40: 2324308566.0}), (14, {40: 2324412585.0}), (15, {51: 2324379444.0}), (16, {51: 2324677081.0})]
+PDAG #MobileNetSiLU64k_comp_32 is equivalent to PDAG #MobileNetSiLU64k_comp_28
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_32
+Partition solving time for PDAG #MobileNetSiLU64k_comp_32: 0.05 seconds
+PDAG #MobileNetSiLU64k_comp_33 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_33
+  this_in_budgets: [(1, {40: 2410396540.0}), (2, {40: 2490542498.0}), (3, {40: 2524096216.0}), (4, {40: 2593451547.0}), (5, {40: 2593461763.0}), (6, {40: 2593725502.0}), (7, {40: 2593211221.0}), (8, {40: 2593221651.0}), (9, {40: 2593516635.0}), (10, {40: 2593500033.0}), (11, {40: 2593503673.0}), (12, {40: 2593252357.0}), (13, {40: 2593416430.0}), (14, {40: 2593273123.0}), (15, {40: 2593496274.0}), (16, {51: 2593193125.0})]
+PDAG #MobileNetSiLU64k_comp_33 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_33
+Partition solving time for PDAG #MobileNetSiLU64k_comp_33: 0.56 seconds
+PDAG #MobileNetSiLU64k_comp_34 Basic, DAG size: 16 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_34
+  this_in_budgets: [(1, {40: 2599891529.0}), (2, {40: 2600678174.0}), (3, {40: 2601665642.0}), (4, {40: 2602749348.0}), (5, {53: 2603410184.0}), (6, {40: 2670196872.0}), (7, {40: 2670619637.0}), (8, {40: 2670232275.0}), (9, {40: 2670359593.0}), (10, {40: 2670306398.0}), (11, {40: 2670368556.0}), (12, {40: 2670264568.0}), (13, {40: 2670487657.0}), (14, {40: 2670824581.0}), (15, {51: 2670612762.0}), (16, {51: 2671018611.0})]
+PDAG #MobileNetSiLU64k_comp_34 is equivalent to PDAG #MobileNetSiLU64k_comp_26
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_34
+Partition solving time for PDAG #MobileNetSiLU64k_comp_34: 0.03 seconds
+PDAG #MobileNetSiLU64k_comp_35 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_35
+  this_in_budgets: [(1, {40: 2605125062.0}), (2, {40: 2606338338.0}), (3, {40: 2607404319.0}), (4, {40: 2674903018.0}), (5, {40: 2675376584.0}), (6, {40: 2675831063.0}), (7, {40: 2676735520.0}), (8, {40: 2676809374.0}), (9, {40: 2676811378.0}), (10, {40: 2676809857.0}), (11, {40: 2676821628.0}), (12, {40: 2676844778.0}), (13, {40: 2676979287.0}), (14, {40: 2676912350.0}), (15, {40: 2676986791.0}), (16, {51: 2676866392.0})]
+PDAG #MobileNetSiLU64k_comp_35 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_35
+Partition solving time for PDAG #MobileNetSiLU64k_comp_35: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_36 Basic, DAG size: 33 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_36
+  this_in_budgets: [(1, {40: 2683358906.0}), (2, {40: 2684223646.0}), (3, {40: 2685236517.0}), (4, {40: 2686221742.0}), (5, {53: 2686980465.0}), (6, {40: 2753531086.0}), (7, {40: 2753934114.0}), (8, {40: 2753871502.0}), (9, {40: 2753981241.0}), (10, {40: 2753979665.0}), (11, {40: 2753953406.0}), (12, {40: 2753903795.0}), (13, {40: 2754140613.0}), (14, {40: 2754244632.0}), (15, {51: 2754211491.0}), (16, {51: 2754509128.0})]
+PDAG #MobileNetSiLU64k_comp_36 is equivalent to PDAG #MobileNetSiLU64k_comp_28
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_36
+Partition solving time for PDAG #MobileNetSiLU64k_comp_36: 0.05 seconds
+PDAG #MobileNetSiLU64k_comp_37 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_37
+  this_in_budgets: [(1, {40: 2840228587.0}), (2, {40: 2920374545.0}), (3, {40: 2953928263.0}), (4, {40: 3023283594.0}), (5, {40: 3023293810.0}), (6, {40: 3023557549.0}), (7, {40: 3023043268.0}), (8, {40: 3023053698.0}), (9, {40: 3023348682.0}), (10, {40: 3023332080.0}), (11, {40: 3023335720.0}), (12, {40: 3023084404.0}), (13, {40: 3023248477.0}), (14, {40: 3023105170.0}), (15, {40: 3023328321.0}), (16, {51: 3023025172.0})]
+PDAG #MobileNetSiLU64k_comp_37 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_37
+Partition solving time for PDAG #MobileNetSiLU64k_comp_37: 0.56 seconds
+PDAG #MobileNetSiLU64k_comp_38 Basic, DAG size: 16 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_38
+  this_in_budgets: [(1, {40: 3029723576.0}), (2, {40: 3030510221.0}), (3, {40: 3031497689.0}), (4, {40: 3032581395.0}), (5, {53: 3033242231.0}), (6, {40: 3100028919.0}), (7, {40: 3100451684.0}), (8, {40: 3100064322.0}), (9, {40: 3100191640.0}), (10, {40: 3100138445.0}), (11, {40: 3100200603.0}), (12, {40: 3100096615.0}), (13, {40: 3100319704.0}), (14, {40: 3100656628.0}), (15, {51: 3100444809.0}), (16, {51: 3100850658.0})]
+PDAG #MobileNetSiLU64k_comp_38 is equivalent to PDAG #MobileNetSiLU64k_comp_26
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_38
+Partition solving time for PDAG #MobileNetSiLU64k_comp_38: 0.03 seconds
+PDAG #MobileNetSiLU64k_comp_39 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_39
+  this_in_budgets: [(1, {40: 3034957109.0}), (2, {40: 3036170385.0}), (3, {40: 3037236366.0}), (4, {40: 3104735065.0}), (5, {40: 3105208631.0}), (6, {40: 3105663110.0}), (7, {40: 3106567567.0}), (8, {40: 3106641421.0}), (9, {40: 3106643425.0}), (10, {40: 3106641904.0}), (11, {40: 3106653675.0}), (12, {40: 3106676825.0}), (13, {40: 3106811334.0}), (14, {40: 3106744397.0}), (15, {40: 3106818838.0}), (16, {51: 3106698439.0})]
+PDAG #MobileNetSiLU64k_comp_39 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_39
+Partition solving time for PDAG #MobileNetSiLU64k_comp_39: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_40 Basic, DAG size: 33 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_40
+  this_in_budgets: [(1, {40: 3113190953.0}), (2, {40: 3114055693.0}), (3, {40: 3115068564.0}), (4, {40: 3116053789.0}), (5, {53: 3116812512.0}), (6, {40: 3183363133.0}), (7, {40: 3183766161.0}), (8, {40: 3183703549.0}), (9, {40: 3183813288.0}), (10, {40: 3183811712.0}), (11, {40: 3183785453.0}), (12, {40: 3183735842.0}), (13, {40: 3183972660.0}), (14, {40: 3184076679.0}), (15, {51: 3184043538.0}), (16, {51: 3184341175.0})]
+PDAG #MobileNetSiLU64k_comp_40 is equivalent to PDAG #MobileNetSiLU64k_comp_28
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_40
+Partition solving time for PDAG #MobileNetSiLU64k_comp_40: 0.05 seconds
+PDAG #MobileNetSiLU64k_comp_41 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_41
+  this_in_budgets: [(1, {40: 3270060634.0}), (2, {40: 3350206592.0}), (3, {40: 3383760310.0}), (4, {40: 3453115641.0}), (5, {40: 3453125857.0}), (6, {40: 3453389596.0}), (7, {40: 3452875315.0}), (8, {40: 3452885745.0}), (9, {40: 3453180729.0}), (10, {40: 3453164127.0}), (11, {40: 3453167767.0}), (12, {40: 3452916451.0}), (13, {40: 3453080524.0}), (14, {40: 3452937217.0}), (15, {40: 3453160368.0}), (16, {51: 3452857219.0})]
+PDAG #MobileNetSiLU64k_comp_41 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_41
+Partition solving time for PDAG #MobileNetSiLU64k_comp_41: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_42 Basic, DAG size: 16 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_42
+  this_in_budgets: [(1, {40: 3459555623.0}), (2, {40: 3460342268.0}), (3, {40: 3461329736.0}), (4, {40: 3462413442.0}), (5, {53: 3463074278.0}), (6, {40: 3529860966.0}), (7, {40: 3530283731.0}), (8, {40: 3529896369.0}), (9, {40: 3530023687.0}), (10, {40: 3529970492.0}), (11, {40: 3530032650.0}), (12, {40: 3529928662.0}), (13, {40: 3530151751.0}), (14, {40: 3530488675.0}), (15, {51: 3530276856.0}), (16, {51: 3530682705.0})]
+PDAG #MobileNetSiLU64k_comp_42 is equivalent to PDAG #MobileNetSiLU64k_comp_26
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_42
+Partition solving time for PDAG #MobileNetSiLU64k_comp_42: 0.03 seconds
+PDAG #MobileNetSiLU64k_comp_43 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_43
+  this_in_budgets: [(1, {40: 3464789156.0}), (2, {40: 3466002432.0}), (3, {40: 3467068413.0}), (4, {40: 3534567112.0}), (5, {40: 3535040678.0}), (6, {40: 3535495157.0}), (7, {40: 3536399614.0}), (8, {40: 3536473468.0}), (9, {40: 3536475472.0}), (10, {40: 3536473951.0}), (11, {40: 3536485722.0}), (12, {40: 3536508872.0}), (13, {40: 3536643381.0}), (14, {40: 3536576444.0}), (15, {40: 3536650885.0}), (16, {51: 3536530486.0})]
+PDAG #MobileNetSiLU64k_comp_43 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_43
+Partition solving time for PDAG #MobileNetSiLU64k_comp_43: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_44 Basic, DAG size: 33 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_44
+  this_in_budgets: [(1, {40: 3543023000.0}), (2, {40: 3543887740.0}), (3, {40: 3544900611.0}), (4, {40: 3545885836.0}), (5, {53: 3546644559.0}), (6, {40: 3613195180.0}), (7, {40: 3613598208.0}), (8, {40: 3613535596.0}), (9, {40: 3613645335.0}), (10, {40: 3613643759.0}), (11, {40: 3613617500.0}), (12, {40: 3613567889.0}), (13, {40: 3613804707.0}), (14, {40: 3613908726.0}), (15, {51: 3613875585.0}), (16, {51: 3614173222.0})]
+PDAG #MobileNetSiLU64k_comp_44 is equivalent to PDAG #MobileNetSiLU64k_comp_28
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 16 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_44
+Partition solving time for PDAG #MobileNetSiLU64k_comp_44: 0.05 seconds
+PDAG #MobileNetSiLU64k_comp_45 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_45
+  this_in_budgets: [(1, {40: 3699892681.0}), (2, {40: 3780038639.0}), (3, {40: 3813592357.0}), (4, {40: 3882947688.0}), (5, {40: 3882957904.0}), (6, {40: 3883221643.0}), (7, {40: 3882707362.0}), (8, {40: 3882717792.0}), (9, {40: 3883012776.0}), (10, {40: 3882996174.0}), (11, {40: 3882999814.0}), (12, {40: 3882748498.0}), (13, {40: 3882912571.0}), (14, {40: 3882769264.0}), (15, {40: 3882992415.0}), (16, {51: 3882689266.0})]
+PDAG #MobileNetSiLU64k_comp_45 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_45
+Partition solving time for PDAG #MobileNetSiLU64k_comp_45: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_46 Basic, DAG size: 20 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_46
+  this_in_budgets: [(1, {40: 3889387670.0}), (2, {40: 3890174315.0}), (3, {40: 3891161783.0}), (4, {40: 3892245489.0}), (5, {53: 3892906325.0}), (6, {40: 3959693013.0}), (7, {40: 3960115778.0}), (8, {40: 3959728416.0}), (9, {40: 3959855734.0}), (10, {40: 3959802539.0}), (11, {40: 3959864697.0}), (12, {40: 3959760709.0}), (13, {40: 3959983798.0}), (14, {40: 3960320722.0}), (15, {51: 3960108903.0}), (16, {51: 3960514752.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_46
+Partition solving time for PDAG #MobileNetSiLU64k_comp_46: 0.79 seconds
+PDAG #MobileNetSiLU64k_comp_47 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_47
+  this_in_budgets: [(1, {40: 3904151007.0}), (2, {40: 3907845879.0}), (3, {40: 3915152877.0}), (4, {40: 3984632362.0}), (5, {40: 3984643113.0}), (6, {40: 3984522690.0}), (7, {40: 3984765524.0}), (8, {40: 3984662668.0}), (9, {40: 3984677460.0}), (10, {40: 3984674337.0}), (11, {40: 3984565324.0}), (12, {40: 3984691027.0}), (13, {40: 3984696158.0}), (14, {40: 3984703013.0}), (15, {40: 3984711815.0}), (16, {51: 3984602325.0})]
+PDAG #MobileNetSiLU64k_comp_47 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_47
+Partition solving time for PDAG #MobileNetSiLU64k_comp_47: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_48 Basic, DAG size: 35 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_48
+  this_in_budgets: [(1, {40: 3991107464.0}), (2, {40: 3991972204.0}), (3, {40: 3992985075.0}), (4, {40: 3993970300.0}), (5, {53: 3994729023.0}), (6, {40: 4061279644.0}), (7, {40: 4061682672.0}), (8, {40: 4061662165.0}), (9, {40: 4061706265.0}), (10, {40: 4061715598.0}), (11, {40: 4061701964.0}), (12, {40: 4061694458.0}), (13, {40: 4061865706.0}), (14, {40: 4061993190.0}), (15, {51: 4061960049.0}), (16, {51: 4062234152.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_48
+Partition solving time for PDAG #MobileNetSiLU64k_comp_48: 1.33 seconds
+PDAG #MobileNetSiLU64k_comp_49 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_49
+  this_in_budgets: [(1, {40: 4282737108.0}), (2, {40: 4431523781.0}), (3, {40: 4494711918.0}), (4, {40: 4564012620.0}), (5, {40: 4564020237.0}), (6, {40: 4564144055.0}), (7, {40: 4564167063.0}), (8, {40: 4564176383.0}), (9, {40: 4564221144.0}), (10, {40: 4564132765.0}), (11, {40: 4564139540.0}), (12, {40: 4564201788.0}), (13, {40: 4564209344.0}), (14, {40: 4564089065.0}), (15, {40: 4564089747.0}), (16, {51: 4563982832.0})]
+PDAG #MobileNetSiLU64k_comp_49 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_49
+Partition solving time for PDAG #MobileNetSiLU64k_comp_49: 0.55 seconds
+PDAG #MobileNetSiLU64k_comp_50 Basic, DAG size: 18 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_50
+  this_in_budgets: [(1, {40: 4570666505.0}), (2, {40: 4571405250.0}), (3, {40: 4572455349.0}), (4, {40: 4573529341.0}), (5, {53: 4574199891.0}), (6, {40: 4640838685.0}), (7, {40: 4641241713.0}), (8, {40: 4641048217.0}), (9, {40: 4641084197.0}), (10, {40: 4641096105.0}), (11, {40: 4641158263.0}), (12, {40: 4641080510.0}), (13, {40: 4641243638.0}), (14, {40: 4641482024.0}), (15, {51: 4641402469.0}), (16, {51: 4641612084.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_50
+Partition solving time for PDAG #MobileNetSiLU64k_comp_50: 0.64 seconds
+PDAG #MobileNetSiLU64k_comp_51 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_51
+  this_in_budgets: [(1, {40: 4575980815.0}), (2, {40: 4577447861.0}), (3, {40: 4578273072.0}), (4, {40: 4645635530.0}), (5, {40: 4646295639.0}), (6, {40: 4646788942.0}), (7, {40: 4647671780.0}), (8, {40: 4647807381.0}), (9, {40: 4647688038.0}), (10, {40: 4647695028.0}), (11, {40: 4647832348.0}), (12, {40: 4647707474.0}), (13, {40: 4647714511.0}), (14, {40: 4647719004.0}), (15, {40: 4647983313.0}), (16, {51: 4647619223.0})]
+PDAG #MobileNetSiLU64k_comp_51 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_51
+Partition solving time for PDAG #MobileNetSiLU64k_comp_51: 0.50 seconds
+PDAG #MobileNetSiLU64k_comp_52 Basic, DAG size: 37 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_52
+  this_in_budgets: [(1, {40: 4654227659.0}), (2, {40: 4655092399.0}), (3, {40: 4656091740.0}), (4, {40: 4657090495.0}), (5, {53: 4657836282.0}), (6, {40: 4724399839.0}), (7, {40: 4724802867.0}), (8, {40: 4724678156.0}), (9, {40: 4724805474.0}), (10, {40: 4724732496.0}), (11, {40: 4724794654.0}), (12, {40: 4724710449.0}), (13, {40: 4724913755.0}), (14, {40: 4725113385.0}), (15, {51: 4725038860.0}), (16, {51: 4725505650.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_52
+Partition solving time for PDAG #MobileNetSiLU64k_comp_52: 1.46 seconds
+PDAG #MobileNetSiLU64k_comp_53 Basic, DAG size: 179 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_53
+  this_in_budgets: [(1, {40: 4965320754.0}), (2, {40: 5124449039.0}), (3, {40: 5191805449.0}), (4, {40: 5261186513.0}), (5, {40: 5261422116.0}), (6, {40: 5261302713.0}), (7, {40: 5261050184.0}), (8, {40: 5261316434.0}), (9, {40: 5261067514.0}), (10, {40: 5261224075.0}), (11, {40: 5261230361.0}), (12, {40: 5261581661.0}), (13, {40: 5261352936.0}), (14, {40: 5261104932.0}), (15, {40: 5261179382.0}), (16, {51: 5260998699.0})]
+PDAG #MobileNetSiLU64k_comp_53 is equivalent to PDAG #MobileNetSiLU64k_comp_1
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_53
+Partition solving time for PDAG #MobileNetSiLU64k_comp_53: 0.56 seconds
+PDAG #MobileNetSiLU64k_comp_54 Basic, DAG size: 32 nodes
+Adding QBP for PDAG #MobileNetSiLU64k_comp_54
+  this_in_budgets: [(1, {40: 5267723338.0}), (2, {40: 5268483748.0}), (3, {40: 5269471216.0}), (4, {40: 5270554922.0}), (5, {53: 5271215758.0}), (6, {40: 5337932216.0}), (7, {40: 5338335244.0}), (8, {40: 5338064084.0}), (9, {40: 5338173832.0}), (10, {40: 5338111972.0}), (11, {40: 5338174130.0}), (12, {40: 5338096377.0}), (13, {40: 5338293231.0}), (14, {40: 5338571659.0}), (15, {51: 5338418336.0}), (16, {51: 5338701719.0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #MobileNetSiLU64k_comp_54
+Partition solving time for PDAG #MobileNetSiLU64k_comp_54: 1.71 seconds
+Final Choice: input (l,s)=(16,40), output (l,s)=(1,58), cost=5287717418.0
+Final cost (aggregated partition cost): 5287.717 sec.
+Final assignment latency: 5287.717 sec.
+	RDAG: Squashing ['dummy']!
+Final tdag latency: 5283.547 sec. (accurate estimation)
+Final tdag latency breakdown (number of operations):
+  add_double: 14091 ops.
+  add_single: 217 ops.
+  bootstrap_single: 27 ops.
+  modswitch_single: 891 ops.
+  mul_double: 513 ops.
+  mul_single: 9205 ops.
+  negate_single: 108 ops.
+  rescale_single: 1902 ops.
+  rotate_single: 31770 ops.
+  upscale_single: 1140 ops.
+========================================
+Final tdag latency breakdown (in sec):
+  add_double: 16.329 sec.
+  add_single: 9.770 sec.
+  bootstrap_single: 1871.658 sec.
+  modswitch_single: 1.231 sec.
+  mul_double: 130.179 sec.
+  mul_single: 340.559 sec.
+  negate_single: 0.493 sec.
+  rescale_single: 69.561 sec.
+  rotate_single: 2839.364 sec.
+  upscale_single: 4.403 sec.
+========================================
+Saturn Compilation time: 64.776 sec.
+Timestamps breakdown:
+  'DAG Load Time': 0.930 sec.
+  'DAG Compression Time': 1.138 sec.
+  'QBP Manager Init Time': 0.000 sec.
+  'ILP-QBP Time': 61.389 sec.
+  'Final Assignment Time': 0.000 sec.
+  'DAG Decode Time': 1.092 sec.
+  'DAG Write Time': 0.228 sec.
+========================================

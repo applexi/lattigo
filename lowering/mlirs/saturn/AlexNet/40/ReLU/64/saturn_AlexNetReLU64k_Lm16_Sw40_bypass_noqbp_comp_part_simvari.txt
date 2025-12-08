@@ -1,0 +1,264 @@
+	RDAG: Squashing ['rescale', 'upscale', 'modswitch', 'bootstrap']!
+Built original DAG with 54188 nodes and 71908 edges.
+After Squashing, DAG has 42873 nodes and 60593 edges.
+After Compression, DAG has 4318 nodes and 5900 edges.
+PDAG #AlexNetReLU64k_comp_0 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_0
+  this_in_budgets: [(-1, {40: 0})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 16 / 16 ILP tasks for PDAG #AlexNetReLU64k_comp_0
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Partition solving time for PDAG #AlexNetReLU64k_comp_0: 0.03 seconds
+PDAG #AlexNetReLU64k_comp_1 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_1
+  this_in_budgets: [(1, {40: 13215110}), (2, {40: 18069166}), (3, {40: 20434504}), (4, {40: 23231524}), (5, {40: 29712092}), (6, {40: 32631998}), (7, {40: 36069511}), (8, {40: 44249507}), (9, {40: 47698891}), (10, {40: 51790723}), (11, {40: 61750904}), (12, {40: 65877807}), (13, {40: 70524288}), (14, {40: 81995536}), (15, {51: 110910444.92307693}), (16, {51: 109622190.92307693})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_1
+Partition solving time for PDAG #AlexNetReLU64k_comp_1: 21.24 seconds
+PDAG #AlexNetReLU64k_comp_2 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_2
+  this_in_budgets: [(1, {40: 155142425.92307693}), (2, {40: 156590201.92307693}), (3, {40: 191164264.92307693}), (4, {40: 191994480.92307693}), (5, {40: 193184418.92307693}), (6, {40: 194334268.92307693}), (7, {40: 195062976.92307693}), (8, {43: 196015620.92307693}), (9, {40: 250882396.84615386}), (10, {40: 261022213.84615386}), (11, {40: 265173178.84615386}), (12, {40: 270070217.84615386}), (13, {40: 280853869.84615386}), (14, {51: 280261581.84615386}), (15, {51: 280229615.84615386}), (16, {51: 280802635.84615386})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_2
+Partition solving time for PDAG #AlexNetReLU64k_comp_2: 43.96 seconds
+PDAG #AlexNetReLU64k_comp_3 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_3
+  this_in_budgets: [(1, {40: 369824258.7692308}), (2, {40: 370514998.7692308}), (3, {40: 390274480.7692308}), (4, {40: 391360436.7692308}), (5, {40: 392096538.7692308}), (6, {40: 392856654.7692308}), (7, {40: 394107552.7692308}), (8, {43: 395282038.7692308}), (9, {40: 464425462.6923077}), (10, {40: 471134141.6923077}), (11, {40: 479281921.6923077}), (12, {40: 479327009.6923077}), (13, {40: 479167395.6923077}), (14, {40: 479505985.6923077}), (15, {51: 479400647.6923077}), (16, {51: 479690823.6923077})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_3
+Partition solving time for PDAG #AlexNetReLU64k_comp_3: 26.73 seconds
+PDAG #AlexNetReLU64k_comp_4 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_4
+  this_in_budgets: [(1, {40: 571509173.6153846}), (2, {40: 573529253.6153846}), (3, {40: 588386280.6153846}), (4, {40: 589510596.6153846}), (5, {40: 589763818.6153846}), (6, {40: 591046958.6153846}), (7, {40: 592163674.6153846}), (8, {43: 593079330.6153846}), (9, {40: 670438025.5384616}), (10, {40: 676958497.5384616}), (11, {40: 676849395.5384616}), (12, {40: 677146427.5384616}), (13, {40: 677162829.5384616}), (14, {40: 677394009.5384616}), (15, {40: 677675083.5384616}), (16, {51: 677305753.5384616})]
+PDAG #AlexNetReLU64k_comp_4 is equivalent to PDAG #AlexNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.750.
+    Need to solve 64 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_4
+Partition solving time for PDAG #AlexNetReLU64k_comp_4: 11.79 seconds
+PDAG #AlexNetReLU64k_comp_5 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_5
+  this_in_budgets: [(1, {40: 785364118.4615386}), (2, {40: 786451282.4615386}), (3, {40: 787496496.4615384}), (4, {40: 788208830.4615386}), (5, {40: 789225712.4615386}), (6, {40: 790078670.4615384}), (7, {40: 791226546.4615386}), (8, {43: 792504054.4615384}), (9, {40: 875928629.3846154}), (10, {40: 875965199.3846154}), (11, {40: 876503937.3846154}), (12, {40: 876319887.3846154}), (13, {40: 876389411.3846154}), (14, {40: 876380255.3846154}), (15, {51: 876392719.3846154}), (16, {51: 876879001.3846154})]
+PDAG #AlexNetReLU64k_comp_5 is equivalent to PDAG #AlexNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_5
+Partition solving time for PDAG #AlexNetReLU64k_comp_5: 0.54 seconds
+PDAG #AlexNetReLU64k_comp_6 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_6
+  this_in_budgets: [(1, {40: 984728422.3076924}), (2, {40: 985457984.3076923}), (3, {40: 986606712.3076923}), (4, {40: 987692668.3076923}), (5, {40: 988428770.3076923}), (6, {40: 989188886.3076923}), (7, {40: 990439784.3076923}), (8, {43: 991614270.3076923}), (9, {40: 1075236605.2307692}), (10, {40: 1075538447.2307692}), (11, {40: 1075614153.2307692}), (12, {40: 1075659241.2307692}), (13, {40: 1075499627.2307692}), (14, {40: 1075838217.2307692}), (15, {51: 1075732879.2307692}), (16, {51: 1075853927.2307692})]
+PDAG #AlexNetReLU64k_comp_6 is equivalent to PDAG #AlexNetReLU64k_comp_3
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_6
+Partition solving time for PDAG #AlexNetReLU64k_comp_6: 0.52 seconds
+PDAG #AlexNetReLU64k_comp_7 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_7
+  this_in_budgets: [(1, {40: 1182320316.153846}), (2, {40: 1183831054.1538463}), (3, {40: 1184549384.153846}), (4, {40: 1185842828.1538463}), (5, {40: 1186096050.1538463}), (6, {40: 1187379190.153846}), (7, {40: 1188389892.153846}), (8, {43: 1189411562.1538463}), (9, {40: 1272954055.076923}), (10, {40: 1273121601.076923}), (11, {40: 1273181627.076923}), (12, {40: 1273478659.0769231}), (13, {40: 1273495061.0769231}), (14, {40: 1273726241.076923}), (15, {40: 1273838187.076923}), (16, {51: 1273637985.076923})]
+PDAG #AlexNetReLU64k_comp_7 is equivalent to PDAG #AlexNetReLU64k_comp_2
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_7
+Partition solving time for PDAG #AlexNetReLU64k_comp_7: 0.48 seconds
+PDAG #AlexNetReLU64k_comp_8 Basic, DAG size: 28 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_8
+  this_in_budgets: [(1, {40: 1381696349.9999998}), (2, {40: 1382614385.9999998}), (3, {40: 1383659600.0}), (4, {40: 1384541061.9999998}), (5, {40: 1385481658.0}), (6, {40: 1386241774.0}), (7, {40: 1387492672.0}), (8, {43: 1388667158.0}), (9, {40: 1472260860.9230766}), (10, {40: 1472297430.9230766}), (11, {40: 1472667040.9230769}), (12, {40: 1472652118.9230766}), (13, {40: 1472552514.9230769}), (14, {40: 1472712486.9230766}), (15, {51: 1472724950.9230766}), (16, {51: 1473145458.9230769})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_8
+Partition solving time for PDAG #AlexNetReLU64k_comp_8: 0.87 seconds
+PDAG #AlexNetReLU64k_comp_9 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_9
+  this_in_budgets: [(1, {40: 1598512336.9999998}), (2, {40: 1661596763.0}), (3, {40: 1718737535.4615383}), (4, {40: 1749435044.4615383}), (5, {40: 1814504182.4615383}), (6, {40: 1847703343.4615383}), (7, {40: 1882936442.4615383}), (8, {40: 1964088060.4615383}), (9, {40: 2001505388.4615383}), (10, {40: 2042520148.4615383}), (11, {40: 2142272994.4615383}), (12, {40: 2186942706.4615383}), (13, {40: 2227411000.4615383}), (14, {40: 2338090012.4615383}), (15, {51: 1730151237.4615383}), (16, {51: 1732330270.4615383})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_9
+Partition solving time for PDAG #AlexNetReLU64k_comp_9: 19.61 seconds
+PDAG #AlexNetReLU64k_comp_10 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_10
+  this_in_budgets: [(1, {40: 1783825311.9230769}), (2, {40: 1784336680.9230769}), (3, {40: 1784487409.9230769}), (4, {40: 1784913723.9230769}), (5, {40: 1785505485.9230769}), (6, {40: 1786064409.9230769}), (7, {40: 1786249271.9230769}), (8, {43: 1787211467.9230769}), (9, {40: 1828716473.3846152}), (10, {40: 1828898349.3846152}), (11, {40: 1829149112.3846152}), (12, {40: 1828903106.3846152}), (13, {40: 1829159013.3846152}), (14, {40: 1829420294.3846152}), (15, {51: 1829557456.3846152}), (16, {51: 1829285671.3846152})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_10
+Partition solving time for PDAG #AlexNetReLU64k_comp_10: 36.29 seconds
+PDAG #AlexNetReLU64k_comp_11 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_11
+  this_in_budgets: [(1, {40: 1882960867.8461537}), (2, {40: 1883543612.8461537}), (3, {40: 1884082328.8461537}), (4, {40: 1884583359.8461537}), (5, {40: 1884937158.8461537}), (6, {40: 1885690743.8461537}), (7, {40: 1886150337.8461537}), (8, {43: 1886746931.8461537}), (9, {40: 1928458595.3076923}), (10, {40: 1928596968.3076923}), (11, {40: 1928506878.3076923}), (12, {40: 1928869760.3076923}), (13, {40: 1928912188.307692}), (14, {40: 1928575814.3076923}), (15, {51: 1928782656.3076923}), (16, {51: 1928667413.307692})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_11
+Partition solving time for PDAG #AlexNetReLU64k_comp_11: 24.99 seconds
+PDAG #AlexNetReLU64k_comp_12 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_12
+  this_in_budgets: [(1, {40: 1982140177.7692308}), (2, {40: 1982429000.7692306}), (3, {40: 1982945337.7692306}), (4, {40: 1983437675.7692306}), (5, {40: 1984051670.7692308}), (6, {40: 1984387943.7692306}), (7, {40: 1984945286.7692306}), (8, {43: 1985462246.7692306}), (9, {40: 2027765625.2307692}), (10, {40: 2027510937.2307692}), (11, {40: 2027380040.230769}), (12, {40: 2027684243.2307692}), (13, {40: 2027657040.2307692}), (14, {40: 2027603937.2307692}), (15, {40: 2027780742.2307692}), (16, {51: 2027671200.2307692})]
+PDAG #AlexNetReLU64k_comp_12 is equivalent to PDAG #AlexNetReLU64k_comp_10
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_12
+Partition solving time for PDAG #AlexNetReLU64k_comp_12: 3.21 seconds
+PDAG #AlexNetReLU64k_comp_13 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_13
+  this_in_budgets: [(1, {40: 2081552280.6923075}), (2, {40: 2082001540.6923075}), (3, {40: 2082540256.6923075}), (4, {40: 2082991939.6923077}), (5, {40: 2083395086.6923075}), (6, {40: 2084076272.6923077}), (7, {40: 2084535866.6923077}), (8, {43: 2085132460.6923077}), (9, {40: 2126916523.153846}), (10, {40: 2127024713.153846}), (11, {40: 2126964806.153846}), (12, {40: 2127268214.153846}), (13, {40: 2127297717.153846}), (14, {40: 2127033742.153846}), (15, {51: 2127240584.153846}), (16, {51: 2127052942.153846})]
+PDAG #AlexNetReLU64k_comp_13 is equivalent to PDAG #AlexNetReLU64k_comp_10
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_13
+Partition solving time for PDAG #AlexNetReLU64k_comp_13: 0.56 seconds
+PDAG #AlexNetReLU64k_comp_14 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_14
+  this_in_budgets: [(1, {40: 2181137046.6153846}), (2, {40: 2181596459.6153846}), (3, {40: 2181967062.6153846}), (4, {40: 2182373681.6153846}), (5, {40: 2182990005.6153846}), (6, {40: 2183458014.6153846}), (7, {40: 2183917608.6153846}), (8, {43: 2184514202.6153846}), (9, {40: 2226357186.076923}), (10, {40: 2226406455.076923}), (11, {40: 2226503107.076923}), (12, {40: 2226649956.076923}), (13, {40: 2226679459.076923}), (14, {40: 2226628661.076923}), (15, {51: 2226818422.076923}), (16, {51: 2226434684.076923})]
+PDAG #AlexNetReLU64k_comp_14 is equivalent to PDAG #AlexNetReLU64k_comp_11
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_14
+Partition solving time for PDAG #AlexNetReLU64k_comp_14: 0.48 seconds
+PDAG #AlexNetReLU64k_comp_15 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_15
+  this_in_budgets: [(1, {40: 2280050049.5384617}), (2, {40: 2280313734.5384617}), (3, {40: 2280712608.538461}), (4, {40: 2281322409.5384617}), (5, {40: 2281851012.538461}), (6, {40: 2282272677.5384617}), (7, {40: 2282712557.538461}), (8, {43: 2283346980.5384617}), (9, {40: 2325652017.0}), (10, {40: 2325448083.0}), (11, {40: 2325147311.0}), (12, {40: 2325503488.0}), (13, {40: 2325541774.0}), (14, {40: 2325488671.0}), (15, {40: 2325665476.0}), (16, {51: 2325694932.0})]
+PDAG #AlexNetReLU64k_comp_15 is equivalent to PDAG #AlexNetReLU64k_comp_10
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_15
+Partition solving time for PDAG #AlexNetReLU64k_comp_15: 0.52 seconds
+PDAG #AlexNetReLU64k_comp_16 Basic, DAG size: 36 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_16
+  this_in_budgets: [(1, {40: 2379319551.4615383}), (2, {40: 2379768811.4615383}), (3, {40: 2380307527.4615383}), (4, {40: 2380808558.4615383}), (5, {40: 2381162357.4615383}), (6, {40: 2381988682.4615383}), (7, {40: 2382461919.4615383}), (8, {43: 2383156192.4615383}), (9, {40: 2424683793.9230766}), (10, {40: 2424822166.9230766}), (11, {40: 2424732076.9230766}), (12, {40: 2425094958.9230766}), (13, {40: 2425204771.9230766}), (14, {40: 2424801012.9230766}), (15, {51: 2425007854.9230766}), (16, {51: 2425076673.923077})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_16
+Partition solving time for PDAG #AlexNetReLU64k_comp_16: 1.23 seconds
+PDAG #AlexNetReLU64k_comp_17 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_17
+  this_in_budgets: [(1, {40: 2564162896.4615383}), (2, {40: 2632347542.4615383}), (3, {40: 2666080406.4615383}), (4, {40: 2711926556.9230766}), (5, {40: 2720469288.9230766}), (6, {40: 2712166148.9230766}), (7, {40: 2721276093.9230766}), (8, {40: 2710948689.9230766}), (9, {40: 2711651844.9230766}), (10, {40: 2711658669.9230766}), (11, {40: 2712013428.9230766}), (12, {40: 2710375512.9230766}), (13, {40: 2712033319.9230766}), (14, {40: 2720299197.9230766}), (15, {40: 2711534202.9230766}), (16, {51: 2710986924.9230766})]
+PDAG #AlexNetReLU64k_comp_17 is equivalent to PDAG #AlexNetReLU64k_comp_9
+  QBP Manager: Reusing Ratio: 0.812.
+    Need to solve 48 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_17
+Partition solving time for PDAG #AlexNetReLU64k_comp_17: 2.28 seconds
+PDAG #AlexNetReLU64k_comp_18 Basic, DAG size: 28 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_18
+  this_in_budgets: [(1, {40: 2764310547.3846154}), (2, {40: 2764708250.3846154}), (3, {40: 2765683206.384615}), (4, {40: 2765861682.384615}), (5, {40: 2766277975.3846154}), (6, {40: 2766710724.3846154}), (7, {40: 2767281429.3846154}), (8, {43: 2767679254.3846154}), (9, {40: 2809407825.8461537}), (10, {40: 2809716814.8461537}), (11, {40: 2809775417.8461537}), (12, {40: 2809752693.8461537}), (13, {40: 2810152168.8461537}), (14, {40: 2809848614.8461537}), (15, {51: 2810190898.8461537}), (16, {51: 2810066675.8461537})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_18
+Partition solving time for PDAG #AlexNetReLU64k_comp_18: 0.94 seconds
+PDAG #AlexNetReLU64k_comp_19 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_19
+  this_in_budgets: [(1, {40: 2981170108.384615}), (2, {40: 3069623679.384615}), (3, {40: 3110770790.3846154}), (4, {40: 3155859472.8461537}), (5, {40: 3154454757.8461537}), (6, {40: 3154463183.8461537}), (7, {40: 3155687932.8461537}), (8, {40: 3158306170.8461537}), (9, {40: 3154920691.8461537}), (10, {40: 3155458574.8461537}), (11, {40: 3154566062.8461537}), (12, {40: 3155958656.8461537}), (13, {40: 3154516246.8461537}), (14, {40: 3159048649.8461537}), (15, {40: 3154964795.8461537}), (16, {51: 3154419334.8461537})]
+PDAG #AlexNetReLU64k_comp_19 is equivalent to PDAG #AlexNetReLU64k_comp_9
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_19
+Partition solving time for PDAG #AlexNetReLU64k_comp_19: 0.51 seconds
+PDAG #AlexNetReLU64k_comp_20 Basic, DAG size: 30 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_20
+  this_in_budgets: [(1, {40: 3208028086.307692}), (2, {40: 3208613373.307692}), (3, {40: 3209115616.307692}), (4, {40: 3209294092.307692}), (5, {40: 3210077119.307692}), (6, {40: 3210149263.307692}), (7, {40: 3210982469.307692}), (8, {43: 3211226986.307692}), (9, {40: 3253665671.769231}), (10, {40: 3253149224.769231}), (11, {40: 3253368194.769231}), (12, {40: 3253728089.769231}), (13, {40: 3253584578.769231}), (14, {40: 3253748626.769231}), (15, {51: 3253623308.769231}), (16, {51: 3253499085.769231})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_20
+Partition solving time for PDAG #AlexNetReLU64k_comp_20: 1.06 seconds
+PDAG #AlexNetReLU64k_comp_21 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_21
+  this_in_budgets: [(1, {40: 3353369487.307692}), (2, {40: 3412178231.307692}), (3, {40: 3440862884.307692}), (4, {40: 3485668019.7692304}), (5, {40: 3484723143.7692304}), (6, {40: 3484909897.7692304}), (7, {40: 3485180513.7692304}), (8, {40: 3484665807.7692304}), (9, {40: 3484675302.7692304}), (10, {40: 3484682721.7692304}), (11, {40: 3485288305.7692304}), (12, {40: 3484695952.7692304}), (13, {40: 3484719420.7692304}), (14, {40: 3485237205.7692304}), (15, {40: 3484717669.7692304}), (16, {51: 3486022949.7692304})]
+PDAG #AlexNetReLU64k_comp_21 is equivalent to PDAG #AlexNetReLU64k_comp_9
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_21
+Partition solving time for PDAG #AlexNetReLU64k_comp_21: 0.47 seconds
+PDAG #AlexNetReLU64k_comp_22 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_22
+  this_in_budgets: [(1, {40: 3538385439.2307687}), (2, {40: 3538966408.2307687}), (3, {40: 3539313248.2307687}), (4, {40: 3539564508.2307687}), (5, {40: 3539829993.2307687}), (6, {40: 3540384530.2307687}), (7, {40: 3541080384.2307687}), (8, {43: 3541704338.2307687}), (9, {40: 3583418545.6923075}), (10, {40: 3583560996.6923075}), (11, {40: 3583456605.6923075}), (12, {40: 3583930586.6923075}), (13, {40: 3583946309.6923075}), (14, {40: 3583501500.6923075}), (15, {51: 3583603597.6923075}), (16, {51: 3584471939.6923075})]
+PDAG #AlexNetReLU64k_comp_22 is equivalent to PDAG #AlexNetReLU64k_comp_10
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_22
+Partition solving time for PDAG #AlexNetReLU64k_comp_22: 0.53 seconds
+PDAG #AlexNetReLU64k_comp_23 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_23
+  this_in_budgets: [(1, {40: 3637628846.153846}), (2, {40: 3638243169.153846}), (3, {40: 3638829279.153846}), (4, {40: 3639409198.153846}), (5, {40: 3639762997.153846}), (6, {40: 3640181830.153846}), (7, {40: 3640665368.153846}), (8, {43: 3641414895.153846}), (9, {40: 3683170337.6153846}), (10, {40: 3683422806.615384}), (11, {40: 3683332716.615384}), (12, {40: 3683333595.6153846}), (13, {40: 3683490760.6153846}), (14, {40: 3683401652.615384}), (15, {51: 3683608494.615384}), (16, {51: 3683562589.615384})]
+PDAG #AlexNetReLU64k_comp_23 is equivalent to PDAG #AlexNetReLU64k_comp_11
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_23
+Partition solving time for PDAG #AlexNetReLU64k_comp_23: 0.53 seconds
+PDAG #AlexNetReLU64k_comp_24 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_24
+  this_in_budgets: [(1, {40: 3736912266.076923}), (2, {40: 3737175951.076923}), (3, {40: 3737840514.0769224}), (4, {40: 3738184626.076923}), (5, {40: 3738839589.076923}), (6, {40: 3739134894.076923}), (7, {40: 3739840463.0769224}), (8, {43: 3740209197.076923}), (9, {40: 3782591463.538461}), (10, {40: 3782310299.538461}), (11, {40: 3782206040.538461}), (12, {40: 3782431193.538461}), (13, {40: 3782403990.538461}), (14, {40: 3782350887.538461}), (15, {40: 3782527692.538461}), (16, {51: 3782497038.538461})]
+PDAG #AlexNetReLU64k_comp_24 is equivalent to PDAG #AlexNetReLU64k_comp_10
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_24
+Partition solving time for PDAG #AlexNetReLU64k_comp_24: 0.49 seconds
+PDAG #AlexNetReLU64k_comp_25 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_25
+  this_in_budgets: [(1, {40: 3836378280.9999995}), (2, {40: 3836896716.9999995}), (3, {40: 3837411158.9999995}), (4, {40: 3837817777.9999995}), (5, {40: 3838290262.9999995}), (6, {40: 3838902110.9999995}), (7, {40: 3839361704.9999995}), (8, {43: 3839958298.9999995}), (9, {40: 3881801282.4615383}), (10, {40: 3881850551.4615383}), (11, {40: 3881859982.461538}), (12, {40: 3882094052.4615383}), (13, {40: 3882123555.4615383}), (14, {40: 3881928918.461538}), (15, {51: 3882135760.461538}), (16, {51: 3881878780.4615383})]
+PDAG #AlexNetReLU64k_comp_25 is equivalent to PDAG #AlexNetReLU64k_comp_10
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_25
+Partition solving time for PDAG #AlexNetReLU64k_comp_25: 0.53 seconds
+PDAG #AlexNetReLU64k_comp_26 Basic, DAG size: 166 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_26
+  this_in_budgets: [(1, {40: 3936032222.923076}), (2, {40: 3936434373.9230766}), (3, {40: 3936792900.9230766}), (4, {40: 3937199519.9230766}), (5, {40: 3937860907.9230766}), (6, {40: 3938283852.9230766}), (7, {40: 3938743446.9230766}), (8, {43: 3939340040.9230766}), (9, {40: 3981183024.3846154}), (10, {40: 3981232293.3846154}), (11, {40: 3981328945.3846154}), (12, {40: 3981475794.3846154}), (13, {40: 3981505297.3846154}), (14, {40: 3981499563.384615}), (15, {51: 3981644260.3846154}), (16, {51: 3981260522.3846154})]
+PDAG #AlexNetReLU64k_comp_26 is equivalent to PDAG #AlexNetReLU64k_comp_11
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_26
+Partition solving time for PDAG #AlexNetReLU64k_comp_26: 0.48 seconds
+PDAG #AlexNetReLU64k_comp_27 Basic, DAG size: 170 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_27
+  this_in_budgets: [(1, {40: 4034875887.8461537}), (2, {40: 4035139572.8461537}), (3, {40: 4035538446.8461537}), (4, {40: 4036148247.8461537}), (5, {40: 4036676850.8461537}), (6, {40: 4037098515.8461537}), (7, {40: 4037538395.8461537}), (8, {43: 4038172818.8461537}), (9, {40: 4080477855.3076925}), (10, {40: 4080273921.307692}), (11, {40: 4079973149.3076925}), (12, {40: 4080329326.3076925}), (13, {40: 4080367612.307692}), (14, {40: 4080314509.307692}), (15, {40: 4080491314.307692}), (16, {51: 4080520770.3076925})]
+PDAG #AlexNetReLU64k_comp_27 is equivalent to PDAG #AlexNetReLU64k_comp_10
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_27
+Partition solving time for PDAG #AlexNetReLU64k_comp_27: 0.53 seconds
+PDAG #AlexNetReLU64k_comp_28 Basic, DAG size: 24 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_28
+  this_in_budgets: [(1, {40: 4134145389.769231}), (2, {40: 4134594649.769231}), (3, {40: 4135133365.769231}), (4, {40: 4135634396.769231}), (5, {40: 4135988195.769231}), (6, {40: 4136814520.769231}), (7, {40: 4137287757.769231}), (8, {43: 4137982030.769231}), (9, {40: 4179509632.230769}), (10, {40: 4179648005.230769}), (11, {40: 4179557915.230769}), (12, {40: 4179920797.230769}), (13, {40: 4180030610.230769}), (14, {40: 4179626851.230769}), (15, {51: 4179833693.230769}), (16, {51: 4179902512.2307696})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_28
+Partition solving time for PDAG #AlexNetReLU64k_comp_28: 0.82 seconds
+PDAG #AlexNetReLU64k_comp_29 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_29
+  this_in_budgets: [(1, {40: 4638931943.769231}), (2, {40: 4883956548.769231}), (3, {40: 4996585203.769231}), (4, {40: 5045112907.230769}), (5, {40: 5073746025.692307}), (6, {40: 5041225143.230769}), (7, {40: 5041316148.230769}), (8, {40: 5041413073.230769}), (9, {40: 5041323234.230769}), (10, {40: 5035296146.230769}), (11, {40: 5035361601.230769}), (12, {40: 5050346774.230769}), (13, {40: 5041563202.230769}), (14, {40: 5035505335.230769}), (15, {40: 5035530612.230769}), (16, {51: 5041644652.230769})]
+PDAG #AlexNetReLU64k_comp_29 is equivalent to PDAG #AlexNetReLU64k_comp_9
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_29
+Partition solving time for PDAG #AlexNetReLU64k_comp_29: 0.52 seconds
+PDAG #AlexNetReLU64k_comp_30 Basic, DAG size: 12 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_30
+  this_in_budgets: [(1, {40: 5089198381.692307}), (2, {40: 5089690790.692307}), (3, {40: 5090092966.692307}), (4, {40: 5090377450.692307}), (5, {40: 5090642935.692307}), (6, {40: 5091197472.692307}), (7, {40: 5091893326.692307}), (8, {43: 5092517280.692307}), (9, {40: 5134231488.153846}), (10, {40: 5134373939.153846}), (11, {40: 5134269548.153846}), (12, {40: 5134743529.153846}), (13, {40: 5134585601.153846}), (14, {40: 5134314443.153846}), (15, {51: 5134416540.153846}), (16, {51: 5134793134.153846})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_30
+Partition solving time for PDAG #AlexNetReLU64k_comp_30: 0.36 seconds
+PDAG #AlexNetReLU64k_comp_31 Basic, DAG size: 160 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_31
+  this_in_budgets: [(1, {40: 5314152074.692307}), (2, {40: 5426149160.692307}), (3, {40: 5473959226.692307}), (4, {40: 5518608820.153846}), (5, {40: 5518664907.153846}), (6, {40: 5518678437.153846}), (7, {40: 5520773166.153846}), (8, {40: 5520830077.153846}), (9, {40: 5520855384.153846}), (10, {40: 5518809951.153846}), (11, {40: 5520822667.153846}), (12, {40: 5518947777.153846}), (13, {40: 5519011935.153846}), (14, {40: 5519012663.153846}), (15, {40: 5519041990.153846}), (16, {51: 5518568993.153846})]
+PDAG #AlexNetReLU64k_comp_31 is equivalent to PDAG #AlexNetReLU64k_comp_9
+  QBP Manager: Reusing Ratio: 0.875.
+    Need to solve 32 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_31
+Partition solving time for PDAG #AlexNetReLU64k_comp_31: 0.47 seconds
+PDAG #AlexNetReLU64k_comp_32 Basic, DAG size: 24 nodes
+Adding QBP for PDAG #AlexNetReLU64k_comp_32
+  this_in_budgets: [(1, {40: 5572177744.615384}), (2, {40: 5572587070.615384}), (3, {40: 5573265274.615384}), (4, {40: 5573443750.615384}), (5, {40: 5574154313.615384}), (6, {40: 5574298921.615384}), (7, {40: 5575132127.615384}), (8, {43: 5575376644.615384}), (9, {40: 5617286646.076922}), (10, {40: 5617298883.076922}), (11, {40: 5617517853.076922}), (12, {40: 5617631514.076922}), (13, {40: 5617734237.076922}), (14, {40: 5617727435.076922}), (15, {51: 5617772967.076922}), (16, {51: 5617648744.076922})]
+  QBP Manager: Reusing Ratio: 0.000.
+    Need to solve 256 / 256 ILP tasks for PDAG #AlexNetReLU64k_comp_32
+Partition solving time for PDAG #AlexNetReLU64k_comp_32: 0.83 seconds
+Final Choice: input (l,s)=(16,40), output (l,s)=(2,120), cost=5574393733.615384
+Final cost (aggregated partition cost): 5574.394 sec.
+Final assignment latency: 5574.387 sec.
+	RDAG: Squashing ['dummy']!
+Final tdag latency: 5572.173 sec. (accurate estimation)
+Final tdag latency breakdown (number of operations):
+  add_double: 16857 ops.
+  add_single: 353 ops.
+  bootstrap_single: 62 ops.
+  modswitch_single: 1181 ops.
+  mul_double: 864 ops.
+  mul_single: 13099 ops.
+  negate_single: 152 ops.
+  rescale_single: 2312 ops.
+  rotate_single: 21602 ops.
+  upscale_single: 2580 ops.
+========================================
+Final tdag latency breakdown (in sec):
+  add_double: 20.537 sec.
+  add_single: 15.233 sec.
+  bootstrap_single: 2764.818 sec.
+  modswitch_single: 1.494 sec.
+  mul_double: 177.695 sec.
+  mul_single: 493.544 sec.
+  negate_single: 0.620 sec.
+  rescale_single: 82.017 sec.
+  rotate_single: 2008.062 sec.
+  upscale_single: 8.153 sec.
+========================================
+Saturn Compilation time: 223.598 sec.
+Timestamps breakdown:
+  'DAG Load Time': 1.450 sec.
+  'DAG Compression Time': 1.662 sec.
+  'QBP Manager Init Time': 0.000 sec.
+  'ILP-QBP Time': 219.137 sec.
+  'Final Assignment Time': 0.000 sec.
+  'DAG Decode Time': 1.121 sec.
+  'DAG Write Time': 0.227 sec.
+========================================

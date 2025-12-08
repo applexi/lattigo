@@ -1,0 +1,48 @@
+	RDAG: Squashing ['rescale', 'upscale', 'modswitch', 'bootstrap']!
+Built original DAG with 4822 nodes and 6375 edges.
+Adding QBP for PDAG #CompPartSiLU64k_copy
+  this_in_budgets: [(-1, {40: 0})]
+  QBP Manager: Reusing Ratio: 0.938.
+    Need to solve 1 / 16 ILP tasks for PDAG #CompPartSiLU64k_copy
+Set parameter WLSAccessID
+Set parameter WLSSecret
+Set parameter LicenseID to value 2640700
+Academic license 2640700 - for non-commercial use only - registered to zi___@andrew.cmu.edu
+Final Choice: input (l,s)=(16,40), output (l,s)=(1,40), cost=807043882.0
+Final cost (aggregated partition cost): 807.044 sec.
+Final assignment latency: 807.044 sec.
+	RDAG: Squashing ['dummy']!
+Final tdag latency: 806.252 sec. (accurate estimation)
+Final tdag latency breakdown (number of operations):
+  add_double: 1383 ops.
+  add_single: 86 ops.
+  bootstrap_single: 9 ops.
+  modswitch_single: 249 ops.
+  mul_double: 171 ops.
+  mul_single: 1230 ops.
+  negate_single: 36 ops.
+  rescale_single: 363 ops.
+  rotate_single: 779 ops.
+  upscale_single: 202 ops.
+========================================
+Final tdag latency breakdown (in sec):
+  add_double: 1.902 sec.
+  add_single: 3.567 sec.
+  bootstrap_single: 623.886 sec.
+  modswitch_single: 0.321 sec.
+  mul_double: 39.408 sec.
+  mul_single: 49.366 sec.
+  negate_single: 0.147 sec.
+  rescale_single: 15.116 sec.
+  rotate_single: 71.730 sec.
+  upscale_single: 0.810 sec.
+========================================
+Saturn Compilation time: 652.775 sec.
+Timestamps breakdown:
+  'DAG Load Time': 0.044 sec.
+  'QBP Manager Init Time': 0.000 sec.
+  'ILP-QBP Time': 652.634 sec.
+  'Final Assignment Time': 0.000 sec.
+  'DAG Decode Time': 0.076 sec.
+  'DAG Write Time': 0.020 sec.
+========================================
