@@ -99,10 +99,11 @@ type LattigoFHE struct {
 	getStats          bool
 	logFile           string
 	enableTiming      bool
+	heMode            bool
 	timingStats       *TimingStats
 }
 
-func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputPath string, outputFile string, trueLabelsPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, logFile string, enableTiming bool) *LattigoFHE {
+func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPath string, inputPath string, outputFile string, trueLabelsPath string, fileType FileType, maxLevel int, bootstrapMinLevel int, bootstrapMaxLevel int, logFile string, enableTiming bool, heMode bool) *LattigoFHE {
 	var timingStats *TimingStats
 	if enableTiming {
 		timingStats = &TimingStats{
@@ -134,6 +135,7 @@ func NewLattigoFHE(n int, instructionsPath string, mlirPath string, constantsPat
 		logFile:           logFile,
 		enableTiming:      enableTiming,
 		timingStats:       timingStats,
+		heMode:            heMode,
 	}
 }
 
@@ -248,17 +250,29 @@ func (lattigo *LattigoFHE) createContext(depth int, rots []int) {
 	lattigo.dec = rlwe.NewDecryptor(params, sk)
 	eval := ckks.NewEvaluator(params, evk)
 
-	fmt.Println("Doing bootstrapping keys...")
-	btpEvk, _, _ := btpParams.GenEvaluationKeys(sk)
-	btpEval, _ := bootstrapping.NewEvaluator(btpParams, btpEvk)
-	lattigo.btpEval = btpEval
-
-	fmt.Println("Doing rotation keys...")
-	galEls := make([]uint64, len(rots))
-	for i, rot := range rots {
-		galEls[i] = params.GaloisElement(rot)
+	if lattigo.heMode {
+		fmt.Println("Doing bootstrapping keys...")
+		btpEvk, _, _ := btpParams.GenEvaluationKeys(sk)
+		btpEval, _ := bootstrapping.NewEvaluator(btpParams, btpEvk)
+		lattigo.btpEval = btpEval
+		fmt.Println("Bootstrapping circuit depth:", btpEval.Depth())
+		fmt.Println("Bootstrapping Output level:", btpEval.OutputLevel())
+		fmt.Println("Bootstrapping min input level:", btpEval.MinimumInputLevel())
+	} else {
+		fmt.Println("Skipping bootstrapping keys for plaintext execution...")
+		lattigo.btpEval = nil
 	}
-	lattigo.eval = eval.WithKey(rlwe.NewMemEvaluationKeySet(rlk, kgen.GenGaloisKeysNew(galEls, sk)...))
+
+	if lattigo.heMode {
+		fmt.Println("Doing rotation keys...")
+		galEls := make([]uint64, len(rots))
+		for i, rot := range rots {
+			galEls[i] = params.GaloisElement(rot)
+		}
+		lattigo.eval = eval.WithKey(rlwe.NewMemEvaluationKeySet(rlk, kgen.GenGaloisKeysNew(galEls, sk)...))
+	} else {
+		fmt.Println("Skipping rotation keys for plaintext execution...")
+	}
 
 	if lattigo.maxLevel != params.MaxLevel() {
 		fmt.Printf("Warning: maxLevel mismatch. Expected: %d, Actual: %d\n", params.MaxLevel(), lattigo.maxLevel)
@@ -377,8 +391,7 @@ func (lattigo *LattigoFHE) preprocess(operations []string) {
 	}
 }
 
-func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphertext, time.Duration, error) {
-	var finalResult *rlwe.Ciphertext
+func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, time.Duration, error) {
 	want := make([]float64, lattigo.n)
 	// var f *os.File
 
@@ -392,13 +405,13 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 	}
 	working_size, err := lattigo.getMaxWorkingPoolSize(numOps, order_list)
 	if err != nil {
-		return nil, nil, 0, err
+		return nil, 0, err
 	}
 	fmt.Printf("Optimized execution order working pool size: %v\n", working_size)
 
 	working_size_naive, err := lattigo.getMaxWorkingPoolSize(numOps, naive_list)
 	if err != nil {
-		return nil, nil, 0, err
+		return nil, 0, err
 	}
 	fmt.Printf("Naive execution order working pool size: %v\n", working_size_naive)
 
@@ -413,11 +426,15 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 		lineNum := order_list[i]
 		term := lattigo.terms[lineNum]
 
-		if _, ok := lattigo.env[lineNum]; !ok {
-			lattigo.env[lineNum] = lattigo.evalOp(term)
+		if lattigo.heMode {
+			if _, ok := lattigo.env[lineNum]; !ok {
+				lattigo.env[lineNum] = lattigo.evalOp(term)
+			}
+		} else {
+			if _, ok := lattigo.ptEnv[lineNum]; !ok {
+				lattigo.ptEnv[lineNum] = lattigo.evalOpPlain(term)
+			}
 		}
-
-		finalResult = lattigo.env[lineNum]
 
 		if lattigo.getStats {
 			want = lattigo.doPrecisionStats(lineNum, term)
@@ -439,7 +456,7 @@ func (lattigo *LattigoFHE) runInstructions(numOps int) ([]float64, *rlwe.Ciphert
 	// f.Close()
 	fmt.Println()
 
-	return want, finalResult, runtime, nil
+	return want, runtime, nil
 }
 
 func (lattigo *LattigoFHE) testOptimalOrder(operations []string) {
@@ -471,7 +488,7 @@ func (lattigo *LattigoFHE) testOptimalOrder(operations []string) {
 	}
 }
 
-func (lattigo *LattigoFHE) Run() ([]float64, error) {
+func (lattigo *LattigoFHE) Run() (pt_results []float64, _err error) {
 	var file string
 	if lattigo.fileType == MLIR {
 		file = lattigo.mlirPath
@@ -485,7 +502,7 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	if lattigo.outputFile != "" {
 		fmt.Println("Output file: ", filepath.Join("outputs", lattigo.outputFile))
 	}
-	expected_str, operations, inputs, err := lattigo.ReadFile(file)
+	expected_str, operations, inputs, outputId, err := lattigo.ReadFile(file)
 	if err != nil {
 		return nil, fmt.Errorf("error reading file: %v", err)
 	}
@@ -500,11 +517,11 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	fmt.Println("Creating context...")
 	lattigo.createContext(lattigo.maxLevel, rots)
 	if len(inputs) > 0 {
-		fmt.Println("Processing inputs...")
+		fmt.Println("Processing inputs from file", lattigo.inputPath, "...")
 		lattigo.processInputs(inputs)
 	}
 	if lattigo.constantsPath != "" {
-		fmt.Println("Loading constants...")
+		fmt.Println("Loading constants from file", lattigo.constantsPath, "...")
 		err := lattigo.loadConstants(lattigo.constantsPath)
 		if err != nil {
 			return nil, fmt.Errorf("error loading constants: %v", err)
@@ -513,14 +530,22 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 
 	fmt.Println("Preprocessing...")
 	lattigo.preprocess(operations)
+	lattigo.refCounts[outputId]++ // Ensure output is not deleted during execution
 
 	fmt.Println("Running instructions...")
-	want, finalResult, runtime, err := lattigo.runInstructions(len(operations))
+	want, runtime, err := lattigo.runInstructions(len(operations))
 	if err != nil {
 		return nil, fmt.Errorf("error running instructions: %v", err)
 	}
-	lastResult := finalResult
-	pt_results := lattigo.decode(lastResult)
+
+	var lastResult *rlwe.Ciphertext
+	if lattigo.heMode {
+		lastResult = lattigo.env[outputId]
+		pt_results = lattigo.decode(lastResult)
+	} else {
+		lastResult = nil
+		pt_results = lattigo.ptEnv[outputId]
+	}
 	if expected_str != "" {
 		fmt.Printf("\nOverall Statistics:\n")
 		expected = parseFloatArray(expected_str)
@@ -541,8 +566,13 @@ func (lattigo *LattigoFHE) Run() ([]float64, error) {
 	if lattigo.fileType == MLIR {
 		fmt.Printf("\nMLIR Result Stats:\n")
 		fmt.Printf("Decrypted Result: %v...\n", pt_results[:20])
-		fmt.Printf("Result Scale: %f\n", math.Log2(lastResult.Scale.Float64()))
-		fmt.Printf("Result Level (following lattigo): %v\n", lastResult.Level())
+		if lattigo.heMode {
+			fmt.Printf("Result Scale: %f\n", math.Log2(lastResult.Scale.Float64()))
+			fmt.Printf("Result Level (following lattigo): %v\n", lastResult.Level())
+		} else {
+			fmt.Printf("Result Scale: N/A (plaintext execution)\n")
+			fmt.Printf("Result Level (following lattigo): N/A (plaintext execution)\n")
+		}
 	}
 	if lattigo.getStats && want != nil {
 		accuracy := lattigo.calculateAccuracy(want, lastResult)
@@ -582,7 +612,7 @@ func (lattigo *LattigoFHE) RunBatch() error {
 	}
 
 	// Read operations and inputs from instruction/MLIR file
-	expected_str, operations, inputs, err := lattigo.ReadFile(file)
+	expected_str, operations, inputs, outputId, err := lattigo.ReadFile(file)
 	if err != nil {
 		return fmt.Errorf("error reading file: %v", err)
 	}
@@ -643,12 +673,13 @@ func (lattigo *LattigoFHE) RunBatch() error {
 		lattigo.preprocess(operations)
 
 		fmt.Println("Running instructions...")
-		_, finalResult, runtime, err := lattigo.runInstructions(len(operations))
+		_, runtime, err := lattigo.runInstructions(len(operations))
 		if err != nil {
 			fmt.Printf("Error running instructions for %s: %v\n", inputFile, err)
 			continue
 		}
 
+		finalResult := lattigo.env[outputId]
 		pt_results := lattigo.decode(finalResult)
 
 		// Print first 10 values from the output

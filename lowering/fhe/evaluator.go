@@ -40,6 +40,14 @@ func (lattigo *LattigoFHE) evalSingleAdd(ct1 *rlwe.Ciphertext, pt1 []float64, pt
 	return ct
 }
 
+func (lattigo *LattigoFHE) evalAddPlain(pt1, pt2 []float64) []float64 {
+	result := make([]float64, len(pt1))
+	for i := range pt1 {
+		result[i] = pt1[i] + pt2[i]
+	}
+	return result
+}
+
 func (lattigo *LattigoFHE) evalDoubleMul(ct1, ct2 *rlwe.Ciphertext) *rlwe.Ciphertext {
 	ct, _ := lattigo.eval.MulRelinNew(ct1, ct2)
 	if lattigo.fileType == Instructions {
@@ -56,9 +64,30 @@ func (lattigo *LattigoFHE) evalSingleMul(ct1 *rlwe.Ciphertext, pt1 []float64, pt
 	return ct
 }
 
+func (lattigo *LattigoFHE) evalMulPlain(pt1, pt2 []float64) []float64 {
+	result := make([]float64, len(pt1))
+	for i := range pt1 {
+		result[i] = pt1[i] * pt2[i]
+	}
+	return result
+}
+
 func (lattigo *LattigoFHE) evalRot(ct1 *rlwe.Ciphertext, k int) *rlwe.Ciphertext {
 	ct, _ := lattigo.eval.RotateNew(ct1, k)
 	return ct
+}
+
+func (lattigo *LattigoFHE) evalRotPlain(pt1 []float64, k int) []float64 {
+	n := len(pt1)
+	result := make([]float64, n)
+	for i := 0; i < n; i++ {
+		newIndex := (i - k + n) % n
+		if newIndex < 0 {
+			newIndex += n
+		}
+		result[newIndex] = pt1[i]
+	}
+	return result
 }
 
 func (lattigo *LattigoFHE) evalRotPow2(ct1 *rlwe.Ciphertext, k int) *rlwe.Ciphertext {
@@ -123,6 +152,14 @@ func (lattigo *LattigoFHE) evalNegate(ct1 *rlwe.Ciphertext) *rlwe.Ciphertext {
 	return ct
 }
 
+func (lattigo *LattigoFHE) evalNegatePlain(pt1 []float64) []float64 {
+	result := make([]float64, len(pt1))
+	for i := range pt1 {
+		result[i] = -pt1[i]
+	}
+	return result
+}
+
 func (lattigo *LattigoFHE) evalBootstrap(ct1 *rlwe.Ciphertext, targetLevel int) *rlwe.Ciphertext {
 	ct_i := ct1.CopyNew()
 	ct, err := lattigo.btpEval.Bootstrap(ct1)
@@ -134,6 +171,14 @@ func (lattigo *LattigoFHE) evalBootstrap(ct1 *rlwe.Ciphertext, targetLevel int) 
 	}
 	ct = lattigo.evalModswitch(ct, lattigo.maxLevel-(lattigo.bootstrapMaxLevel-targetLevel))
 	return ct
+}
+
+func (lattigo *LattigoFHE) evalNullPlain(pt1 []float64) []float64 {
+	result := make([]float64, len(pt1))
+	for i := range pt1 {
+		result[i] = pt1[i]
+	}
+	return result
 }
 
 func (lattigo *LattigoFHE) ensureEncoded(childID int) {
@@ -237,6 +282,61 @@ func (lattigo *LattigoFHE) evalOp(term *Term) *rlwe.Ciphertext {
 		result = lattigo.evalRescale(lattigo.env[term.Children[0]])
 	case UPSCALE:
 		result = lattigo.evalUpscale(lattigo.env[term.Children[0]], md.UpFactor)
+	default:
+		fmt.Printf("Unknown op: %v\n", term.Op)
+		return nil
+	}
+
+	if lattigo.enableTiming && result != nil {
+		duration := time.Since(start)
+		lattigo.recordTiming(term.Op, term.Level, duration)
+	}
+
+	return result
+}
+
+func (lattigo *LattigoFHE) evalOpPlain(term *Term) []float64 {
+	md := term.Metadata
+
+	switch term.Op {
+	case CONST:
+		return nil
+	}
+
+	var result []float64
+	var start time.Time
+
+	if lattigo.enableTiming {
+		start = time.Now()
+	}
+
+	switch term.Op {
+	/* case PACK:
+		result = lattigo.encode(md.PackedValue, nil, lattigo.params.MaxLevel())
+	case MASK:
+		result = lattigo.encode(md.MaskedValue, nil, lattigo.params.MaxLevel()) */
+	case ADD:
+		a := term.Children[0]
+		b := term.Children[1]
+		result = lattigo.evalAddPlain(lattigo.ptEnv[a], lattigo.ptEnv[b])
+	case MUL:
+		a := term.Children[0]
+		b := term.Children[1]
+		result = lattigo.evalMulPlain(lattigo.ptEnv[a], lattigo.ptEnv[b])
+	case ROT:
+		childLineNum := term.Children[0]
+		offset := md.Offset
+		result = lattigo.evalRotPlain(lattigo.ptEnv[childLineNum], offset)
+	case MODSWITCH:
+		result = lattigo.evalNullPlain(lattigo.ptEnv[term.Children[0]])
+	case NEGATE:
+		result = lattigo.evalNegatePlain(lattigo.ptEnv[term.Children[0]])
+	case BOOTSTRAP:
+		result = lattigo.evalNullPlain(lattigo.ptEnv[term.Children[0]])
+	case RESCALE:
+		result = lattigo.evalNullPlain(lattigo.ptEnv[term.Children[0]])
+	case UPSCALE:
+		result = lattigo.evalNullPlain(lattigo.ptEnv[term.Children[0]])
 	default:
 		fmt.Printf("Unknown op: %v\n", term.Op)
 		return nil

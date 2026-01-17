@@ -21,6 +21,7 @@ var (
 	reUpFactor     = regexp.MustCompile(`upFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 	reDownFactor   = regexp.MustCompile(`downFactor\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
 	reTargetLevel  = regexp.MustCompile(`targetLevel\s*=\s*([0-9]+)(?:\s*:\s*\w+)?`)
+	reOutputVar    = regexp.MustCompile(`(?:\"func\.return\"\s*\(\s*%|return\s+%)((?:arg)?-?\d+)`)
 )
 
 type FileType int
@@ -99,10 +100,10 @@ func getOpName(operation op) string {
 	}
 }
 
-func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []string, inputs []Term, err error) {
+func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []string, inputs []Term, outputId int, err error) {
 	file, err := os.Open(path)
 	if err != nil {
-		return "", nil, nil, err
+		return "", nil, nil, -1, err
 	}
 	defer file.Close()
 
@@ -147,11 +148,22 @@ func (lattigo *LattigoFHE) ReadFile(path string) (expected string, operations []
 					}
 					inputs = append(inputs, *term)
 				}
+			} else if strings.HasPrefix(trimmed, "\"func.return\"") || strings.HasPrefix(trimmed, "return") {
+				matches := reOutputVar.FindStringSubmatch(trimmed)
+				if len(matches) == 2 {
+					outputStr := matches[1]
+					if strings.HasPrefix(outputStr, "arg") {
+						outputId, _ = strconv.Atoi(strings.TrimPrefix(outputStr, "arg"))
+						outputId = -1 - outputId
+					} else {
+						outputId, _ = strconv.Atoi(outputStr)
+					}
+				}
 			}
 		}
 	}
 
-	return expected, operations, inputs, scanner.Err()
+	return expected, operations, inputs, outputId, scanner.Err()
 }
 
 func (lattigo *LattigoFHE) processInputs(inputs []Term) {

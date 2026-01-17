@@ -15,6 +15,7 @@ def worker(queue: Queue, base_cmd: List[str]):
         cmd = base_cmd + ["--run", str(run_num)]
         try:
             subprocess.run(cmd, check=True)
+            print(f"Completed run {run_num}")
         except subprocess.CalledProcessError as e:
             print(f"Error running with --run {run_num}: {e}")
         finally:
@@ -27,6 +28,8 @@ def main():
     parser.add_argument("--n", type=int, default=16, choices=[16, 64])
     parser.add_argument("--Lm", type=int, default=16)
     parser.add_argument("--Sw", type=int, default=40)
+    parser.add_argument("--Csw", type=int, default=None)
+    parser.add_argument("--plain", action='store_true')
     parser.add_argument("--maxthread", type=int, default=8)
     
     args = parser.parse_args()
@@ -38,8 +41,12 @@ def main():
         "--act", args.act,
         "--n", str(args.n),
         "--Lm", str(args.Lm),
-        "--Sw", str(args.Sw)
+        "--Sw", str(args.Sw),
     ]
+    if args.Csw is not None:
+        base_cmd += ["--Csw", str(args.Csw)]
+    if args.plain:
+        base_cmd.append("--plain")
     
     # Create queue and threads
     queue = Queue()
@@ -51,7 +58,7 @@ def main():
         threads.append(t)
     
     # Queue all runs
-    for run_num in range(8):
+    for run_num in range(24):
         queue.put(run_num)
     
     # Wait for completion

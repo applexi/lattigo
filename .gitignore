@@ -55,5 +55,9 @@ _testmain.go
 
 lowering/fhe_binary
 lowering/inputs/
+lowering/inputs_old/
+lowering/logs/
+lowering/mlirs_old/
+lowering/mlirs/
 lowering/mlir_const/
 lowering/execution_res/
